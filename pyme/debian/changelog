@@ -1,10 +1,14 @@
 pyme (0.6.3) unstable; urgency=low
 
-  * Remove workaround in Context.wait()
-  * Make Context.wait() and Context.op_edit() through exception on failure.
+  * Removed workaround in Context.wait()
+  * Made Context.wait() and Context.op_edit() throw exception on failure.
   * Added exception handling for passphrase_cb and edit_cb
+  * Allowed using None to unset previous callback and made hook argument
+    optional
+  * Fixed passphrase_cb to pass previously missing prev_bad argument as well
+  * Got rid of "warning: function declaration isn't a prototype" in helpers.h
 
- -- Igor Belyi <belyi@users.sourceforge.net>  Thu, 31 Mar 2005 14:18:57 -0500
+ -- Igor Belyi <belyi@users.sourceforge.net>  Tue,  5 Apr 2005 01:33:14 -0400
 
 pyme (0.6.2) unstable; urgency=low
 

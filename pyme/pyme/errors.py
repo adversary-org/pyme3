@@ -42,5 +42,5 @@ class GPGMEError(Exception):
 EOF = getattr(gpgme, "EOF")
 
 def errorcheck(retval, extradata = None):
-    if retval != 0:
+    if retval:
         raise GPGMEError(retval, extradata)

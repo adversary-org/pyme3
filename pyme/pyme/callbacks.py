@@ -19,17 +19,19 @@
 import gpgme
 from getpass import getpass
 
-def passphrase_stdin(hint, desc, hook):
+def passphrase_stdin(hint, desc, prev_bad, hook=None):
     """This is a sample callback that will read a passphrase from
     the terminal.  The hook here, if present, will be used to describe
     why the passphrase is needed."""
     why = ''
     if hook != None:
         why = ' ' + hook
+    if prev_bad:
+        why += ' (again)'
     print "Please supply %s' password%s:" % (hint, why)
     return getpass()
 
-def progress_stdout(what, type, current, total, hook):
+def progress_stdout(what, type, current, total, hook=None):
     print "PROGRESS UPDATE: what = %s, type = %d, current = %d, total = %d" %\
           (what, type, current, total)
     

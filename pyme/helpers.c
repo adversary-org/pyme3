@@ -26,7 +26,7 @@
 
 static PyObject *GPGMEError = NULL;
 
-void pygpgme_exception_init() {
+void pygpgme_exception_init(void) {
   if (GPGMEError == NULL) {
     PyObject *errors;
     errors = PyImport_ImportModule("errors");
@@ -37,7 +37,7 @@ void pygpgme_exception_init() {
   }
 }
 
-gpgme_error_t pygpgme_exception2code() {
+gpgme_error_t pygpgme_exception2code(void) {
   gpgme_error_t err_status = gpg_error(GPG_ERR_GENERAL);
   if (GPGMEError && PyErr_ExceptionMatches(GPGMEError)) {
     PyObject *type = 0, *value = 0, *traceback = 0;
@@ -47,11 +47,8 @@ gpgme_error_t pygpgme_exception2code() {
     error = PyObject_GetAttrString(value, "error");
     err_status = PyInt_AsLong(error);
     Py_DECREF(error);
-    Py_DECREF(type);
-    Py_DECREF(value);
-    Py_DECREF(traceback);
+    PyErr_Restore(type, value, traceback);
   }
-  PyErr_Clear();
   return err_status;
 }
 
@@ -64,7 +61,7 @@ static gpgme_error_t pyPassphraseCb(void *hook,
 				    const char *passphrase_info,
 				    int prev_was_bad,
 				    int fd) {
-  PyObject *pyhook = NULL;
+  PyObject *pyhook = (PyObject *) hook;
   PyObject *func = NULL;
   PyObject *args = NULL;
   PyObject *retval = NULL;
@@ -73,15 +70,23 @@ static gpgme_error_t pyPassphraseCb(void *hook,
 
   pygpgme_exception_init();
 
-  pyhook = (PyObject *) hook;
-  func = PyTuple_GetItem(pyhook, 0);
-  dataarg = PyTuple_GetItem(pyhook, 1);
+  if (PyTuple_Check(pyhook)) {
+    func = PyTuple_GetItem(pyhook, 0);
+    dataarg = PyTuple_GetItem(pyhook, 1);
+    args = PyTuple_New(4);
+  } else {
+    func = pyhook;
+    args = PyTuple_New(3);
+  }
 
-  args = PyTuple_New(3);
   PyTuple_SetItem(args, 0, PyString_FromString(uid_hint));
   PyTuple_SetItem(args, 1, PyString_FromString(passphrase_info));
-  Py_INCREF(dataarg);		/* Because GetItem doesn't give a ref but SetItem taketh away */
-  PyTuple_SetItem(args, 2, dataarg);
+  PyTuple_SetItem(args, 2, PyBool_FromLong((long)prev_was_bad));
+  if (dataarg) {
+    Py_INCREF(dataarg);		/* Because GetItem doesn't give a ref but SetItem taketh away */
+    PyTuple_SetItem(args, 3, dataarg);
+  }
+
   retval = PyObject_CallObject(func, args);
   Py_DECREF(args);
   if (PyErr_Occurred()) {
@@ -101,6 +106,10 @@ static gpgme_error_t pyPassphraseCb(void *hook,
 
 void pygpgme_set_passphrase_cb(gpgme_ctx_t ctx, PyObject *cb,
 			       PyObject **freelater) {
+  if (cb == Py_None) {
+    gpgme_set_passphrase_cb(ctx, NULL, NULL);
+    return;
+  }
   Py_INCREF(cb);
   *freelater = cb;
   gpgme_set_passphrase_cb(ctx, (gpgme_passphrase_cb_t)pyPassphraseCb, (void *) cb);
@@ -111,25 +120,36 @@ static void pyProgressCb(void *hook, const char *what, int type, int current,
   PyObject *func = NULL, *dataarg = NULL, *args = NULL, *retval = NULL;
   PyObject *pyhook = (PyObject *) hook;
   
-  func = PyTuple_GetItem(pyhook, 0);
-  dataarg = PyTuple_GetItem(pyhook, 1);
+  if (PyTuple_Check(pyhook)) {
+    func = PyTuple_GetItem(pyhook, 0);
+    dataarg = PyTuple_GetItem(pyhook, 1);
+    args = PyTuple_New(5);
+  } else {
+    func = pyhook;
+    args = PyTuple_New(4);
+  }
 
-  args = PyTuple_New(5);
-  
   PyTuple_SetItem(args, 0, PyString_FromString(what));
   PyTuple_SetItem(args, 1, PyInt_FromLong((long) type));
   PyTuple_SetItem(args, 2, PyInt_FromLong((long) current));
   PyTuple_SetItem(args, 3, PyInt_FromLong((long) total));
-  Py_INCREF(dataarg);		/* Because GetItem doesn't give a ref but SetItem taketh away */
-  PyTuple_SetItem(args, 4, dataarg);
+  if (dataarg) {
+    Py_INCREF(dataarg);		/* Because GetItem doesn't give a ref but SetItem taketh away */
+    PyTuple_SetItem(args, 4, dataarg);
+  }
   
   retval = PyObject_CallObject(func, args);
   Py_DECREF(args);
-  Py_DECREF(retval);
+  Py_XDECREF(retval);
 }
 
 void pygpgme_set_progress_cb(gpgme_ctx_t ctx, PyObject *cb, PyObject **freelater){
+  if (cb == Py_None) {
+    gpgme_set_progress_cb(ctx, NULL, NULL);
+    return;
+  }
   Py_INCREF(cb);
   *freelater = cb;
+  fprintf(stderr, "Sending callback %p to gpgme\n", cb);
   gpgme_set_progress_cb(ctx, (gpgme_progress_cb_t) pyProgressCb, (void *) cb);
 }

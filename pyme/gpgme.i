@@ -208,15 +208,21 @@ gpgme_error_t pyEditCb(void *opaque, gpgme_status_code_t status,
 
   pygpgme_exception_init();
 
-  func = PyTuple_GetItem(pyopaque, 0);
-  dataarg = PyTuple_GetItem(pyopaque, 1);
-
-  pyargs = PyTuple_New(3);
+  if (PyTuple_Check(pyopaque)) {
+    func = PyTuple_GetItem(pyopaque, 0);
+    dataarg = PyTuple_GetItem(pyopaque, 1);
+    pyargs = PyTuple_New(3);
+  } else {
+    func = pyopaque;
+    pyargs = PyTuple_New(2);
+  }
   
   PyTuple_SetItem(pyargs, 0, PyInt_FromLong((long) status));
   PyTuple_SetItem(pyargs, 1, PyString_FromString(args));
-  Py_INCREF(dataarg);		/* Because GetItem doesn't give a ref but SetItem taketh away */
-  PyTuple_SetItem(pyargs, 2, dataarg);
+  if (dataarg) {
+    Py_INCREF(dataarg);		/* Because GetItem doesn't give a ref but SetItem taketh away */
+    PyTuple_SetItem(pyargs, 2, dataarg);
+  }
   
   retval = PyObject_CallObject(func, pyargs);
   Py_DECREF(pyargs);

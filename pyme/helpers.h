@@ -21,8 +21,8 @@
 #include <gpgme.h>
 #include "Python.h"
 
-void pygpgme_exception_init();
-gpgme_error_t pygpgme_exception2code();
+void pygpgme_exception_init(void);
+gpgme_error_t pygpgme_exception2code(void);
 
 void pygpgme_clear_generic_cb(PyObject **cb);
 

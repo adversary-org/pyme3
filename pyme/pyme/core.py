@@ -129,40 +129,47 @@ class Context(GpgmeWrapper):
         gpgme.delete_gpgme_trust_item_t_p(ptr)
         return trust
 
-    def set_passphrase_cb(self, func, hook):
+    def set_passphrase_cb(self, func, hook=None):
         """Sets the passphrase callback to the function specified by func.
 
-        When the system needs a passphrase, it will call func with two args:
-        desc, a string describing the passphrase it needs; and hook,
-        the data passed in as hook here.
-
-        The hook argument is mandatory for obscure technical reasons
-        (Python hands the C code a 'cell' instead of a tuple if I made
-        this optional.)  It is suggested that you pass a None value for
-        hook if your called functions do not require a specific hook value.
+        When the system needs a passphrase, it will call func with three args:
+        hint, a string describing the key it needs the passphrase for;
+        desc, a string describing the passphrase it needs;
+        prev_bad, a boolean equal True if this is a call made after
+        unsuccessful previous attempt.
+        
+        If hook has a value other than None it will be passed into the func
+        as a forth argument.
 
         Please see the GPGME manual for more information.
         """
         self._free_passcb()
-        self.last_passcb = gpgme.new_PyObject_p_p()
-        hookdata = (func, hook)
+        if func == None:
+            hookdata = None
+        else:
+            self.last_passcb = gpgme.new_PyObject_p_p()
+            if hook == None:
+                hookdata = func
+            else:
+                hookdata = (func, hook)
         gpgme.pygpgme_set_passphrase_cb(self.wrapped, hookdata, self.last_passcb)
 
-    def set_progress_cb(self, func, hook):
+    def set_progress_cb(self, func, hook=None):
         """Sets the progress meter callback to the function specified by
 
         This function will be called to provide an interactive update of
         the system's progress.
 
-        The hook argument is mandatory for obscure technical reasons
-        (Python hands the C code a 'cell' instead of a tuple if I made
-        this optional.)  It is suggested that you pass a None value for
-        hook if your called functions do not require a specific hook value.
-
         Please see the GPGME manual for more information."""
         self._free_progresscb()
-        self.last_progresscb = gpgme.new_PyObject_p_p()
-        hookdata = (func, hook)
+        if func == None:
+            hookdata = None
+        else:
+            self.last_progresscb = gpgme.new_PyObject_p_p()
+            if hook == None:
+                hookdata = func
+            else:
+                hookdata = (func, hook)
         gpgme.pygpgme_set_progress_cb(self.wrapped, hookdata, self.last_progresscb)
 
     def wait(self, hang):
@@ -186,6 +193,8 @@ class Context(GpgmeWrapper):
 
     def op_edit(self, key, func, fnc_value, out):
         """Start key editing using supplied callback function"""
+        if key == None:
+            raise ValueError("op_edit: First argument cannot be None")
         opaquedata = (func, fnc_value)
         errorcheck(gpgme.gpgme_op_edit(self.wrapped, key, opaquedata, out))
     

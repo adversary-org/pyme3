@@ -44,7 +44,7 @@ passlist = {
     }
     
 # callback will return password based on the e-mail listed in the hint.
-c.set_passphrase_cb(lambda x,y,z: passlist[x[x.rindex("<"):]], "")
+c.set_passphrase_cb(lambda x,y,z: passlist[x[x.rindex("<"):]])
 
 c.op_sign(plain, sig, mode.CLEAR)
 

@@ -46,7 +46,7 @@ if not os.getenv("GNUPGHOME"):
     print "Please, set GNUPGHOME env.var. pointing to GPGME's tests/gpg dir"
 else:
     c = Context()
-    c.set_passphrase_cb(lambda x,y,z: "abc", "")
+    c.set_passphrase_cb(lambda x,y,z: "abc")
     out = Data()
     c.op_keylist_start("Alpha", 0)
     key = c.op_keylist_next()
