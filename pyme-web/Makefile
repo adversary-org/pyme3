@@ -7,3 +7,6 @@ DOCPATH=$(PROJPATH)/htdocs
 install:
 	scp $(WEBFILES) shell.sf.net:$(DOCPATH)
 	ssh shell.sf.net "cd $(DOCPATH) && chmod a+r $(WEBFILES)"
+
+clean:
+	rm -f *~
