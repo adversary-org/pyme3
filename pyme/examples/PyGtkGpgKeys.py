@@ -20,6 +20,7 @@ import gtk, gobject, gtk.glade
 import time, sys, os
 from pyme import callbacks
 from pyme.core import Data, Context, pubkey_algo_name
+from pyme import constants
 from pyme.constants import validity
 from pyme.constants.keylist import mode
 
@@ -39,96 +40,132 @@ def sec2str(secs):
 
 index = 0
 class KeyColumn:
-    "Helper class for data columns. Sortable by self.index"
-    def __init__(self, gtype, vattr, func):
-        """new(qtype, vattr, func):
+    "Helper class for data columns."
+    def __init__(self, name, gtype, vattr=None, tcols=None, func=lambda x:x):
+        """new(name, qtype, vattr, column, ocolumn, func):
+        name  - column title
         qtype - gobject type to use in TreeStore for this column
         vattr - column data is visible is method vattr present in the object
+        tcols - list of type specific columns to append its name to.
         func  - function converting object data into viewable presentation"""
         global index
+        self.name = name
         self.type = gtype
         self.vattr = vattr
         self.func = func
         self.index = index
-        self.attrs = {"text": index}
-        self.name = None
+        self.attrs = {}
+        if tcols != None: tcols.append(name)
         index += 1
 
-    def __cmp__(self, other):
-        return self.index - other.index
+# List column names specific to an object type
+key_columns = []                        # names only in key
+uid_columns = []                        # names only in uids
+sub_columns = []                        # names only in subkeys
+sign_columns = []                       # names only in signatures
+sub_sign_columns = []                   # names in subkeys and signatures
 
 # Explicite columns
-columns = {
-    "Name":    KeyColumn(gobject.TYPE_STRING, "name",
-                         lambda x: x.name+(x.comment and " (%s)"%x.comment)),
-    "Email":   KeyColumn(gobject.TYPE_STRING, "email",
-                         lambda x: x.email),
-    "Trust":   KeyColumn(gobject.TYPE_STRING, "owner_trust",
-                         lambda x: trusts[x.owner_trust]),
-    "Type":    KeyColumn(gobject.TYPE_STRING, "pubkey_algo",
-                         lambda x: pubkey_algo_name(x.pubkey_algo)),
-    "Length":  KeyColumn(gobject.TYPE_INT, "length",
-                         lambda x: x.length),
-    "Created": KeyColumn(gobject.TYPE_STRING, "timestamp",
-                         lambda x: sec2str(x.timestamp)),
-    "Expires": KeyColumn(gobject.TYPE_STRING, "expires",
-                         lambda x: sec2str(x.expires)),
-    "Id":      KeyColumn(gobject.TYPE_STRING, "keyid",
-                         lambda x: x.keyid),
-    "NameRev": KeyColumn(gobject.TYPE_BOOLEAN, None,
-                         lambda x: x.revoked or x.invalid),
-    "KeyRev":  KeyColumn(gobject.TYPE_BOOLEAN, None,
-                         lambda x: x.revoked or x.invalid or x.expired),
-    "CanDel":  KeyColumn(gobject.TYPE_BOOLEAN, None, lambda x: x)
-    }
+visible_columns = [
+    KeyColumn("Name", gobject.TYPE_STRING, "name", uid_columns,
+              lambda x: x.name+(x.comment and " (%s)"%x.comment)),
+    KeyColumn("Email", gobject.TYPE_STRING, "email", uid_columns,
+              lambda x: x.email),
+    KeyColumn("Owner\nTrust", gobject.TYPE_STRING, "owner_trust", key_columns,
+              lambda x: trusts[x.owner_trust]),
+    KeyColumn("Type", gobject.TYPE_STRING, "pubkey_algo", sub_sign_columns,
+              lambda x: pubkey_algo_name(x.pubkey_algo)),
+    KeyColumn("Length", gobject.TYPE_INT, "length", sub_columns,
+              lambda x: x.length),
+    KeyColumn("Can\nAuth", gobject.TYPE_BOOLEAN,"can_authenticate",sub_columns,
+              lambda x: x.can_authenticate),
+    KeyColumn("Can\nCert", gobject.TYPE_BOOLEAN, "can_certify", sub_columns,
+              lambda x: x.can_certify),
+    KeyColumn("Can\nEncr", gobject.TYPE_BOOLEAN, "can_encrypt", sub_columns,
+              lambda x: x.can_encrypt),
+    KeyColumn("Can\nSign", gobject.TYPE_BOOLEAN, "can_sign", sub_columns,
+              lambda x: x.can_sign),
+    KeyColumn("Created", gobject.TYPE_STRING, "timestamp", sub_sign_columns,
+              lambda x: sec2str(x.timestamp)),
+    KeyColumn("Expires", gobject.TYPE_STRING, "expires", sub_sign_columns,
+              lambda x: sec2str(x.expires)),
+    KeyColumn("Id", gobject.TYPE_STRING, "keyid", sub_sign_columns,
+              lambda x: x.keyid)
+    ]
 
-# The last column represented as a TreeViewColumn
-last_visible = columns["Id"].index
+helper_columns = [
+    KeyColumn("Name Invalid", gobject.TYPE_BOOLEAN, None, uid_columns,
+              lambda x: x.revoked or x.invalid),
+    KeyColumn("Subkey Invalid", gobject.TYPE_BOOLEAN, None, sub_sign_columns,
+              lambda x: x.revoked or x.invalid or x.expired),
+    KeyColumn("FPR", gobject.TYPE_STRING, None, sub_columns,
+              lambda x: x.fpr)
+    ]
 
 # Calculate implicite columns - defining visibility of the data in a column.
-# Also put names into column classes to use after sort.
+# In the same loop calculate tuple for rows having only name in them.
 name_only = ()
-for name in columns.keys():
-    columns[name].name = name
-    if columns[name].index <= last_visible:
-        columns["Show"+name] = KeyColumn(gobject.TYPE_BOOLEAN,None,lambda x: x)
-        columns[name].attrs["visible"] = columns["Show"+name].index
-        name_only += (columns["Show"+name].index, name == "Name")
+for item in visible_columns:
+    vis_item = KeyColumn("Show"+item.name, gobject.TYPE_BOOLEAN)
+    helper_columns.append(vis_item)
+    item.attrs["visible"] = vis_item.index
+    name_only += (vis_item.index, item.name == "Name")
+
+columns = {}
+for item in visible_columns + helper_columns:
+    columns[item.name] = item
 
 # Use strikethrough to indicate revoked or invalid keys and uids
-columns["Name"].attrs["strikethrough"] = columns["NameRev"].index
-columns["Id"].attrs["strikethrough"] = columns["KeyRev"].index
-
-# List columns specific to an object type
-key_columns = ["Trust"]
-uid_columns = ["Name", "Email", "NameRev"]
-sub_columns = ["Type", "Expires", "Length", "Created", "Id", "KeyRev"]
+columns["Name"].attrs["strikethrough"] = columns["Name Invalid"].index
+columns["Id"].attrs["strikethrough"] = columns["Subkey Invalid"].index
 
 def pair(name, value):
     "pair(name, value) creates (index, func(value)) tuple based on column name"
     item = columns[name]
-    if item.index <= last_visible:
-        view = columns["Show"+name]
-        if hasattr(value, item.vattr):
-            return (item.index, item.func(value), view.index, True)
-        else:
-            return (view.index, False)
+    if item.index < len(visible_columns):
+        return (item.index, item.func(value), columns["Show"+name].index, True)
     else:
         return (item.index, item.func(value))
 
 class PyGtkGpgKeys:
     "Main class representing PyGtkGpgKeys application"
+    def error_message(self, text, parent=None):
+        dialog = gtk.MessageDialog(parent or self.mainwin,
+                                   gtk.DIALOG_MODAL |
+                                   gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_ERROR,
+                                   gtk.BUTTONS_OK,
+                                   text)
+        dialog.run()
+        dialog.destroy()        
+
+    def yesno_message(self, text, parent=None):
+        dialog = gtk.MessageDialog(parent or self.mainwin,
+                                   gtk.DIALOG_MODAL |
+                                   gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_QUESTION,
+                                   gtk.BUTTONS_YES_NO,
+                                   text)
+        result = dialog.run() == gtk.RESPONSE_YES
+        dialog.destroy()
+        return result
+    
+    def load_keys(self):
+        for key in self.context.op_keylist_all(None, self.only_secret):
+            self.add_key(key)
     
     def add_key(self, key):
         "self.add_key(key) - add key to the TreeStore model"
         uid = key.uids
         subkey = key.subkeys
         iter = self.model.append(None)
+        # Can delete only the whole key
         param = (iter,)
+        # Key information is a combination of the key and first uid and subkey
         for col in key_columns: param += pair(col, key)
         for col in uid_columns: param += pair(col, uid)
         for col in sub_columns: param += pair(col, subkey)
-        param += pair("CanDel", True)
+        for col in sub_sign_columns: param += pair(col, subkey)
         self.model.set(*param)
         if uid:
             self.add_signatures(uid.signatures, iter)
@@ -145,7 +182,7 @@ class PyGtkGpgKeys:
             child_iter = self.model.append(key_iter)
             param = (child_iter,)
             for col in sub_columns: param += pair(col, subkey)
-            param += pair("CanDel", False)
+            for col in sub_sign_columns: param += pair(col, subkey)
             self.model.set(*param)
             subkey = subkey.next
 
@@ -159,7 +196,6 @@ class PyGtkGpgKeys:
             child_iter = self.model.append(uid_iter)
             param = (child_iter,)
             for col in uid_columns: param += pair(col, uid)
-            param += pair("CanDel", False)
             self.model.set(*param)
             self.add_signatures(uid.signatures, child_iter)
             uid=uid.next
@@ -174,17 +210,20 @@ class PyGtkGpgKeys:
             child_iter = self.model.append(sign_iter)
             param = (child_iter,)
             for col in uid_columns: param += pair(col, sign)
-            for col in sub_columns: param += pair(col, sign)
-            param += pair("CanDel", False)
+            for col in sign_columns: param += pair(col, sign)
+            for col in sub_sign_columns: param += pair(col, sign)
             self.model.set(*param)
             sign = sign.next
 
     def add_columns(self):
         "Add viewable columns for the data in TreeStore model"
-        visibles = [x for x in columns.values() if x.index <= last_visible]
-        visibles.sort()
-        for item in visibles:
-            renderer = gtk.CellRendererText()
+        for item in visible_columns:
+            if item.type == gobject.TYPE_BOOLEAN:
+                renderer = gtk.CellRendererToggle()
+                item.attrs["active"] = item.index
+            else:
+                renderer = gtk.CellRendererText()
+                item.attrs["text"] = item.index
             column = self.treeview.insert_column_with_attributes(
                 item.index, item.name, renderer, **item.attrs)
             column.set_sort_column_id(item.index)
@@ -194,25 +233,125 @@ class PyGtkGpgKeys:
                 check.connect("activate",
                               lambda x, y: y.set_visible(x.get_active()),
                               column)
+                column.set_visible(check.get_active())
+
+    def collect_keys(self, model, path, iter, key_list):
+        iter = model.get_iter(path[:1])
+        keyid = model.get_value(iter, columns["FPR"].index)
+        key = self.context.get_key(keyid, 0)
+        key_list.append((key, model, iter))
+
+    def export_keys(self):
+        selection = self.treeview.get_selection()
+        if selection.count_selected_rows() <= 0:
+            return
+        
+        export_file = None
+        dialog = gtk.FileChooserDialog("Export Keys (Public only) into a File",
+                                       self.mainwin,
+                                       gtk.FILE_CHOOSER_ACTION_SAVE,
+                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                        gtk.STOCK_OK, gtk.RESPONSE_OK))
+        while dialog.run() == gtk.RESPONSE_OK:
+            filename = dialog.get_filename()
+            if os.path.exists(filename):
+                if os.path.isdir(filename):
+                    self.error_message("%s is a directory!" % filename,
+                                       dialog)
+                    continue
+                elif not self.yesno_message("%s exists. Override?" % filename,
+                                            dialog):
+                    continue
+
+            # FIXME. Verify that file can be written to
+            export_file = file(filename, "wb")
+            break
+        dialog.destroy()
+        if export_file == None:
+            return
+
+        key_list = []
+        expkeys = Data()
+        selection.selected_foreach(self.collect_keys, key_list)
+        for key, model, iter in key_list:
+            self.context.op_export(key.subkeys.fpr, 0, expkeys)
+        expkeys.seek(0,0)
+        export_file.write(expkeys.read())
+        export_file.close()
+            
+    def on_export_keys_activate(self, obj):
+        self.context.set_armor(0)
+        self.export_keys()
+
+    def on_export_keys_text_activate(self, obj):
+        self.context.set_armor(1)
+        self.export_keys()
+
+    def on_import_keys_activate(self, obj):
+        import_file = None
+        dialog = gtk.FileChooserDialog("Import Keys from a File",
+                                       self.mainwin,
+                                       gtk.FILE_CHOOSER_ACTION_OPEN,
+                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                        gtk.STOCK_OK, gtk.RESPONSE_OK))
+        while dialog.run() == gtk.RESPONSE_OK:
+            filename = dialog.get_filename()
+            if os.path.exists(filename):
+                if os.path.isdir(filename):
+                    self.error_message("%s is a directory!" % filename,
+                                       dialog)
+                else:
+                    # FIXME. Verify that file can be open.
+                    import_file = filename
+                    break
+            else:
+                self.error_message("%s does not exist." % filename,
+                                   dialog)
+        dialog.destroy()
+        if import_file == None:
+            return
+
+        impkeys = Data(file=import_file)
+        status = self.context.op_import(impkeys)
+        if status:
+            self.error_message("Import return an error message %d" % status)
+        result = self.context.op_import_result()
+        if result.considered == 0:
+            self.error_message("There's no keys in the file.")
+        # FIXME. Instead of rereading everything we could find out what's new
+        # from the result based on the ORed value of impkey:
+        # constants.import.NEW    - The key was new.
+        # constants.import.UID    - The key contained new user IDs.
+        # constants.import.SIG    - The key contained new signatures.
+        # constants.import.SUBKEY - The key contained new sub keys.
+        # constants.import.SECRET - The key contained a secret key.
+        # It would be nice to highlight new things as well.
+        self.model.clear()
+        self.load_keys()
+        #if result:
+        #    impkey = result.imports
+        #    while impkey:
+        #        if impkey.status & constants.import.NEW:
+        #            self.add_key(self.context.get_key(impkey.fpr,
+        #                                              self.only_secret))
+        #        impkey = impkey.next
 
     def on_delete_activate(self, obj):
         "self.on_delete_activate(obj) - callback for key deletion request"
         selection = self.treeview.get_selection()
-        if selection:
-            model, iter = selection.get_selected()
-            if iter and model.get_value(iter, columns["CanDel"].index):
-                keyid = model.get_value(iter, columns["Id"].index)
-                key = self.context.get_key(keyid, 0)
-                dialog = gtk.MessageDialog(self.mainwin,
-                                           gtk.DIALOG_MODAL |
-                                           gtk.DIALOG_DESTROY_WITH_PARENT,
-                                           gtk.MESSAGE_QUESTION,
-                                           gtk.BUTTONS_YES_NO,
-                                           "Delete selected key?")
-                if dialog.run() == gtk.RESPONSE_YES:
+        if selection.count_selected_rows() > 0:
+            key_list = []
+            selection.selected_foreach(self.collect_keys, key_list)
+            
+            message = "Delete selected keys?\n"
+            for key, model, iter in key_list:
+                message += "\n%s\t" % key.subkeys.keyid
+                if key.uids: message += key.uids.uid
+                else:        message += "<undefined>"                
+            if self.yesno_message(message):
+                for key, model, iter in key_list:
                     self.context.op_delete(key, 1)
                     model.remove(iter)
-                dialog.destroy()
 
     def get_widget_values(self, widgets):
         "Create an array of values from widgets' getter methods"
@@ -260,7 +399,8 @@ class PyGtkGpgKeys:
     def on_generate_activate(self, obj):
         "Callback to generate new key"
         
-        # Set of (widget, common suffix of getter/setter function) tuples.
+        # Set of (widget, common suffix of getter/setter function) tuples
+        # from the GenerateDialog prompt for new key properties.
         widgets = [
             ("key_type", "active_iter"),
             ("key_length", "value"),
@@ -286,7 +426,7 @@ class PyGtkGpgKeys:
              subkey_type, subkey_length, subkey_encrypt, subkey_sign,
              name_real, name_comment, name_email, expire_date,
              passphrase, passphrase2) = self.get_widget_values(widgets)
-            if key_type and key_length and passphrase == passphrase2:
+            if key_type and passphrase == passphrase2:
                 key_type = self.wtree.get_widget("key_type").get_model(
                     ).get_value(key_type,0)
                 result = "<GnupgKeyParms format=\"internal\">\n"
@@ -319,7 +459,13 @@ class PyGtkGpgKeys:
                     result += "Expire-Date: 0\n"
                 result += "</GnupgKeyParms>\n"
             else:
-                pass
+                if not key_type:
+                    message = "Type of the primary key is not specified."
+                elif passphrase != passphrase2:
+                    message = "Passphrases do not match."
+                else:
+                    message = "Unknown error."
+                self.error_message(message, dialog)
         else:
             self.set_widget_values(widgets, saved_values)
 
@@ -332,7 +478,7 @@ class PyGtkGpgKeys:
             self.progress_entry.set_text("")
             gobject.timeout_add(500, self.update_progress)
             self.wtree.get_widget("GenerateProgress").show_all()
-            # Start anynchronous key generation
+            # Start asynchronous key generation
             self.context.op_genkey_start(result, None, None)
 
     def gen_progress(self, what=None, type=None, current=None,
@@ -351,20 +497,18 @@ class PyGtkGpgKeys:
             return True
         elif status == 0:
             fpr = self.context.op_genkey_result().fpr
-            self.add_key(self.context.get_key(fpr, 0))                    
-            
+            self.add_key(self.context.get_key(fpr, self.only_secret))            
         self.wtree.get_widget("GenerateProgress").hide()
         self.progress = None
 
-        # FIXME. Should be a popup window on an error...
         if status:
-            sys.stderr.write("Function return %d\n" % status)
+            self.error_message("Got error %d during key generation." % status)
 
         # Let callback to be removed.
         return False
 
     def on_generating_close_clicked(self, obj):
-        # Request cancelation of the outstanding asynchonous call
+        # Request cancelation of the outstanding asynchronous call
         self.context.cancel()
 
     def get_password(self, hint, desc, hook):
@@ -382,6 +526,16 @@ class PyGtkGpgKeys:
         dialog.hide()
         return result
 
+    def on_reload_all_activate(self, obj):
+        self.model.clear()
+        self.only_secret = 0
+        self.load_keys()
+
+    def on_reload_secret_activate(self, obj):
+        self.model.clear()
+        self.only_secret = 1
+        self.load_keys()
+
     def on_about_activate(self, obj):
         about = self.wtree.get_widget("AboutDialog")
         about.run()
@@ -396,9 +550,8 @@ class PyGtkGpgKeys:
         self.mainwin = self.wtree.get_widget("GPGAdminWindow")
         self.treeview = self.wtree.get_widget("GPGKeysView")
 
-        types = columns.values()
-        types.sort()
-        self.model = gtk.TreeStore(*[x.type for x in types])        
+        self.model = gtk.TreeStore(*[x.type for x in visible_columns +
+                                     helper_columns])        
 
         self.context = Context()
         self.context.set_passphrase_cb(self.get_password, "")
@@ -406,10 +559,11 @@ class PyGtkGpgKeys:
         self.context.set_progress_cb(self.gen_progress, None)
         # Use mode.SIGS to include signatures in the list.
         self.context.set_keylist_mode(mode.SIGS)
-        for key in self.context.op_keylist_all(None, 0):
-            self.add_key(key)
+        self.only_secret = 0
+        self.load_keys()
 
         self.treeview.set_model(self.model)
+        self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.add_columns()
 
         gtk.main()
