@@ -268,16 +268,15 @@ class PyGtkGpgKeys:
 
         message = "Change trust to %s on the following keys?\n" % \
                   trusts[new_trust]
-        for key, model, iter in key_list:
+        for key, row in key_list:
             message += "\n%s\t" % key.subkeys.keyid
             if key.uids: message += key.uids.uid
             else:        message += "<undefined>"                
         if self.yesno_message(message):
-            for key, model, iter in key_list:
+            for key, row in key_list:
                 if key.owner_trust != new_trust:
                     self.change_key_trust(key, new_trust)
-                    model.set(iter, columns["Owner\nTrust"].index,
-                              trusts[new_trust])
+                    row[columns["Owner\nTrust"].index] = trusts[new_trust]
 
     def on_undefined_trust_activate(self, obj):
         self.on_change_trust(1)
@@ -295,10 +294,10 @@ class PyGtkGpgKeys:
         self.on_change_trust(5)
 
     def collect_keys(self, model, path, iter, key_list):
-        iter = model.get_iter(path[:1])
-        keyid = model.get_value(iter, columns["FPR"].index)
+        row = model[path[:1]]
+        keyid = row[columns["FPR"].index]
         key = self.context.get_key(keyid, 0)
-        key_list.append((key, model, iter))
+        key_list.append((key, row))
 
     def export_keys(self):
         selection = self.treeview.get_selection()
@@ -332,7 +331,7 @@ class PyGtkGpgKeys:
         key_list = []
         selection.selected_foreach(self.collect_keys, key_list)
         expkeys = Data()
-        for key, model, iter in key_list:
+        for key, row in key_list:
             self.context.op_export(key.subkeys.fpr, 0, expkeys)
         expkeys.seek(0,0)
         export_file.write(expkeys.read())
@@ -402,14 +401,14 @@ class PyGtkGpgKeys:
             selection.selected_foreach(self.collect_keys, key_list)
             
             message = "Delete selected keys?\n"
-            for key, model, iter in key_list:
+            for key, row in key_list:
                 message += "\n%s\t" % key.subkeys.keyid
                 if key.uids: message += key.uids.uid
                 else:        message += "<undefined>"                
             if self.yesno_message(message):
-                for key, model, iter in key_list:
+                for key, row in key_list:
                     self.context.op_delete(key, 1)
-                    model.remove(iter)
+                    row.model.remove(row.iter)
 
     def get_widget_values(self, widgets):
         "Create an array of values from widgets' getter methods"
