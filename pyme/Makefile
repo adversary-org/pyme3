@@ -22,8 +22,8 @@ CFILE = $(FILE)_wrap.c
 HFILE = $(FILE).h
 USRHFILE = /usr/include/$(HFILE)
 SWIGSOURCE = $(FILE).i
-DOCMODSDIRS := $(shell /find pyme -type d | grep -v svn | sed 'sx/x.xg')
-DOCMODSFILES := $(shell find pyme -name "*.py" | grep -v __init__ | grep -v svn | sed 'sx/x.xg')
+DOCMODSDIRS := $(shell find pyme -type d | grep -v CVS | sed 'sx/x.xg')
+DOCMODSFILES := $(shell find pyme -name "*.py" | egrep -v __init__ | grep -v gpgme.py | grep -v CVS | sed 'sx/x.xg')
 DOCMODS := $(DOCMODSDIRS) $(DOCMODSFILES:.py=)
 SWIGOPT := `gpgme-config --cflags` -I/usr/include 
 
@@ -34,10 +34,6 @@ info:
 	@echo $(DOCMODS)
 
 swig: $(CFILE) $(PYPATH)/$(PYFILE)
-
-#$(SWIGSOURCE): $(SWIGSOURCE)0
-#	SWIGOPT="$(SWIGOPT)" perl callback/mkcallback.pl -python \
-#		$(SWIGSOURCE)0 > $(SWIGSOURCE)
 
 # Work around a problem of gpgme.h containing class structure fields.
 $(HFILE): $(USRHFILE)
@@ -52,26 +48,14 @@ clean:
 	-rm -r build build2.2 build2.3 setup.cfg
 	-rm `find . -name "*~"` `find . -name "*.pyc"` `find . -name "*.so"`
 	-find . -name auth -exec rm -vf {}/password {}/username \;
-	-svn cleanup
 
-changelog:
-	svn log -v > ChangeLog
+#changelog:
+#	svn log -v > ChangeLog
 
 reallyclean: clean
 	-rm doc/*.html doc/gpgme/*.html $(CFILE) $(PYPATH)/$(PYFILE) $(HFILE)
 
-doc: pydocs texidocs
-
-pydocs:
+docs:
 	-rm doc/*.html
 	cd doc; for MOD in $(DOCMODS); do PYTHONPATH=`echo ../build/lib*` pydoc -w $$MOD; done
-
-texidocs:
-	-rm doc/gpgme/*.html
-	cd doc/gpgme; texi2html -split=chapter gpgme.texi
-
-# This code was once used, but is now assumed as part of setup.py.
-#_$(FILE).so: $(FILE)_wrap.c helpers.c
-#	gcc -shared -fPIC -o _$(FILE).so helpers.c $(FILE)_wrap.c `gpgme-config --libs` \
-#		`gpgme-config --cflags` -I/usr/include/python2.2
 
