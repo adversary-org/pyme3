@@ -1,3 +1,10 @@
+pyme (0.6.2) unstable; urgency=low
+
+  * Implemented Context.wait() method more sutable for asynch calls in Python.
+  * Implemented Context.op_edit() to support editing operations
+
+ -- Igor Belyi <belyi@users.sourceforge.net>  Thu, 24 Mar 2005 00:43:17 -0500
+
 pyme (0.6.1) unstable; urgency=low
 
   * Added package building for python2.4

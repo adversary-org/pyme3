@@ -181,6 +181,7 @@ PyObject* object_to_gpgme_t(PyObject* input, const char* objtype, int argnum) {
 %pointer_functions(gpgme_ctx_t, gpgme_ctx_t_p);
 %pointer_functions(gpgme_data_t, gpgme_data_t_p);
 %pointer_functions(gpgme_key_t, gpgme_key_t_p);
+%pointer_functions(gpgme_error_t, gpgme_error_t_p);
 %pointer_functions(gpgme_trust_item_t, gpgme_trust_item_t_p);
 %pointer_functions(gpgme_engine_info_t, gpgme_engine_info_t_p);
 %pointer_functions(PyObject *, PyObject_p_p);

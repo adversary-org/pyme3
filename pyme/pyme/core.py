@@ -165,7 +165,27 @@ class Context(GpgmeWrapper):
         hookdata = (func, hook)
         gpgme.pygpgme_set_progress_cb(self.wrapped, hookdata, self.last_progresscb)
 
+    def wait(self, hang):
+        """Wait for asynchronous call to finish. Wait forever if hang is True
+
+        Return:
+            On an async call completion its return status.
+            On timeout - None.
+
+        Please read the GPGME manual for more information."""
+        ptr = gpgme.new_gpgme_error_t_p()
+        gpgme.gpgme_error_t_p_assign(ptr, 0xFFFF)
+        context = gpgme.gpgme_wait(self.wrapped, ptr, hang)
+        status = gpgme.gpgme_error_t_p_value(ptr)
+        gpgme.delete_gpgme_error_t_p(ptr)
+        
+        if status == 0xFFFF:
+            return None
+        else:
+            return status
+
     def op_edit(self, key, func, fnc_value, out):
+        """Start key editing using supplied callback function"""
         opaquedata = (func, fnc_value)
         gpgme.gpgme_op_edit(self.wrapped, key, opaquedata, out)
     
@@ -378,3 +398,23 @@ def get_engine_info():
         info = None
     gpgme.delete_gpgme_engine_info_t_p(ptr)
     return info
+
+def wait(hang):
+    """Wait for asynchronous call on any Context  to finish.
+    Wait forever if hang is True.
+    
+    For finished anynch calls it returns a tuple (status, context):
+        status  - status return by asnynchronous call.
+        context - context which caused this call to return.
+    On timeout it returns None
+        
+    Please read the GPGME manual of more information."""
+    ptr = gpgme.new_gpgme_error_t_p()
+    gpgme.gpgme_error_t_p_assign(ptr, 0xFFFF)
+    context = gpgme.gpgme_wait(None, ptr, hang)
+    status = gpgme.gpgme_error_t_p_value(ptr)
+    gpgme.gpgme_error_t_p_delete(ptr)
+    if status == 0xFFFF:
+        return None
+    else:
+        return (status, context)
