@@ -2,8 +2,11 @@ pyme (0.6.2) unstable; urgency=low
 
   * Implemented Context.wait() method more sutable for asynch calls in Python.
   * Implemented Context.op_edit() to support editing operations
+  * Fixed string representation of the errors.GPGMEError exception
+  * Added a nice example: PyGtkGpgKeys.py (requires Glade2 and PyGTK 2.4).
+    No match to gpa, seahorse, or kgpg of course. :)
 
- -- Igor Belyi <belyi@users.sourceforge.net>  Thu, 24 Mar 2005 00:43:17 -0500
+ -- Igor Belyi <belyi@users.sourceforge.net>  Sat, 26 Mar 2005 11:42:27 -0500
 
 pyme (0.6.1) unstable; urgency=low
 
