@@ -1,0 +1,134 @@
+"""
+Pyme: GPGME Interface for Python
+Copyright (C) 2002 John Goerzen
+<jgoerzen@complete.org>
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+Welcome to PyME, the GPGME Interface for Python.  "Pyme", when prounced,
+rhymes with "Pine".
+
+The latest release of this package may be obtained from
+http://quux.org/devel/pyme/
+
+FEATURES
+--------
+
+ * Feature-rich, full implementation of the GPGME library.  Supports
+   all GPGME features except interactive editing (coming soon).
+   Callback functions may be written in pure Python.
+
+ * Ability to sign, encrypt, decrypt, and verify data.
+
+ * Ability to list keys, export and import keys, and manage the keyring.
+
+ * Fully object-oriented with convenient classes and modules.
+
+GENERAL OVERVIEW
+----------------
+
+For those of you familiar with GPGME, you will be right at home here.
+
+Pyme is, for the most part, a direct interface to the C GPGME
+library.  However, it is re-packaged in a more Pythonic way --
+object-oriented with classes and modules.  Take a look at the classes
+defined here -- they correspond directly to certain object types in GPGME
+for C.  For instance, the following C code:
+
+GpgmeCtx context;
+GpgmeRecipients recp;
+gpgme_new(&context);
+gpgme_recipients_new(&recp);
+...
+gpgme_op_encrypt(context, recp, plain, cipher);
+
+Translates into the following Python code:
+
+context = core.Context()
+recp = core.Recipients()
+...
+context.encrypt(recp, plain, cipher)
+
+The Python module automatically does error-checking and raises Python
+exceptions when GPGME signals an error.  Those exceptions correspond
+directly to GPGME errors.  All GPGME exceptions are defined in the
+gpgme.errors module, and pyme.errors.GPGMEError is the parent of all
+exceptions.
+
+IMPORTANT NOTE
+--------------
+This documentation only covers a small subset of available GPGME functions and
+methods.  Please consult the documentation for the C library
+(available in doc/gpgme in this distribution) for comprehensive coverage.
+
+This library uses Python's reflection to automatically detect the methods
+that are available for each class, and as such, most of those methods
+do not appear explicitly anywhere.
+
+QUICK START SAMPLE PROGRAM
+--------------------------
+This program is not for serious encryption, but for example purposes only!
+
+import sys
+from pyme import core, constants
+import pyme.constants.validity
+
+# Set up our input and output buffers.
+
+plain = core.Data('This is my message.')
+cipher = core.Data()
+
+# Initialize our context.
+
+c = core.Context()
+c.set_armor(1)
+
+# Set up the recipients.
+
+sys.stdout.write("Enter name of your recipient: ")
+name = sys.stdin.readline().strip()
+r = core.Recipients()
+r.add(name, constants.validity.FULL)
+
+# Do the encryption.
+
+c.op_encrypt(r, plain, cipher)
+print cipher.read()
+
+Note that although there is no explicit error checking done here, the
+Python GPGME library is automatically doing error-checking, and will
+raise an exception if there is any problem.
+
+This program is in the Pyme distribution as examples/simple.py.  The examples
+directory contains more advanced samples as well.
+
+FOR MORE INFORMATION
+--------------------
+PYME homepage: http://quux.org/devel/pyme
+GPGME documentation: http://www.fifi.org/cgi-bin/info2www?%28gpgme%29
+GPGME homepage: http://www.gnupg.org/gpgme.html
+
+Base classes: pyme.core (START HERE!)
+Auxiliary classes: pyme.aux
+Utilities: pyme.util
+Error classes: pyme.errors
+Constants: pyme.constants
+Version information: pyme.version
+
+Base classes are documented at pyme.core and auxiliary classes at pyme.aux
+
+"""
+
+__all__ = ['core', 'errors', 'constants', 'aux', 'util', 'version']

@@ -1,0 +1,802 @@
+------------------------------------------------------------------------
+rev 59:  jgoerzen | 2002-11-21 08:40:10 -0600 (Thu, 21 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/debian/rules
+
+Fixed a couple of bugs that did not get checked in before.
+
+------------------------------------------------------------------------
+rev 58:  jgoerzen | 2002-11-21 08:37:39 -0600 (Thu, 21 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/debian/rules
+
+Fixed a bug here
+
+------------------------------------------------------------------------
+rev 57:  jgoerzen | 2002-11-21 08:33:31 -0600 (Thu, 21 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/ChangeLog
+   M /pyme/head/debian/changelog
+   M /pyme/head/doc/gpgme/gpgme.html
+   M /pyme/head/doc/gpgme/gpgme_1.html
+   M /pyme/head/doc/gpgme/gpgme_10.html
+   M /pyme/head/doc/gpgme/gpgme_11.html
+   M /pyme/head/doc/gpgme/gpgme_12.html
+   M /pyme/head/doc/gpgme/gpgme_2.html
+   M /pyme/head/doc/gpgme/gpgme_3.html
+   M /pyme/head/doc/gpgme/gpgme_4.html
+   M /pyme/head/doc/gpgme/gpgme_5.html
+   M /pyme/head/doc/gpgme/gpgme_6.html
+   M /pyme/head/doc/gpgme/gpgme_7.html
+   M /pyme/head/doc/gpgme/gpgme_8.html
+   M /pyme/head/doc/gpgme/gpgme_9.html
+   M /pyme/head/doc/gpgme/gpgme_abt.html
+   M /pyme/head/doc/gpgme/gpgme_fot.html
+   M /pyme/head/doc/gpgme/gpgme_ovr.html
+   M /pyme/head/doc/gpgme/gpgme_toc.html
+   M /pyme/head/doc/pyme.aux.html
+   M /pyme/head/doc/pyme.callbacks.html
+   M /pyme/head/doc/pyme.constants.attr.html
+   M /pyme/head/doc/pyme.constants.data.dtype.html
+   M /pyme/head/doc/pyme.constants.data.encoding.html
+   M /pyme/head/doc/pyme.constants.data.html
+   M /pyme/head/doc/pyme.constants.html
+   M /pyme/head/doc/pyme.constants.keylist.html
+   M /pyme/head/doc/pyme.constants.keylist.mode.html
+   M /pyme/head/doc/pyme.constants.protocol.html
+   M /pyme/head/doc/pyme.constants.sig.html
+   M /pyme/head/doc/pyme.constants.sig.mode.html
+   M /pyme/head/doc/pyme.constants.sig.stat.html
+   M /pyme/head/doc/pyme.constants.sigsum.html
+   M /pyme/head/doc/pyme.constants.status.html
+   M /pyme/head/doc/pyme.constants.validity.html
+   M /pyme/head/doc/pyme.core.html
+   M /pyme/head/doc/pyme.errors.html
+   M /pyme/head/doc/pyme.gpgme.html
+   M /pyme/head/doc/pyme.html
+   M /pyme/head/doc/pyme.util.html
+   M /pyme/head/doc/pyme.version.html
+   M /pyme/head/pyme/version.py
+
+Prep for 0.5.1
+
+------------------------------------------------------------------------
+rev 56:  jgoerzen | 2002-11-20 22:39:02 -0600 (Wed, 20 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/generated/gpgme_wrap.c
+   M /pyme/head/helpers.c
+   M /pyme/head/helpers.h
+   M /pyme/head/pyme/callbacks.py
+   M /pyme/head/pyme/core.py
+   M /pyme/head/pyme/gpgme.py
+
+Beginnings of support for read_cb
+
+------------------------------------------------------------------------
+rev 55:  jgoerzen | 2002-11-19 15:29:43 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/debian/changelog
+
+Removed the debian version number.
+
+------------------------------------------------------------------------
+rev 54:  jgoerzen | 2002-11-19 15:28:49 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/ChangeLog
+   M /pyme/head/debian/changelog
+
+Final prep for 0.5.0.
+
+------------------------------------------------------------------------
+rev 53:  jgoerzen | 2002-11-19 15:26:50 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/Makefile
+   A /pyme/head/debian/README.Debian
+   M /pyme/head/debian/rules
+   A /pyme/head/debian/setup.cfg-2.2
+   A /pyme/head/debian/setup.cfg-2.3
+
+Updated for Debian packaging.
+
+------------------------------------------------------------------------
+rev 52:  jgoerzen | 2002-11-19 15:04:01 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/ChangeLog
+   M /pyme/head/Makefile
+   D /pyme/head/debian/README.Debian
+   D /pyme/head/debian/conffiles.ex
+   M /pyme/head/debian/control
+   M /pyme/head/debian/copyright
+   D /pyme/head/debian/cron.d.ex
+   M /pyme/head/debian/docs
+   D /pyme/head/debian/emacsen-install.ex
+   D /pyme/head/debian/emacsen-remove.ex
+   D /pyme/head/debian/emacsen-startup.ex
+   D /pyme/head/debian/init.d.ex
+   D /pyme/head/debian/menu.ex
+   M /pyme/head/debian/rules
+   D /pyme/head/debian/watch.ex
+   M /pyme/head/doc/pyme.aux.html
+   A /pyme/head/doc/pyme.callbacks.html
+   M /pyme/head/doc/pyme.constants.attr.html
+   M /pyme/head/doc/pyme.constants.data.dtype.html
+   M /pyme/head/doc/pyme.constants.data.encoding.html
+   M /pyme/head/doc/pyme.constants.data.html
+   M /pyme/head/doc/pyme.constants.html
+   M /pyme/head/doc/pyme.constants.keylist.html
+   M /pyme/head/doc/pyme.constants.keylist.mode.html
+   M /pyme/head/doc/pyme.constants.protocol.html
+   M /pyme/head/doc/pyme.constants.sig.html
+   M /pyme/head/doc/pyme.constants.sig.mode.html
+   M /pyme/head/doc/pyme.constants.sig.stat.html
+   M /pyme/head/doc/pyme.constants.sigsum.html
+   M /pyme/head/doc/pyme.constants.status.html
+   M /pyme/head/doc/pyme.constants.validity.html
+   M /pyme/head/doc/pyme.core.html
+   M /pyme/head/doc/pyme.errors.html
+   M /pyme/head/doc/pyme.gpgme.html
+   M /pyme/head/doc/pyme.html
+   M /pyme/head/doc/pyme.util.html
+   M /pyme/head/doc/pyme.version.html
+   M /pyme/head/pyme/version.py
+
+Preparing for the first release.
+
+------------------------------------------------------------------------
+rev 51:  jgoerzen | 2002-11-19 14:45:22 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   A /pyme/head/debian
+   A /pyme/head/debian/README.Debian
+   A /pyme/head/debian/changelog
+   A /pyme/head/debian/conffiles.ex
+   A /pyme/head/debian/control
+   A /pyme/head/debian/copyright
+   A /pyme/head/debian/cron.d.ex
+   A /pyme/head/debian/dirs
+   A /pyme/head/debian/docs
+   A /pyme/head/debian/emacsen-install.ex
+   A /pyme/head/debian/emacsen-remove.ex
+   A /pyme/head/debian/emacsen-startup.ex
+   A /pyme/head/debian/ex.package.doc-base
+   A /pyme/head/debian/init.d.ex
+   A /pyme/head/debian/manpage.1.ex
+   A /pyme/head/debian/manpage.sgml.ex
+   A /pyme/head/debian/menu.ex
+   A /pyme/head/debian/postinst.ex
+   A /pyme/head/debian/postrm.ex
+   A /pyme/head/debian/preinst.ex
+   A /pyme/head/debian/prerm.ex
+   A /pyme/head/debian/rules
+   A /pyme/head/debian/watch.ex
+   M /pyme/head/pyme/__init__.py
+
+Added templates from dh_make
+
+------------------------------------------------------------------------
+rev 50:  jgoerzen | 2002-11-19 14:44:59 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/setup.py
+
+Removed debug code
+
+------------------------------------------------------------------------
+rev 49:  jgoerzen | 2002-11-19 14:30:52 -0600 (Tue, 19 Nov 2002) | 3 lines
+Changed paths:
+   A /pyme/head/helpers.h
+
+Forgot to add this file.
+
+
+------------------------------------------------------------------------
+rev 48:  jgoerzen | 2002-11-19 14:29:45 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   D /pyme/head/callback
+   A /pyme/head/examples/genkey.py (from /pyme/head/examples/simple.py:40)
+   M /pyme/head/generated/gpgme_wrap.c
+   M /pyme/head/helpers.c
+   M /pyme/head/pyme/core.py
+   M /pyme/head/pyme/gpgme.py
+
+Removed this; I'm doing it better myself.
+
+------------------------------------------------------------------------
+rev 47:  jgoerzen | 2002-11-19 13:58:13 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/Makefile
+   M /pyme/head/generated/gpgme_wrap.c
+   M /pyme/head/gpgme.i
+   M /pyme/head/helpers.c
+   M /pyme/head/pyme/callbacks.py
+   M /pyme/head/pyme/core.py
+   M /pyme/head/pyme/gpgme.py
+   M /pyme/head/setup.py
+
+Initial stab at progress stuff.
+
+------------------------------------------------------------------------
+rev 46:  jgoerzen | 2002-11-19 13:25:55 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/examples/sign.py
+   M /pyme/head/pyme/core.py
+
+Finished this.
+
+------------------------------------------------------------------------
+rev 45:  jgoerzen | 2002-11-19 13:24:27 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/examples/sign.py
+   M /pyme/head/generated/gpgme_wrap.c
+   M /pyme/head/gpgme.i
+   M /pyme/head/helpers.c
+   M /pyme/head/pyme/callbacks.py
+   M /pyme/head/pyme/core.py
+   M /pyme/head/pyme/gpgme.py
+
+Seems to be working with hooks now.  On to debug :-)
+
+------------------------------------------------------------------------
+rev 44:  jgoerzen | 2002-11-19 12:12:44 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/Makefile
+   A /pyme/head/examples/sign.py
+   M /pyme/head/generated/gpgme_wrap.c
+   M /pyme/head/gpgme.i
+   M /pyme/head/helpers.c
+   A /pyme/head/pyme/callbacks.py
+   M /pyme/head/pyme/core.py
+   M /pyme/head/pyme/gpgme.py
+
+The passphrase callback is now working.
+
+------------------------------------------------------------------------
+rev 43:  jgoerzen | 2002-11-19 11:34:08 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   A /pyme/head/gpgme.i (from /pyme/head/gpgme.i0:42)
+   D /pyme/head/gpgme.i0
+
+Reverting back
+
+------------------------------------------------------------------------
+rev 42:  jgoerzen | 2002-11-19 11:33:55 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/Makefile
+   M /pyme/head/callback/mkcallback.pl
+   M /pyme/head/generated/gpgme_wrap.c
+   M /pyme/head/gpgme.i0
+   M /pyme/head/helpers.c
+   M /pyme/head/pyme/gpgme.py
+
+First try at callbacks
+
+------------------------------------------------------------------------
+rev 41:  jgoerzen | 2002-11-19 10:59:34 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/Makefile
+   D /pyme/head/gpgme.i
+   A /pyme/head/gpgme.i0 (from /pyme/head/gpgme.i:40)
+
+Renamed and updated for callback processing.
+
+------------------------------------------------------------------------
+rev 40:  jgoerzen | 2002-11-19 10:57:18 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/callback/mkcallback.pl
+   D /pyme/head/callback/mkcallback0.02.pl
+
+Updated to handle swig options from the environment.
+
+------------------------------------------------------------------------
+rev 39:  jgoerzen | 2002-11-19 10:55:12 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   A /pyme/head/callback
+   A /pyme/head/callback/COPYRIGHT
+   A /pyme/head/callback/Makefile
+   A /pyme/head/callback/Makefile.PL
+   A /pyme/head/callback/Makefile.PY
+   A /pyme/head/callback/Makefile.TCL
+   A /pyme/head/callback/README
+   A /pyme/head/callback/make.pl
+   A /pyme/head/callback/mkcallback.pl
+   A /pyme/head/callback/mkcallback0.02.pl
+   A /pyme/head/callback/test.pl
+   A /pyme/head/callback/test.py
+   A /pyme/head/callback/test.tcl
+   A /pyme/head/callback/testcb.i
+   A /pyme/head/callback/testcb.i0
+   A /pyme/head/callback/testcb1.i0
+
+Added
+
+------------------------------------------------------------------------
+rev 38:  jgoerzen | 2002-11-19 10:37:23 -0600 (Tue, 19 Nov 2002) | 4 lines
+Changed paths:
+   A /pyme/head/ChangeLog
+   M /pyme/head/Makefile
+   A /pyme/head/doc/pyme.aux.html
+   A /pyme/head/doc/pyme.constants.attr.html
+   A /pyme/head/doc/pyme.constants.data.dtype.html
+   A /pyme/head/doc/pyme.constants.data.encoding.html
+   A /pyme/head/doc/pyme.constants.data.html
+   A /pyme/head/doc/pyme.constants.html
+   A /pyme/head/doc/pyme.constants.keylist.html
+   A /pyme/head/doc/pyme.constants.keylist.mode.html
+   A /pyme/head/doc/pyme.constants.protocol.html
+   A /pyme/head/doc/pyme.constants.sig.html
+   A /pyme/head/doc/pyme.constants.sig.mode.html
+   A /pyme/head/doc/pyme.constants.sig.stat.html
+   A /pyme/head/doc/pyme.constants.sigsum.html
+   A /pyme/head/doc/pyme.constants.status.html
+   A /pyme/head/doc/pyme.constants.validity.html
+   A /pyme/head/doc/pyme.core.html
+   A /pyme/head/doc/pyme.errors.html
+   A /pyme/head/doc/pyme.gpgme.html
+   A /pyme/head/doc/pyme.html
+   A /pyme/head/doc/pyme.util.html
+   A /pyme/head/doc/pyme.version.html
+   A /pyme/head/examples/simple.py
+   M /pyme/head/pyme/__init__.py
+   M /pyme/head/pyme/version.py
+
+Finishing touches prepping for first release.
+
+Added changelog, new docs.
+
+------------------------------------------------------------------------
+rev 37:  jgoerzen | 2002-11-19 10:15:27 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/examples/encrypt-to-all.py
+   M /pyme/head/pyme/constants/attr.py
+   M /pyme/head/pyme/constants/data/dtype.py
+   M /pyme/head/pyme/constants/data/encoding.py
+   M /pyme/head/pyme/constants/keylist/mode.py
+   M /pyme/head/pyme/constants/protocol.py
+   M /pyme/head/pyme/constants/sig/mode.py
+   M /pyme/head/pyme/constants/sig/stat.py
+   M /pyme/head/pyme/constants/sigsum.py
+   M /pyme/head/pyme/constants/status.py
+   M /pyme/head/pyme/constants/validity.py
+   M /pyme/head/pyme/errors.py
+
+Addressing more fallout from the rename.
+
+------------------------------------------------------------------------
+rev 36:  jgoerzen | 2002-11-19 10:11:11 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   A /pyme/head/examples/encrypt-to-all.py (from /pyme/head/examples/test.py:33)
+   D /pyme/head/examples/test.py
+   M /pyme/head/generated/gpgme_wrap.c
+   M /pyme/head/gpgme.i
+   A /pyme/head/pyme/gpgme.py (from /pyme/head/pyme/gpgme_c.py:34)
+   D /pyme/head/pyme/gpgme_c.py
+
+Updated -- more renaming still.
+
+------------------------------------------------------------------------
+rev 35:  jgoerzen | 2002-11-19 10:08:31 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   A /pyme/head/pyme/constants/sig
+   A /pyme/head/pyme/constants/sig/__init__.py
+   A /pyme/head/pyme/constants/sig/mode.py
+   A /pyme/head/pyme/constants/sig/stat.py
+   D /pyme/head/pyme/sig
+
+Fixed sig problem
+
+------------------------------------------------------------------------
+rev 34:  jgoerzen | 2002-11-19 10:05:11 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /pyme/head/Makefile
+   A /pyme/head/doc/gpgme (from /pyme/head/doc/gpgme_c:33)
+   D /pyme/head/doc/gpgme.attr.html
+   D /pyme/head/doc/gpgme.data.dtype.html
+   D /pyme/head/doc/gpgme.data.encoding.html
+   D /pyme/head/doc/gpgme.data.html
+   D /pyme/head/doc/gpgme.errors.html
+   D /pyme/head/doc/gpgme.html
+   D /pyme/head/doc/gpgme.keylist.html
+   D /pyme/head/doc/gpgme.keylist.mode.html
+   D /pyme/head/doc/gpgme.protocol.html
+   D /pyme/head/doc/gpgme.sig.html
+   D /pyme/head/doc/gpgme.sig.mode.html
+   D /pyme/head/doc/gpgme.sig.stat.html
+   D /pyme/head/doc/gpgme.sigsum.html
+   D /pyme/head/doc/gpgme.status.html
+   D /pyme/head/doc/gpgme.util.html
+   D /pyme/head/doc/gpgme.validity.html
+   D /pyme/head/doc/gpgme_c
+   D /pyme/head/generated/gpgme_c_wrap.c
+   A /pyme/head/generated/gpgme_wrap.c (from /pyme/head/generated/gpgme_c_wrap.c:33)
+   D /pyme/head/gpgme
+   A /pyme/head/gpgme.i (from /pyme/head/gpgme_c.i:33)
+   D /pyme/head/gpgme_c.i
+   A /pyme/head/pyme (from /pyme/head/gpgme:33)
+   M /pyme/head/pyme/__init__.py
+   A /pyme/head/pyme/aux.py
+   A /pyme/head/pyme/constants/__init__.py
+   M /pyme/head/pyme/core.py
+   M /pyme/head/pyme/errors.py
+   R /pyme/head/pyme/sig
+   M /pyme/head/pyme/util.py
+   M /pyme/head/pyme/version.py
+   M /pyme/head/setup.py
+
+Updated -- progress on renaming
+
+------------------------------------------------------------------------
+rev 32:  jgoerzen | 2002-11-19 09:30:58 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /python-gpgme/head/gpgme/__init__.py
+   M /python-gpgme/head/gpgme/constants/data/__init__.py
+   M /python-gpgme/head/gpgme/constants/keylist/__init__.py
+
+Updated.
+
+------------------------------------------------------------------------
+rev 31:  jgoerzen | 2002-11-19 09:29:14 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /python-gpgme/head/gpgme/__init__.py
+   D /python-gpgme/head/gpgme/attr.py
+   A /python-gpgme/head/gpgme/constants/attr.py (from /python-gpgme/head/gpgme/attr.py:29)
+   A /python-gpgme/head/gpgme/constants/protocol.py (from /python-gpgme/head/gpgme/protocol.py:29)
+   D /python-gpgme/head/gpgme/protocol.py
+
+Updated.
+
+------------------------------------------------------------------------
+rev 30:  jgoerzen | 2002-11-19 09:28:09 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /python-gpgme/head/gpgme/__init__.py
+   A /python-gpgme/head/gpgme/constants
+   A /python-gpgme/head/gpgme/constants/data (from /python-gpgme/head/gpgme/data:29)
+   A /python-gpgme/head/gpgme/constants/keylist (from /python-gpgme/head/gpgme/keylist:29)
+   A /python-gpgme/head/gpgme/constants/sigsum.py (from /python-gpgme/head/gpgme/sigsum.py:29)
+   A /python-gpgme/head/gpgme/constants/status.py (from /python-gpgme/head/gpgme/status.py:29)
+   A /python-gpgme/head/gpgme/constants/validity.py (from /python-gpgme/head/gpgme/validity.py:29)
+   A /python-gpgme/head/gpgme/core.py (from /python-gpgme/head/gpgme/__init__.py:29)
+   D /python-gpgme/head/gpgme/data
+   D /python-gpgme/head/gpgme/keylist
+   D /python-gpgme/head/gpgme/sigsum.py
+   D /python-gpgme/head/gpgme/status.py
+   D /python-gpgme/head/gpgme/validity.py
+
+Some rearranging starting
+
+------------------------------------------------------------------------
+rev 29:  jgoerzen | 2002-11-19 09:16:51 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   A /python-gpgme/head/doc/gpgme_c/gpgme.html
+   A /python-gpgme/head/doc/gpgme_c/gpgme_1.html
+   A /python-gpgme/head/doc/gpgme_c/gpgme_10.html
+   A /python-gpgme/head/doc/gpgme_c/gpgme_11.html
+   A /python-gpgme/head/doc/gpgme_c/gpgme_12.html
+   A /python-gpgme/head/doc/gpgme_c/gpgme_2.html
+   A /python-gpgme/head/doc/gpgme_c/gpgme_3.html
+   A /python-gpgme/head/doc/gpgme_c/gpgme_4.html
+   A /python-gpgme/head/doc/gpgme_c/gpgme_5.html
+   A /python-gpgme/head/doc/gpgme_c/gpgme_6.html
+   A /python-gpgme/head/doc/gpgme_c/gpgme_7.html
+   A /python-gpgme/head/doc/gpgme_c/gpgme_8.html
+   A /python-gpgme/head/doc/gpgme_c/gpgme_9.html
+   A /python-gpgme/head/doc/gpgme_c/gpgme_abt.html
+   A /python-gpgme/head/doc/gpgme_c/gpgme_fot.html
+   A /python-gpgme/head/doc/gpgme_c/gpgme_ovr.html
+   A /python-gpgme/head/doc/gpgme_c/gpgme_toc.html
+   A /python-gpgme/head/gpgme/version.py
+
+Added other missing files.
+
+------------------------------------------------------------------------
+rev 28:  jgoerzen | 2002-11-19 09:16:04 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /python-gpgme/head/Makefile
+   M /python-gpgme/head/doc/gpgme.attr.html
+   M /python-gpgme/head/doc/gpgme.data.dtype.html
+   M /python-gpgme/head/doc/gpgme.data.encoding.html
+   M /python-gpgme/head/doc/gpgme.data.html
+   M /python-gpgme/head/doc/gpgme.errors.html
+   M /python-gpgme/head/doc/gpgme.html
+   M /python-gpgme/head/doc/gpgme.keylist.html
+   M /python-gpgme/head/doc/gpgme.keylist.mode.html
+   M /python-gpgme/head/doc/gpgme.protocol.html
+   M /python-gpgme/head/doc/gpgme.sig.html
+   M /python-gpgme/head/doc/gpgme.sig.mode.html
+   M /python-gpgme/head/doc/gpgme.sig.stat.html
+   M /python-gpgme/head/doc/gpgme.sigsum.html
+   M /python-gpgme/head/doc/gpgme.status.html
+   M /python-gpgme/head/doc/gpgme.util.html
+   M /python-gpgme/head/doc/gpgme.validity.html
+   M /python-gpgme/head/examples/test.py
+   D /python-gpgme/head/generated/gpgme_c.py
+   M /python-gpgme/head/gpgme/__init__.py
+   A /python-gpgme/head/gpgme/gpgme_c.py
+
+Lots of updates
+
+------------------------------------------------------------------------
+rev 27:  jgoerzen | 2002-11-19 08:30:32 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   D /python-gpgme/head/buildscripts
+
+Removed this directory.
+
+------------------------------------------------------------------------
+rev 26:  jgoerzen | 2002-11-19 08:30:11 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   A /python-gpgme/head/Makefile
+   D /python-gpgme/head/buildscripts/Makefile
+   D /python-gpgme/head/buildscripts/makedocs.sh
+   D /python-gpgme/head/buildscripts/runswig.sh
+   M /python-gpgme/head/setup.py
+
+Consolidation
+
+------------------------------------------------------------------------
+rev 25:  jgoerzen | 2002-11-19 08:15:22 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   D /python-gpgme/head/Makefile
+   A /python-gpgme/head/buildscripts
+   A /python-gpgme/head/buildscripts/Makefile (from /python-gpgme/head/Makefile:24)
+   A /python-gpgme/head/buildscripts/makedocs.sh (from /python-gpgme/head/doc/makedocs.sh:24)
+   A /python-gpgme/head/buildscripts/runswig.sh (from /python-gpgme/head/runswig.sh:24)
+   D /python-gpgme/head/doc/makedocs.sh
+   A /python-gpgme/head/examples
+   A /python-gpgme/head/examples/test.py (from /python-gpgme/head/test.py:24)
+   A /python-gpgme/head/generated
+   A /python-gpgme/head/generated/gpgme_c.py (from /python-gpgme/head/gpgme/gpgme_c.py:24)
+   A /python-gpgme/head/generated/gpgme_c_wrap.c (from /python-gpgme/head/gpgme_c_wrap.c:24)
+   D /python-gpgme/head/gpgme/gpgme_c.py
+   D /python-gpgme/head/gpgme_c_wrap.c
+   D /python-gpgme/head/runswig.sh
+   D /python-gpgme/head/test.py
+
+Moving lots of things around
+
+------------------------------------------------------------------------
+rev 24:  jgoerzen | 2002-11-19 08:01:17 -0600 (Tue, 19 Nov 2002) | 2 lines
+Changed paths:
+   M /python-gpgme/head/Makefile
+   M /python-gpgme/head/doc/gpgme.errors.html
+   M /python-gpgme/head/doc/gpgme.html
+   M /python-gpgme/head/doc/makedocs.sh
+   M /python-gpgme/head/gpgme/__init__.py
+   A /python-gpgme/head/gpgme/gpgme_c.py
+   A /python-gpgme/head/gpgme_c_wrap.c
+   M /python-gpgme/head/helpers.c
+   A /python-gpgme/head/runswig.sh
+   A /python-gpgme/head/setup.py
+   M /python-gpgme/head/test.py
+
+Lots of updates and work on making it installable.
+
+------------------------------------------------------------------------
+rev 23:  jgoerzen | 2002-11-18 19:05:03 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   M /python-gpgme/head/gpgme/errors.py
+   M /python-gpgme/head/test.py
+
+Updated with new features
+
+------------------------------------------------------------------------
+rev 22:  jgoerzen | 2002-11-18 17:06:42 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   A /python-gpgme/head/doc/gpgme_c/fdl.texi
+   A /python-gpgme/head/doc/gpgme_c/gpgme.texi
+   A /python-gpgme/head/doc/gpgme_c/gpl.texi
+   A /python-gpgme/head/doc/gpgme_c/version.texi
+
+Added.
+
+------------------------------------------------------------------------
+rev 21:  jgoerzen | 2002-11-18 17:06:17 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   M /python-gpgme/head/doc/gpgme.html
+   M /python-gpgme/head/doc/gpgme.util.html
+   A /python-gpgme/head/doc/gpgme_c
+   M /python-gpgme/head/gpgme/__init__.py
+   M /python-gpgme/head/test.py
+
+Committed.
+
+------------------------------------------------------------------------
+rev 20:  jgoerzen | 2002-11-18 16:37:23 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   M /python-gpgme/head/gpgme/__init__.py
+   M /python-gpgme/head/gpgme/util.py
+   A /python-gpgme/head/test.py
+
+Various bugfixes
+
+------------------------------------------------------------------------
+rev 19:  jgoerzen | 2002-11-18 16:34:14 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   A /python-gpgme/head/gpgme/__init__.py (from /python-gpgme/head/gpgme/wrappers.py:17)
+   D /python-gpgme/head/gpgme/wrappers.py
+   M /python-gpgme/head/gpgme_c.i
+
+Using a more versatile method for passing around stuff now.
+
+------------------------------------------------------------------------
+rev 18:  jgoerzen | 2002-11-18 16:31:27 -0600 (Mon, 18 Nov 2002) | 1 line
+Changed paths:
+   D /python-gpgme/head/gpgme/__init__.py
+
+
+------------------------------------------------------------------------
+rev 17:  jgoerzen | 2002-11-18 16:30:25 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   M /python-gpgme/head/doc/gpgme.data.dtype.html
+   M /python-gpgme/head/doc/gpgme.data.encoding.html
+   M /python-gpgme/head/doc/gpgme.errors.html
+   M /python-gpgme/head/doc/gpgme.html
+   M /python-gpgme/head/doc/gpgme.keylist.mode.html
+   M /python-gpgme/head/doc/gpgme.sig.mode.html
+   M /python-gpgme/head/doc/gpgme.sig.stat.html
+   M /python-gpgme/head/doc/gpgme.util.html
+   M /python-gpgme/head/doc/makedocs.sh
+   M /python-gpgme/head/gpgme/__init__.py
+   D /python-gpgme/head/gpgme/context.py
+   M /python-gpgme/head/gpgme/util.py
+   A /python-gpgme/head/gpgme/wrappers.py (from /python-gpgme/head/gpgme/__init__.py:16)
+
+Updated
+
+------------------------------------------------------------------------
+rev 16:  jgoerzen | 2002-11-18 16:21:39 -0600 (Mon, 18 Nov 2002) | 1 line
+Changed paths:
+   M /python-gpgme/head/gpgme/__init__.py
+   A /python-gpgme/head/gpgme/context.py (from /python-gpgme/head/gpgme/__init__.py:10)
+   M /python-gpgme/head/gpgme/errors.py
+   M /python-gpgme/head/gpgme/util.py
+
+
+------------------------------------------------------------------------
+rev 15:  jgoerzen | 2002-11-18 16:10:39 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   M /python-gpgme/head/gpgme/errors.py
+
+Errors working better now.
+
+------------------------------------------------------------------------
+rev 14:  jgoerzen | 2002-11-18 16:03:08 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   A /python-gpgme/head/doc
+   A /python-gpgme/head/doc/gpgme.attr.html
+   A /python-gpgme/head/doc/gpgme.data.dtype.html
+   A /python-gpgme/head/doc/gpgme.data.encoding.html
+   A /python-gpgme/head/doc/gpgme.data.html
+   A /python-gpgme/head/doc/gpgme.errors.html
+   A /python-gpgme/head/doc/gpgme.html
+   A /python-gpgme/head/doc/gpgme.keylist.html
+   A /python-gpgme/head/doc/gpgme.keylist.mode.html
+   A /python-gpgme/head/doc/gpgme.protocol.html
+   A /python-gpgme/head/doc/gpgme.sig.html
+   A /python-gpgme/head/doc/gpgme.sig.mode.html
+   A /python-gpgme/head/doc/gpgme.sig.stat.html
+   A /python-gpgme/head/doc/gpgme.sigsum.html
+   A /python-gpgme/head/doc/gpgme.status.html
+   A /python-gpgme/head/doc/gpgme.util.html
+   A /python-gpgme/head/doc/gpgme.validity.html
+   A /python-gpgme/head/doc/makedocs.sh
+   M /python-gpgme/head/gpgme/data/dtype.py
+   M /python-gpgme/head/gpgme/data/encoding.py
+   M /python-gpgme/head/gpgme/keylist/mode.py
+   M /python-gpgme/head/gpgme/sig/mode.py
+   M /python-gpgme/head/gpgme/sig/stat.py
+
+Added documentation, fixed import problems in some modules.
+
+------------------------------------------------------------------------
+rev 13:  jgoerzen | 2002-11-18 15:54:34 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   A /python-gpgme/head/gpgme/data
+   A /python-gpgme/head/gpgme/data/__init__.py
+   A /python-gpgme/head/gpgme/data/dtype.py (from /python-gpgme/head/gpgme/attr.py:10)
+   A /python-gpgme/head/gpgme/data/encoding.py (from /python-gpgme/head/gpgme/attr.py:10)
+   D /python-gpgme/head/gpgme/datatype.py
+   A /python-gpgme/head/gpgme/keylist
+   A /python-gpgme/head/gpgme/keylist/__init__.py
+   A /python-gpgme/head/gpgme/keylist/mode.py (from /python-gpgme/head/gpgme/attr.py:10)
+   D /python-gpgme/head/gpgme/keylistmode.py
+   A /python-gpgme/head/gpgme/sig
+   A /python-gpgme/head/gpgme/sig/__init__.py
+   A /python-gpgme/head/gpgme/sig/mode.py (from /python-gpgme/head/gpgme/attr.py:10)
+   A /python-gpgme/head/gpgme/sig/stat.py (from /python-gpgme/head/gpgme/attr.py:10)
+   A /python-gpgme/head/gpgme/sigsum.py (from /python-gpgme/head/gpgme/attr.py:10)
+
+Updated
+
+------------------------------------------------------------------------
+rev 12:  jgoerzen | 2002-11-18 15:50:33 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   A /python-gpgme/head/gpgme/datatype.py (from /python-gpgme/head/gpgme/attr.py:10)
+   D /python-gpgme/head/gpgme/keylist.py
+   A /python-gpgme/head/gpgme/keylistmode.py (from /python-gpgme/head/gpgme/attr.py:10)
+   A /python-gpgme/head/gpgme/protocol.py (from /python-gpgme/head/gpgme/attr.py:10)
+   A /python-gpgme/head/gpgme/validity.py (from /python-gpgme/head/gpgme/attr.py:10)
+
+Updates.
+
+------------------------------------------------------------------------
+rev 11:  jgoerzen | 2002-11-18 15:47:41 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   A /python-gpgme/head/gpgme/keylist.py (from /python-gpgme/head/gpgme/attr.py:10)
+   A /python-gpgme/head/gpgme/status.py (from /python-gpgme/head/gpgme/attr.py:10)
+
+Updated
+
+------------------------------------------------------------------------
+rev 10:  jgoerzen | 2002-11-18 15:46:15 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   M /python-gpgme/head/gpgme/__init__.py
+   M /python-gpgme/head/gpgme/attr.py
+   A /python-gpgme/head/gpgme/util.py
+
+Updated
+
+------------------------------------------------------------------------
+rev 9:  jgoerzen | 2002-11-18 15:39:29 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   A /python-gpgme/head/gpgme/attr.py (from /python-gpgme/head/gpgme/errors.py:8)
+   M /python-gpgme/head/gpgme/errors.py
+
+Updated
+
+------------------------------------------------------------------------
+rev 8:  jgoerzen | 2002-11-18 15:30:44 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   A /python-gpgme/head/gpgme/errors.py
+
+Added.
+
+------------------------------------------------------------------------
+rev 7:  jgoerzen | 2002-11-18 15:29:45 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   M /python-gpgme/head/gpgme/__init__.py
+
+Rearranged
+
+------------------------------------------------------------------------
+rev 6:  jgoerzen | 2002-11-18 15:26:42 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   A /python-gpgme/head/gpgme/__init__.py (from /python-gpgme/head/gpgme.py:4)
+   D /python-gpgme/head/gpgme.py
+
+Updated
+
+------------------------------------------------------------------------
+rev 5:  jgoerzen | 2002-11-18 15:26:23 -0600 (Mon, 18 Nov 2002) | 1 line
+Changed paths:
+   D /python-gpgme/head/gpgme/__init__.py
+
+
+------------------------------------------------------------------------
+rev 4:  jgoerzen | 2002-11-18 15:25:59 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   A /python-gpgme/head/gpgme
+   A /python-gpgme/head/gpgme/__init__.py
+   M /python-gpgme/head/gpgme.py
+
+Updated.
+
+------------------------------------------------------------------------
+rev 3:  jgoerzen | 2002-11-18 15:09:04 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   A /python-gpgme/head/COPYING
+   A /python-gpgme/head/Makefile
+   A /python-gpgme/head/gpgme.py
+   A /python-gpgme/head/gpgme_c.i
+   A /python-gpgme/head/helpers.c
+
+Initial add.
+
+------------------------------------------------------------------------
+rev 2:  jgoerzen | 2002-11-18 15:05:20 -0600 (Mon, 18 Nov 2002) | 2 lines
+Changed paths:
+   A /python-gpgme/branches
+   A /python-gpgme/head
+   A /python-gpgme/releases
+   A /python-gpgme/tags
+
+Added basic structure
+
+------------------------------------------------------------------------
