@@ -150,7 +150,8 @@ class PyGtkGpgKeys:
         dialog.destroy()
         return result
     
-    def load_keys(self):
+    def load_keys(self, first_time=False):
+        if not first_time: self.model.clear()
         for key in self.context.op_keylist_all(None, self.only_secret):
             self.add_key(key)
     
@@ -235,6 +236,64 @@ class PyGtkGpgKeys:
                               column)
                 column.set_visible(check.get_active())
 
+    def editor_func(self, status, args, val_dict):
+        state = val_dict["state"]
+        prompt = "%s %s" % (state, args)
+        if val_dict.has_key(prompt):
+            val_dict["state"] = val_dict[prompt][0]
+            return val_dict[prompt][1]
+        elif args:
+            sys.stderr.write("Unexpected prompt in editor_func: %s\n" % prompt)
+            raise EOFError()
+        return ""
+
+    def change_key_trust(self, key, new_trust):
+        val_dict = {
+            "state": "start",
+            "start keyedit.prompt": ("trust", "trust"),
+            "trust edit_ownertrust.value": ("prompt", "%d" % new_trust),
+            "prompt edit_ownertrust.set_ultimate.okay": ("prompt", "Y"),
+            "prompt keyedit.prompt": ("finish", "quit")
+            }
+        out = Data()
+        self.context.op_edit(key, self.editor_func, val_dict, out)
+
+    def on_change_trust(self, new_trust):
+        selection = self.treeview.get_selection()
+        if selection.count_selected_rows() <= 0:
+            return
+        
+        key_list = []
+        selection.selected_foreach(self.collect_keys, key_list)
+
+        message = "Change trust to %s on the following keys?\n" % \
+                  trusts[new_trust]
+        for key, model, iter in key_list:
+            message += "\n%s\t" % key.subkeys.keyid
+            if key.uids: message += key.uids.uid
+            else:        message += "<undefined>"                
+        if self.yesno_message(message):
+            for key, model, iter in key_list:
+                if key.owner_trust != new_trust:
+                    self.change_key_trust(key, new_trust)
+                    model.set(iter, columns["Owner\nTrust"].index,
+                              trusts[new_trust])
+
+    def on_undefined_trust_activate(self, obj):
+        self.on_change_trust(1)
+
+    def on_never_trust_activate(self, obj):
+        self.on_change_trust(2)
+
+    def on_marginal_trust_activate(self, obj):
+        self.on_change_trust(3)
+
+    def on_full_trust_activate(self, obj):
+        self.on_change_trust(4)
+
+    def on_ultimate_trust_activate(self, obj):
+        self.on_change_trust(5)
+
     def collect_keys(self, model, path, iter, key_list):
         iter = model.get_iter(path[:1])
         keyid = model.get_value(iter, columns["FPR"].index)
@@ -271,8 +330,8 @@ class PyGtkGpgKeys:
             return
 
         key_list = []
-        expkeys = Data()
         selection.selected_foreach(self.collect_keys, key_list)
+        expkeys = Data()
         for key, model, iter in key_list:
             self.context.op_export(key.subkeys.fpr, 0, expkeys)
         expkeys.seek(0,0)
@@ -326,7 +385,6 @@ class PyGtkGpgKeys:
         # constants.import.SUBKEY - The key contained new sub keys.
         # constants.import.SECRET - The key contained a secret key.
         # It would be nice to highlight new things as well.
-        self.model.clear()
         self.load_keys()
         #if result:
         #    impkey = result.imports
@@ -527,12 +585,10 @@ class PyGtkGpgKeys:
         return result
 
     def on_reload_all_activate(self, obj):
-        self.model.clear()
         self.only_secret = 0
         self.load_keys()
 
     def on_reload_secret_activate(self, obj):
-        self.model.clear()
         self.only_secret = 1
         self.load_keys()
 
@@ -560,7 +616,7 @@ class PyGtkGpgKeys:
         # Use mode.SIGS to include signatures in the list.
         self.context.set_keylist_mode(mode.SIGS)
         self.only_secret = 0
-        self.load_keys()
+        self.load_keys(True)
 
         self.treeview.set_model(self.model)
         self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
