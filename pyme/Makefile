@@ -16,7 +16,6 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 FILE = gpgme
-CPATH = generated
 PYPATH = pyme
 PYFILE = $(FILE).py
 CFILE = $(FILE)_wrap.c
@@ -34,7 +33,7 @@ all:	swig
 info:
 	@echo $(DOCMODS)
 
-swig: $(CPATH)/$(CFILE) $(PYPATH)/$(PYFILE)
+swig: $(CFILE) $(PYPATH)/$(PYFILE)
 
 #$(SWIGSOURCE): $(SWIGSOURCE)0
 #	SWIGOPT="$(SWIGOPT)" perl callback/mkcallback.pl -python \
@@ -44,9 +43,8 @@ swig: $(CPATH)/$(CFILE) $(PYPATH)/$(PYFILE)
 $(HFILE): $(USRHFILE)
 	sed -e 's/ class / _py_obsolete_class /' $(USRHFILE) >$(HFILE)
 
-$(CPATH)/$(CFILE) $(PYPATH)/$(PYFILE): $(SWIGSOURCE) $(HFILE) helpers.h
+$(CFILE) $(PYPATH)/$(PYFILE): $(SWIGSOURCE) $(HFILE) helpers.h
 	swig -python $(SWIGOPT) $(SWIGSOURCE)
-	mv $(CFILE) $(CPATH)/$(CFILE)
 	mv $(PYFILE) $(PYPATH)/$(PYFILE)
 
 clean:
@@ -60,7 +58,7 @@ changelog:
 	svn log -v > ChangeLog
 
 reallyclean: clean
-	-rm doc/*.html doc/gpgme/*.html generated/* $(PYPATH)/$(PYFILE) $(HFILE)
+	-rm doc/*.html doc/gpgme/*.html $(CFILE) $(PYPATH)/$(PYFILE) $(HFILE)
 
 doc: pydocs texidocs
 

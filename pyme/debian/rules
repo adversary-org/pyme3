@@ -33,6 +33,7 @@ build-stamp: configure-stamp
 	# Add here commands to compile the package.
 	#$(MAKE)
 	#/usr/bin/docbook-to-man debian/pyme.sgml > pyme.1
+	$(MAKE) swig
 	cp debian/setup.cfg-2.2 setup.cfg
 	python2.2 setup.py build -b `pwd`/build2.2
 	cp debian/setup.cfg-2.3 setup.cfg
@@ -45,7 +46,7 @@ clean:
 	rm -f build-stamp configure-stamp
 
 	# Add here commands to clean up after the build process.
-	-$(MAKE) clean
+	-$(MAKE) reallyclean
 
 	dh_clean
 

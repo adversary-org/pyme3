@@ -40,7 +40,7 @@ def getconfig(what):
 cflags = getconfig('cflags')
 libs = getconfig('libs')
 
-swige = Extension("pyme._gpgme", ["generated/gpgme_wrap.c", "helpers.c"],
+swige = Extension("pyme._gpgme", ["gpgme_wrap.c", "helpers.c"],
                   extra_compile_args = cflags,
                   include_dirs = [os.getcwd()],
                   extra_link_args = cflags + libs)
