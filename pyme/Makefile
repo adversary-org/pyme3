@@ -27,6 +27,7 @@ DOCMODSDIRS := $(shell find pyme -type d | grep -v CVS | sed 'sx/x.xg')
 DOCMODSFILES := $(shell find pyme -name "*.py" | egrep -v __init__ | grep -v gpgme.py | grep -v CVS | sed 'sx/x.xg')
 DOCMODS := $(DOCMODSDIRS) $(DOCMODSFILES:.py=)
 SWIGOPT := `gpgme-config --cflags` -I/usr/include 
+PYMEVERS := $(shell python -c "from pyme.version import *;print versionstr")
 
 build: swig
 	$(PYTHON) setup.py build -b build
@@ -48,18 +49,33 @@ $(CFILE) $(PYPATH)/$(PYFILE): $(SWIGSOURCE) $(HFILE) helpers.h
 	mv $(PYFILE) $(PYPATH)/$(PYFILE)
 
 clean:
-	-python setup.py clean --all
-	-rm -r build build2.2 build2.3 build2.4 setup.cfg
-	-rm `find . -name "*~"` `find . -name "*.pyc"` `find . -name "*.so"`
-	-find . -name auth -exec rm -vf {}/password {}/username \;
+	python setup.py clean --all
+	rm -rf build build2.2 build2.3 build2.4 setup.cfg
+	rm -f `find . -name "*~"` `find . -name "*.pyc"` `find . -name "*.so"`
+	find . -name auth -exec rm -vf {}/password {}/username \;
 
 #changelog:
 #	svn log -v > ChangeLog
 
 reallyclean: clean
-	-rm doc/*.html doc/gpgme/*.html $(CFILE) $(PYPATH)/$(PYFILE) $(HFILE)
+	rm -f doc/*.html doc/gpgme/*.html $(CFILE) $(PYPATH)/$(PYFILE) $(HFILE)
 
 docs:
-	-rm doc/*.html
+	rm -f doc/*.html
 	cd doc; for MOD in $(DOCMODS); do PYTHONPATH=`echo ../build/lib*` pydoc -w $$MOD; done
 
+nondeb-dist: reallyclean
+	rm -rf ../pyme-$(PYMEVERS)
+	mkdir ../pyme-$(PYMEVERS)
+	tar -c --exclude="debian" --exclude="CVS" * | tar -x -C ../pyme-$(PYMEVERS)
+	tar -czf ../pyme-$(PYMEVERS).tar.gz -C .. pyme-$(PYMEVERS)
+	rm -rf ../pyme-$(PYMEVERS)
+
+dist:
+	fakeroot debian/rules binary
+	fakeroot debian/rules clean
+	rm -rf ../pyme-$(PYMEVERS)
+	mkdir ../pyme-$(PYMEVERS)
+	tar -c --exclude="CVS" * | tar -x -C ../pyme-$(PYMEVERS)
+	tar -czf ../pyme-$(PYMEVERS).tar.gz -C .. pyme-$(PYMEVERS)
+	rm -rf ../pyme-$(PYMEVERS)

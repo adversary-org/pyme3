@@ -10,9 +10,9 @@ versionlist = versionstr.split(".")
 major = versionlist[0]
 minor = versionlist[1]
 patch = versionlist[2]
-copyright = "Copyright (C) 2002 John Goerzen"
-author = "John Goerzen"
-author_email = "jgoerzen@complete.org"
+copyright = "Copyright (C) 2004 Igor Belyi, 2002 John Goerzen"
+author = "Igor Belyi"
+author_email = "belyi@users.sourceforge.net"
 description = "Python support for GPGME GnuPG cryptography library"
 bigcopyright = """%(productname)s %(versionstr)s (%(revstr)s)
 %(copyright)s <%(author_email)s>""" % locals()
@@ -22,9 +22,9 @@ This software comes with ABSOLUTELY NO WARRANTY; see the file
 COPYING for details.  This is free software, and you are welcome
 to distribute it under the conditions laid out in COPYING."""
 
-homepage = "http://www.quux.org/devel/pyme"
-homegopher = "gopher://quux.org/1/devel/pyme"
-license = """Copyright (C) 2002 John Goerzen <jgoerzen@complete.org>
+homepage = "http://pyme.sourceforge.net"
+license = """Copyright (C) 2004 Igor Belyi <belyi@users.sourceforge.net>
+Copyright (C) 2002 John Goerzen <jgoerzen@complete.org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
