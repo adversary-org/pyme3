@@ -2,8 +2,9 @@ pyme (0.6.1) unstable; urgency=low
 
   * Added package building for python2.4
   * Updated copyright notes to avoid confusion for John's sake.
+  * Cleanup deprecated functions and typedefs from gpgme.h before building.
 
- -- Igor Belyi <belyi@users.sourceforge.net>  Fri, 18 Mar 2005 13:54:22 -0500
+ -- Igor Belyi <belyi@users.sourceforge.net>  Fri, 18 Mar 2005 20:41:52 -0500
 
 pyme (0.6.0) unstable; urgency=low
 
