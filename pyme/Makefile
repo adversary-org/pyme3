@@ -40,9 +40,9 @@ info:
 
 swig: $(CFILE) $(PYPATH)/$(PYFILE)
 
-# Work around a problem of gpgme.h containing class structure fields.
+# Cleanup gpgme.h from deprecated functions and typedefs.
 $(HFILE): $(USRHFILE)
-	sed -e 's/ class / _py_obsolete_class /' $(USRHFILE) >$(HFILE)
+	$(PYTHON) gpgme-h-clean.py $(USRHFILE) >$(HFILE)
 
 $(CFILE) $(PYPATH)/$(PYFILE): $(SWIGSOURCE) $(HFILE) helpers.h
 	swig -python $(SWIGOPT) $(SWIGSOURCE)

@@ -130,11 +130,3 @@ int pyReadCb(void *hook, char *buffer, size_t count, size_t *nread) {
   Py_DECREF(retval);
   return 0;
 }
-
-void pygpgme_data_new_with_read_cb(gpgme_data_t *dh, PyObject *cb, 
-                                   PyObject **freelater){
-  Py_INCREF(cb);
-  *freelater = cb;
-  gpgme_data_new_with_read_cb(dh, pyReadCb, (void *) cb);
-}
-

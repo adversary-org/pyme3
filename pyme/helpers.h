@@ -26,5 +26,3 @@ void pygpgme_clear_generic_cb(PyObject **cb);
 void pygpgme_set_passphrase_cb(gpgme_ctx_t ctx, PyObject *cb,
 			       PyObject **freelater);
 void pygpgme_set_progress_cb(gpgme_ctx_t ctx, PyObject *cb, PyObject **freelater);
-void pygpgme_data_new_with_read_cb(gpgme_data_t *dh, PyObject *cb, 
-                                   PyObject **freelater);
