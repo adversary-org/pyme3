@@ -126,13 +126,12 @@ Base classes: pyme.core (START HERE!)
 Error classes: pyme.errors
 Constants: pyme.constants
 Version information: pyme.version
-Auxiliary classes: pyme.aux
 Utilities: pyme.util
 
 Base classes are documented at pyme.core.
-Classes of pyme.aux and pyme.util usually are not instantiated by users
+Classes of pyme.util usually are not instantiated by users
 directly but return by methods of base classes.
 
 """
 
-__all__ = ['core', 'errors', 'constants', 'aux', 'util', 'version']
+__all__ = ['core', 'errors', 'constants', 'util', 'version']

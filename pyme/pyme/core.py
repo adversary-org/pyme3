@@ -16,9 +16,12 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+# import generators for portability with python2.2
+from __future__ import generators
+
 import gpgme
 from errors import errorcheck
-import errors, aux
+import errors
 from util import GpgmeWrapper
 
 class Context(GpgmeWrapper):
@@ -76,7 +79,10 @@ class Context(GpgmeWrapper):
 
     def op_keylist_all(self, *args, **kwargs):
         apply(self.op_keylist_start, args, kwargs)
-        return aux.KeyIterator(self)
+        key = self.op_keylist_next()
+        while key:
+            yield key
+            key = self.op_keylist_next()
 
     def op_keylist_next(self):
         """Returns the next key in the list created
@@ -103,7 +109,10 @@ class Context(GpgmeWrapper):
 
     def op_trustlist_all(self, *args, **kwargs):
         apply(self.op_trustlist_start, args, kwargs)
-        return aux.TrustItemIterator(self)
+        trust = self.ctx.op_trustlist_next()
+        while trust:
+            yield trust
+            trust = self.ctx.op_trustlist_next()
 
     def op_trustlist_next(self):
         """Returns the next trust item in the list created
