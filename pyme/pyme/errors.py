@@ -24,10 +24,10 @@ class GPGMEError(Exception):
         self.message = message
     
     def getstring(self):
-        message = gpgme.gpgme_strerror_r(self.error, 1024);
+        message = "%s: %s" % (gpgme.gpgme_strsource(self.error),
+                              gpgme.gpgme_strerror(self.error))
         if self.message != None:
-            message = "%s: source(%d), code(%d) %s" % \
-                      (self.message,self.getsource(),self.getcode(),message)
+            message = "%s: %s" % (self.message, message)
         return message
 
     def getcode(self):
