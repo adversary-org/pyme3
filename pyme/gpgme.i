@@ -158,6 +158,14 @@ PyObject* object_to_gpgme_t(PyObject* input, const char* objtype, int argnum) {
   free($1);
 }
 
+// Include mapper for edit callbacks
+%typemap(python,in) (gpgme_edit_cb_t fnc, void *fnc_value) {
+  $1 = (gpgme_edit_cb_t) pyEditCb;
+  if ($input == Py_None)
+    $2 = NULL;
+  else
+    $2 = $input;
+}
 
 // Include the header file both for cc (first) and for swig (second)
 // Include for swig locally since we need to fix 'class' usage there.
@@ -189,3 +197,31 @@ FILE *fdopen(int fildes, const char *mode);
 #include "helpers.h"
 %}
 %include "helpers.h"
+
+%{
+gpgme_error_t pyEditCb(void *opaque, gpgme_status_code_t status,
+		       const char *args, int fd) {
+  PyObject *func = NULL, *dataarg = NULL, *pyargs = NULL, *retval = NULL;
+  PyObject *pyopaque = (PyObject *) opaque;
+  
+  func = PyTuple_GetItem(pyopaque, 0);
+  dataarg = PyTuple_GetItem(pyopaque, 1);
+
+  pyargs = PyTuple_New(3);
+  
+  PyTuple_SetItem(pyargs, 0, PyInt_FromLong((long) status));
+  PyTuple_SetItem(pyargs, 1, PyString_FromString(args));
+  Py_INCREF(dataarg);		/* Because GetItem doesn't give a ref but SetItem taketh away */
+  PyTuple_SetItem(pyargs, 2, dataarg);
+  
+  retval = PyObject_CallObject(func, pyargs);
+  Py_DECREF(pyargs);
+  if (fd>=0 && retval) {
+    write(fd, PyString_AsString(retval), PyString_Size(retval));
+    write(fd, "\n", 1);
+  }
+  Py_DECREF(retval);
+  return 0;
+}
+%}
+

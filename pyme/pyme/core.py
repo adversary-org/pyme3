@@ -160,11 +160,14 @@ class Context(GpgmeWrapper):
         hook if your called functions do not require a specific hook value.
 
         Please see the GPGME manual for more information."""
-        print "PROGRESSCBSET"
         self._free_progresscb()
         self.last_progresscb = gpgme.new_PyObject_p_p()
         hookdata = (func, hook)
         gpgme.pygpgme_set_progress_cb(self.wrapped, hookdata, self.last_progresscb)
+
+    def op_edit(self, key, func, fnc_value, out):
+        opaquedata = (func, fnc_value)
+        gpgme.gpgme_op_edit(self.wrapped, key, opaquedata, out)
     
 class Data(GpgmeWrapper):
     """From the GPGME C manual:

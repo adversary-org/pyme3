@@ -94,39 +94,3 @@ void pygpgme_set_progress_cb(gpgme_ctx_t ctx, PyObject *cb, PyObject **freelater
   *freelater = cb;
   gpgme_set_progress_cb(ctx, (gpgme_progress_cb_t) pyProgressCb, (void *) cb);
 }
-
-int pyReadCb(void *hook, char *buffer, size_t count, size_t *nread) {
-  PyObject *func = NULL, *dataarg = NULL, *args = NULL, *retval = NULL;
-  PyObject *pyhook = (PyObject *) hook;
-  int strsize = 0;
-  
-  func = PyTuple_GetItem(pyhook, 0);
-  dataarg = PyTuple_GetItem(pyhook, 1);
-
-  args = PyTuple_New(2);
-  
-  PyTuple_SetItem(args, 0, PyInt_FromLong((long) count));
-  Py_INCREF(dataarg);
-  PyTuple_SetItem(args, 1, dataarg);
-  
-  retval = PyObject_CallObject(func, args);
-  Py_DECREF(args);
-
-  if ((!nread) || (!buffer)) {
-    /* Returned EOF -- signal EOF OR
-       nread is NULL OR
-       buffer is NULL */
-    Py_DECREF(retval);
-    return 0;
-  }
-  strsize = PyString_Size(retval);
-  if (strsize == 0) {
-    Py_DECREF(retval);
-    *nread = 0;
-    return -1;
-  }
-  *nread = strsize;
-  memcpy(buffer, PyString_AsString(retval), strsize);
-  Py_DECREF(retval);
-  return 0;
-}
