@@ -1,4 +1,5 @@
-#!/usr/bin/env python2.2
+#!/usr/bin/env python
+# $Id$
 # Copyright (C) 2002 John Goerzen
 # <jgoerzen@complete.org>
 #

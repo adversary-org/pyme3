@@ -1,3 +1,5 @@
+# $Id$
+
 productname = 'pyme'
 versionstr = "0.6.0"
 revno = long('$Rev: 281 $'[6:-2])

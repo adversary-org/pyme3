@@ -1,3 +1,4 @@
+# $Id$
 """
 Pyme: GPGME Interface for Python
 Copyright (C) 2002 John Goerzen
