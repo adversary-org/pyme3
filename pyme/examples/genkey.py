@@ -21,11 +21,6 @@ import sys
 from pyme import core, constants, callbacks, errors
 import pyme.constants.validity
 
-# Set up our input and output buffers.
-
-pubkey = core.Data()
-seckey = core.Data()
-
 # Initialize our context.
 
 c = core.Context()
@@ -47,10 +42,5 @@ Expire-Date: 2010-08-15
 </GnupgKeyParms>
 """
 
-try:
-    c.op_genkey(parms, pubkey, seckey)
-except errors.GPGMEError, excp:
-    print excp.getstring()
-
-seckey.seek(0,0)
-print seckey.read()
+c.op_genkey(parms, None, None)
+print c.op_genkey_result().fpr

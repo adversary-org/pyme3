@@ -110,20 +110,25 @@ PyObject* object_to_gpgme_t(PyObject* input, const char* objtype, int argnum) {
 
 // Special handling for references to our objects.
 %typemap(python,in) gpgme_data_t DATAIN {
-  PyObject *pypointer = NULL;
+  if ($input == Py_None)
+    $1 = NULL;
+  else {
+    PyObject *pypointer = NULL;
 
-  if((pypointer=object_to_gpgme_t($input, "$1_ltype", $argnum)) == NULL)
-    return NULL;
+    if((pypointer=object_to_gpgme_t($input, "$1_ltype", $argnum)) == NULL)
+      return NULL;
 
-  /* input = $input, 1 = $1, 1_descriptor = $1_descriptor */
+    /* input = $input, 1 = $1, 1_descriptor = $1_descriptor */
 
-  // Following code is from swig's python.swg
+    // Following code is from swig's python.swg
 
-  if ((SWIG_ConvertPtr(pypointer,(void **) &$1, $1_descriptor,SWIG_POINTER_EXCEPTION | $disown )) == -1) {
+    if ((SWIG_ConvertPtr(pypointer,(void **) &$1, $1_descriptor,
+         SWIG_POINTER_EXCEPTION | $disown )) == -1) {
+      Py_DECREF(pypointer);
+      return NULL;
+    }
     Py_DECREF(pypointer);
-    return NULL;
   }
-  Py_DECREF(pypointer);
 }
 
 %apply gpgme_data_t DATAIN {gpgme_data_t plain, gpgme_data_t cipher,
