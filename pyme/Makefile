@@ -28,8 +28,11 @@ DOCMODSFILES := $(shell find pyme -name "*.py" | egrep -v __init__ | grep -v gpg
 DOCMODS := $(DOCMODSDIRS) $(DOCMODSFILES:.py=)
 SWIGOPT := `gpgme-config --cflags` -I/usr/include 
 
-all:	swig
+build: swig
 	$(PYTHON) setup.py build -b build
+
+install: build
+	$(PYTHON) setup.py install
 
 info:
 	@echo $(DOCMODS)
