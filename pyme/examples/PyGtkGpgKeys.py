@@ -18,7 +18,7 @@
 
 import gtk, gobject, gtk.glade
 import time, sys, os
-from pyme import callbacks
+from pyme import callbacks, errors
 from pyme.core import Data, Context, pubkey_algo_name
 from pyme import constants
 from pyme.constants import validity
@@ -248,6 +248,29 @@ class PyGtkGpgKeys:
                 
         view_menu.show_all()
         self.wtree.get_widget("view_menu").set_submenu(view_menu)
+
+    def on_GPGKeysView_button_press_event(self, obj, event):
+        if event.button != 3:
+            return False
+
+        menu = gtk.Menu()
+        for title, callback in [
+            ("Reload", self.on_reload_activate),
+            (None, None),
+            ("Delete", self.on_delete_activate),
+            ("Export (txt)", self.on_export_keys_text_activate),
+            ("Export (bin)", self.on_export_keys_activate)
+            ]:
+            if title:
+                item = gtk.MenuItem(title)
+                item.connect("activate", callback)
+            else:
+                item = gtk.SeparatorMenuItem()
+            menu.append(item)
+        menu.show_all()
+        
+        menu.popup(None, None, None, event.button, event.time)
+        return True
 
     def editor_func(self, status, args, val_dict):
         state = val_dict["state"]
@@ -571,7 +594,8 @@ class PyGtkGpgKeys:
         self.progress = None
 
         if status:
-            self.error_message("Got error %d during key generation." % status)
+            self.error_message("Got an error during key generation:\n%s" %
+                               errors.GPGMEError(status).getstring())
 
         # Let callback to be removed.
         return False
@@ -595,7 +619,7 @@ class PyGtkGpgKeys:
         dialog.hide()
         return result
 
-    def on_reload_all_activate(self, obj):
+    def on_reload_activate(self, obj):
         self.load_keys()
 
     def on_about_activate(self, obj):
