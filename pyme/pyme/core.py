@@ -174,12 +174,12 @@ class Context(GpgmeWrapper):
 
         Please read the GPGME manual for more information."""
         ptr = gpgme.new_gpgme_error_t_p()
-        gpgme.gpgme_error_t_p_assign(ptr, 0xFFFF)
         context = gpgme.gpgme_wait(self.wrapped, ptr, hang)
         status = gpgme.gpgme_error_t_p_value(ptr)
         gpgme.delete_gpgme_error_t_p(ptr)
         
-        if status == 0xFFFF:
+        if context == None:
+            errorcheck(status)
             return None
         else:
             return status
@@ -187,7 +187,7 @@ class Context(GpgmeWrapper):
     def op_edit(self, key, func, fnc_value, out):
         """Start key editing using supplied callback function"""
         opaquedata = (func, fnc_value)
-        gpgme.gpgme_op_edit(self.wrapped, key, opaquedata, out)
+        errorcheck(gpgme.gpgme_op_edit(self.wrapped, key, opaquedata, out))
     
 class Data(GpgmeWrapper):
     """From the GPGME C manual:
@@ -410,11 +410,11 @@ def wait(hang):
         
     Please read the GPGME manual of more information."""
     ptr = gpgme.new_gpgme_error_t_p()
-    gpgme.gpgme_error_t_p_assign(ptr, 0xFFFF)
     context = gpgme.gpgme_wait(None, ptr, hang)
     status = gpgme.gpgme_error_t_p_value(ptr)
     gpgme.gpgme_error_t_p_delete(ptr)
-    if status == 0xFFFF:
+    if context == None:
+        errorcheck(status)
         return None
     else:
         return (status, context)
