@@ -47,35 +47,33 @@ object-oriented with classes and modules.  Take a look at the classes
 defined here -- they correspond directly to certain object types in GPGME
 for C.  For instance, the following C code:
 
-GpgmeCtx context;
-GpgmeRecipients recp;
+gpgme_ctx_t context;
+
 gpgme_new(&context);
-gpgme_recipients_new(&recp);
+
 ...
 gpgme_op_encrypt(context, recp, plain, cipher);
 
 Translates into the following Python code:
 
 context = core.Context()
-recp = core.Recipients()
 ...
 context.encrypt(recp, plain, cipher)
 
 The Python module automatically does error-checking and raises Python
-exceptions when GPGME signals an error.  Those exceptions correspond
-directly to GPGME errors.  All GPGME exceptions are defined in the
-gpgme.errors module, and pyme.errors.GPGMEError is the parent of all
-exceptions.
+exception pyme.errors.GPGMEError when GPGME signals an error. getcode()
+and getsource() of this exception return code and source of the error.
 
 IMPORTANT NOTE
 --------------
 This documentation only covers a small subset of available GPGME functions and
 methods.  Please consult the documentation for the C library
-(available in doc/gpgme in this distribution) for comprehensive coverage.
+for comprehensive coverage.
 
 This library uses Python's reflection to automatically detect the methods
 that are available for each class, and as such, most of those methods
-do not appear explicitly anywhere.
+do not appear explicitly anywhere. You can use dir() python built-in command
+on an object to see what methods and fields it has.
 
 QUICK START SAMPLE PROGRAM
 --------------------------
@@ -83,7 +81,6 @@ This program is not for serious encryption, but for example purposes only!
 
 import sys
 from pyme import core, constants
-import pyme.constants.validity
 
 # Set up our input and output buffers.
 
@@ -99,12 +96,12 @@ c.set_armor(1)
 
 sys.stdout.write("Enter name of your recipient: ")
 name = sys.stdin.readline().strip()
-r = core.Recipients()
-r.add(name, constants.validity.FULL)
+r = c.op_keylist_all(name, 0)
 
 # Do the encryption.
 
-c.op_encrypt(r, plain, cipher)
+c.op_encrypt(r, 1, plain, cipher)
+cipher.seek(0,0)
 print cipher.read()
 
 Note that although there is no explicit error checking done here, the
@@ -116,7 +113,7 @@ directory contains more advanced samples as well.
 
 FOR MORE INFORMATION
 --------------------
-PYME homepage: http://quux.org/devel/pyme
+PYME homepage: http://pyme.sourceforge.net
 GPGME documentation: http://www.fifi.org/cgi-bin/info2www?%28gpgme%29
 GPGME homepage: http://www.gnupg.org/gpgme.html
 
