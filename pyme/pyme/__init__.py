@@ -21,6 +21,8 @@ Welcome to PyME, the GPGME Interface for Python.  "Pyme", when prounced,
 rhymes with "Pine".
 
 The latest release of this package may be obtained from
+http://pyme.sourceforge.net
+Previous releases of this package can be obtained from
 http://quux.org/devel/pyme/
 
 FEATURES
@@ -52,13 +54,13 @@ gpgme_ctx_t context;
 gpgme_new(&context);
 
 ...
-gpgme_op_encrypt(context, recp, plain, cipher);
+gpgme_op_encrypt(context, recp, 1, plain, cipher);
 
 Translates into the following Python code:
 
 context = core.Context()
 ...
-context.encrypt(recp, plain, cipher)
+context.op_encrypt(recp, 1, plain, cipher)
 
 The Python module automatically does error-checking and raises Python
 exception pyme.errors.GPGMEError when GPGME signals an error. getcode()
@@ -73,7 +75,8 @@ for comprehensive coverage.
 This library uses Python's reflection to automatically detect the methods
 that are available for each class, and as such, most of those methods
 do not appear explicitly anywhere. You can use dir() python built-in command
-on an object to see what methods and fields it has.
+on an object to see what methods and fields it has but their meaning can
+be found only in GPGME documentation.
 
 QUICK START SAMPLE PROGRAM
 --------------------------
@@ -96,11 +99,12 @@ c.set_armor(1)
 
 sys.stdout.write("Enter name of your recipient: ")
 name = sys.stdin.readline().strip()
-r = c.op_keylist_all(name, 0)
+c.op_keylist_start(name, 0)
+r = c.op_keylist_next()
 
 # Do the encryption.
 
-c.op_encrypt(r, 1, plain, cipher)
+c.op_encrypt([r], 1, plain, cipher)
 cipher.seek(0,0)
 print cipher.read()
 
@@ -118,13 +122,15 @@ GPGME documentation: http://www.fifi.org/cgi-bin/info2www?%28gpgme%29
 GPGME homepage: http://www.gnupg.org/gpgme.html
 
 Base classes: pyme.core (START HERE!)
-Auxiliary classes: pyme.aux
-Utilities: pyme.util
 Error classes: pyme.errors
 Constants: pyme.constants
 Version information: pyme.version
+Auxiliary classes: pyme.aux
+Utilities: pyme.util
 
-Base classes are documented at pyme.core and auxiliary classes at pyme.aux
+Base classes are documented at pyme.core.
+Classes of pyme.aux and pyme.util usually are not instantiated by users
+directly but return by methods of base classes.
 
 """
 

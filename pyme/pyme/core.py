@@ -87,7 +87,7 @@ class Context(GpgmeWrapper):
             key = gpgme.gpgme_key_t_p_value(ptr)
         except errors.GPGMEError, excp:
             key = None
-            if excp.getvalue() != errors.EOF:
+            if excp.getcode() != errors.EOF:
                 raise excp
         gpgme.delete_gpgme_key_t_p(ptr)
         return key
@@ -114,7 +114,7 @@ class Context(GpgmeWrapper):
             trust = gpgme.gpgme_trust_item_t_p_value(ptr)
         except errors.GPGMEError, excp:
             trust = None
-            if excp.getvalue() != errors.EOF:
+            if excp.getcode() != errors.EOF:
                 raise
         gpgme.delete_gpgme_trust_item_t_p(ptr)
         return trust
