@@ -1,5 +1,5 @@
-# Copyright (C) 2002 John Goerzen
 # $Id$
+# Copyright (C) 2002 John Goerzen
 # <jgoerzen@complete.org>
 #
 #    This program is free software; you can redistribute it and/or modify
