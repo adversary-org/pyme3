@@ -204,7 +204,10 @@ gpgme_error_t pyEditCb(void *opaque, gpgme_status_code_t status,
 		       const char *args, int fd) {
   PyObject *func = NULL, *dataarg = NULL, *pyargs = NULL, *retval = NULL;
   PyObject *pyopaque = (PyObject *) opaque;
-  
+  gpgme_error_t err_status = 0;
+
+  pygpgme_exception_init();
+
   func = PyTuple_GetItem(pyopaque, 0);
   dataarg = PyTuple_GetItem(pyopaque, 1);
 
@@ -217,12 +220,17 @@ gpgme_error_t pyEditCb(void *opaque, gpgme_status_code_t status,
   
   retval = PyObject_CallObject(func, pyargs);
   Py_DECREF(pyargs);
-  if (fd>=0 && retval) {
-    write(fd, PyString_AsString(retval), PyString_Size(retval));
-    write(fd, "\n", 1);
+  if (PyErr_Occurred()) {
+    err_status = pygpgme_exception2code();
+  } else {
+    if (fd>=0 && retval) {
+      write(fd, PyString_AsString(retval), PyString_Size(retval));
+      write(fd, "\n", 1);
+    }
   }
-  Py_DECREF(retval);
-  return 0;
+
+  Py_XDECREF(retval);
+  return err_status;
 }
 %}
 

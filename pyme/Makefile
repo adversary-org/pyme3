@@ -72,6 +72,7 @@ nondeb-dist: reallyclean
 	rm -rf ../pyme-$(PYMEVERS)
 
 dist:
+	fakeroot debian/rules clean
 	fakeroot debian/rules binary
 	fakeroot debian/rules clean
 	rm -rf ../pyme-$(PYMEVERS)

@@ -21,6 +21,9 @@
 #include <gpgme.h>
 #include "Python.h"
 
+void pygpgme_exception_init();
+gpgme_error_t pygpgme_exception2code();
+
 void pygpgme_clear_generic_cb(PyObject **cb);
 
 void pygpgme_set_passphrase_cb(gpgme_ctx_t ctx, PyObject *cb,

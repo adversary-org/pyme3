@@ -24,6 +24,37 @@
 #include "Python.h"
 #include "helpers.h"
 
+static PyObject *GPGMEError = NULL;
+
+void pygpgme_exception_init() {
+  if (GPGMEError == NULL) {
+    PyObject *errors;
+    errors = PyImport_ImportModule("errors");
+    if (errors) {
+      GPGMEError=PyDict_GetItemString(PyModule_GetDict(errors), "GPGMEError");
+      Py_XINCREF(GPGMEError);
+    }
+  }
+}
+
+gpgme_error_t pygpgme_exception2code() {
+  gpgme_error_t err_status = gpg_error(GPG_ERR_GENERAL);
+  if (GPGMEError && PyErr_ExceptionMatches(GPGMEError)) {
+    PyObject *type = 0, *value = 0, *traceback = 0;
+    PyObject *error = 0;
+    PyErr_Fetch(&type, &value, &traceback);
+    PyErr_NormalizeException(&type, &value, &traceback);
+    error = PyObject_GetAttrString(value, "error");
+    err_status = PyInt_AsLong(error);
+    Py_DECREF(error);
+    Py_DECREF(type);
+    Py_DECREF(value);
+    Py_DECREF(traceback);
+  }
+  PyErr_Clear();
+  return err_status;
+}
+
 void pygpgme_clear_generic_cb(PyObject **cb) {
   Py_DECREF(*cb);
 }
@@ -38,6 +69,9 @@ static gpgme_error_t pyPassphraseCb(void *hook,
   PyObject *args = NULL;
   PyObject *retval = NULL;
   PyObject *dataarg = NULL;
+  gpgme_error_t err_status = 0;  
+
+  pygpgme_exception_init();
 
   pyhook = (PyObject *) hook;
   func = PyTuple_GetItem(pyhook, 0);
@@ -50,14 +84,19 @@ static gpgme_error_t pyPassphraseCb(void *hook,
   PyTuple_SetItem(args, 2, dataarg);
   retval = PyObject_CallObject(func, args);
   Py_DECREF(args);
-  if (!retval) {
-    write(fd, "\n", 1);
+  if (PyErr_Occurred()) {
+    err_status = pygpgme_exception2code();
   } else {
-    write(fd, PyString_AsString(retval), PyString_Size(retval));
-    write(fd, "\n", 1);
-    Py_DECREF(retval);
+    if (!retval) {
+      write(fd, "\n", 1);
+    } else {
+      write(fd, PyString_AsString(retval), PyString_Size(retval));
+      write(fd, "\n", 1);
+      Py_DECREF(retval);
+    }
   }
-  return 0;
+
+  return err_status;
 }
 
 void pygpgme_set_passphrase_cb(gpgme_ctx_t ctx, PyObject *cb,

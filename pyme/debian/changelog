@@ -1,3 +1,11 @@
+pyme (0.6.3) unstable; urgency=low
+
+  * Remove workaround in Context.wait()
+  * Make Context.wait() and Context.op_edit() through exception on failure.
+  * Added exception handling for passphrase_cb and edit_cb
+
+ -- Igor Belyi <belyi@users.sourceforge.net>  Thu, 31 Mar 2005 14:18:57 -0500
+
 pyme (0.6.2) unstable; urgency=low
 
   * Implemented Context.wait() method more sutable for asynch calls in Python.
