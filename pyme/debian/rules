@@ -38,6 +38,8 @@ build-stamp: configure-stamp
 	python2.2 setup.py build -b `pwd`/build2.2
 	cp debian/setup.cfg-2.3 setup.cfg
 	python2.3 setup.py build -b `pwd`/build2.3
+	cp debian/setup.cfg-2.4 setup.cfg
+	python2.4 setup.py build -b `pwd`/build2.4
 	$(MAKE) docs
 	touch build-stamp
 
@@ -62,6 +64,8 @@ install: build
 	python2.2 setup.py install --root=`pwd`/debian/python2.2-pyme
 	cp debian/setup.cfg-2.3 setup.cfg
 	python2.3 setup.py install --root=`pwd`/debian/python2.3-pyme
+	cp debian/setup.cfg-2.4 setup.cfg
+	python2.4 setup.py install --root=`pwd`/debian/python2.4-pyme
 
 
 

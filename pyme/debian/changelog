@@ -1,3 +1,10 @@
+pyme (0.6.1) unstable; urgency=low
+
+  * Added package building for python2.4
+  * Updated copyright notes to avoid confusion for John's sake.
+
+ -- Igor Belyi <belyi@users.sourceforge.net>  Fri, 18 Mar 2005 13:54:22 -0500
+
 pyme (0.6.0) unstable; urgency=low
 
   * Added support for libgpgme11 revision of GPGME library.

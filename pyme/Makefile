@@ -1,6 +1,6 @@
 # $Id$
-# Copyright (C) 2002 John Goerzen
-# <jgoerzen@complete.org>
+# Copyright (C) 2004 Igor Belyi <belyi@users.sourceforge.net>
+# Copyright (C) 2002 John Goerzen <jgoerzen@complete.org>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ $(CFILE) $(PYPATH)/$(PYFILE): $(SWIGSOURCE) $(HFILE) helpers.h
 
 clean:
 	-python setup.py clean --all
-	-rm -r build build2.2 build2.3 setup.cfg
+	-rm -r build build2.2 build2.3 build2.4 setup.cfg
 	-rm `find . -name "*~"` `find . -name "*.pyc"` `find . -name "*.so"`
 	-find . -name auth -exec rm -vf {}/password {}/username \;
 
