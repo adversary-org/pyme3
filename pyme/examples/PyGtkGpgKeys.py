@@ -41,18 +41,21 @@ def sec2str(secs):
 index = 0
 class KeyColumn:
     "Helper class for data columns."
-    def __init__(self, name, gtype, vattr=None, tcols=None, func=lambda x:x):
+    def __init__(self, name, gtype, vattr=None, tcols=None,
+                 func=lambda x:x, view=None):
         """new(name, qtype, vattr, column, ocolumn, func):
         name  - column title
         qtype - gobject type to use in TreeStore for this column
-        vattr - column data is visible is method vattr present in the object
+        vattr - column data is visible if method vattr present in the object
         tcols - list of type specific columns to append its name to.
-        func  - function converting object data into viewable presentation"""
+        func  - function converting object data into viewable presentation
+        view  - to put or not the column in the view menu"""
         global index
         self.name = name
         self.type = gtype
         self.vattr = vattr
         self.func = func
+        self.view = view
         self.index = index
         self.attrs = {}
         if tcols != None: tcols.append(name)
@@ -67,28 +70,29 @@ sub_sign_columns = []                   # names in subkeys and signatures
 
 # Explicite columns
 visible_columns = [
+    KeyColumn("Secret", gobject.TYPE_BOOLEAN, "subkeys"),
     KeyColumn("Name", gobject.TYPE_STRING, "name", uid_columns,
               lambda x: x.name+(x.comment and " (%s)"%x.comment)),
     KeyColumn("Email", gobject.TYPE_STRING, "email", uid_columns,
               lambda x: x.email),
-    KeyColumn("Owner\nTrust", gobject.TYPE_STRING, "owner_trust", key_columns,
-              lambda x: trusts[x.owner_trust]),
+    KeyColumn("Owner Trust", gobject.TYPE_STRING, "owner_trust", key_columns,
+              lambda x: trusts[x.owner_trust], True),
     KeyColumn("Type", gobject.TYPE_STRING, "pubkey_algo", sub_sign_columns,
               lambda x: pubkey_algo_name(x.pubkey_algo)),
     KeyColumn("Length", gobject.TYPE_INT, "length", sub_columns,
               lambda x: x.length),
-    KeyColumn("Can\nAuth", gobject.TYPE_BOOLEAN,"can_authenticate",sub_columns,
-              lambda x: x.can_authenticate),
-    KeyColumn("Can\nCert", gobject.TYPE_BOOLEAN, "can_certify", sub_columns,
-              lambda x: x.can_certify),
-    KeyColumn("Can\nEncr", gobject.TYPE_BOOLEAN, "can_encrypt", sub_columns,
-              lambda x: x.can_encrypt),
-    KeyColumn("Can\nSign", gobject.TYPE_BOOLEAN, "can_sign", sub_columns,
-              lambda x: x.can_sign),
+    KeyColumn("Can Auth", gobject.TYPE_BOOLEAN,"can_authenticate", sub_columns,
+              lambda x: x.can_authenticate, False),
+    KeyColumn("Can Cert", gobject.TYPE_BOOLEAN, "can_certify", sub_columns,
+              lambda x: x.can_certify, False),
+    KeyColumn("Can Encr", gobject.TYPE_BOOLEAN, "can_encrypt", sub_columns,
+              lambda x: x.can_encrypt, False),
+    KeyColumn("Can Sign", gobject.TYPE_BOOLEAN, "can_sign", sub_columns,
+              lambda x: x.can_sign, False),
     KeyColumn("Created", gobject.TYPE_STRING, "timestamp", sub_sign_columns,
-              lambda x: sec2str(x.timestamp)),
+              lambda x: sec2str(x.timestamp), True),
     KeyColumn("Expires", gobject.TYPE_STRING, "expires", sub_sign_columns,
-              lambda x: sec2str(x.expires)),
+              lambda x: sec2str(x.expires), True),
     KeyColumn("Id", gobject.TYPE_STRING, "keyid", sub_sign_columns,
               lambda x: x.keyid)
     ]
@@ -152,16 +156,19 @@ class PyGtkGpgKeys:
     
     def load_keys(self, first_time=False):
         if not first_time: self.model.clear()
-        for key in self.context.op_keylist_all(None, self.only_secret):
-            self.add_key(key)
+        secret_keys = {}
+        for key in self.context.op_keylist_all(None, 1):
+            secret_keys[key.subkeys.fpr] = 1
+        for key in self.context.op_keylist_all(None, 0):
+            self.add_key(key, secret_keys.has_key(key.subkeys.fpr))
     
-    def add_key(self, key):
+    def add_key(self, key, secret):
         "self.add_key(key) - add key to the TreeStore model"
         uid = key.uids
         subkey = key.subkeys
         iter = self.model.append(None)
         # Can delete only the whole key
-        param = (iter,)
+        param = (iter,) + pair("Secret", secret)
         # Key information is a combination of the key and first uid and subkey
         for col in key_columns: param += pair(col, key)
         for col in uid_columns: param += pair(col, uid)
@@ -178,7 +185,7 @@ class PyGtkGpgKeys:
         if not subkey:
             return
         key_iter = self.model.append(iter)
-        self.model.set(key_iter, 0, "Subkeys", *name_only)
+        self.model.set(key_iter, columns["Name"].index, "Subkeys", *name_only)
         while subkey:
             child_iter = self.model.append(key_iter)
             param = (child_iter,)
@@ -192,7 +199,7 @@ class PyGtkGpgKeys:
         if not uid:
             return
         uid_iter = self.model.append(iter)
-        self.model.set(uid_iter,0, "Other UIDs", *name_only)
+        self.model.set(uid_iter,columns["Name"].index,"Other UIDs",*name_only)
         while uid:
             child_iter = self.model.append(uid_iter)
             param = (child_iter,)
@@ -206,7 +213,7 @@ class PyGtkGpgKeys:
         if not sign:
             return
         sign_iter = self.model.append(iter)
-        self.model.set(sign_iter, 0, "Signatures", *name_only)
+        self.model.set(sign_iter,columns["Name"].index,"Signatures",*name_only)
         while sign:
             child_iter = self.model.append(sign_iter)
             param = (child_iter,)
@@ -218,6 +225,7 @@ class PyGtkGpgKeys:
 
     def add_columns(self):
         "Add viewable columns for the data in TreeStore model"
+        view_menu = gtk.Menu()
         for item in visible_columns:
             if item.type == gobject.TYPE_BOOLEAN:
                 renderer = gtk.CellRendererToggle()
@@ -229,12 +237,17 @@ class PyGtkGpgKeys:
                 item.index, item.name, renderer, **item.attrs)
             column.set_sort_column_id(item.index)
             # Create callback for a View menu item
-            check = self.wtree.get_widget(item.vattr + "_check")
-            if check:
+            if item.view != None:
+                check = gtk.CheckMenuItem(item.name)
+                check.set_active(item.view)
                 check.connect("activate",
                               lambda x, y: y.set_visible(x.get_active()),
                               column)
+                view_menu.append(check)
                 column.set_visible(check.get_active())
+                
+        view_menu.show_all()
+        self.wtree.get_widget("view_menu").set_submenu(view_menu)
 
     def editor_func(self, status, args, val_dict):
         state = val_dict["state"]
@@ -276,7 +289,7 @@ class PyGtkGpgKeys:
             for key, row in key_list:
                 if key.owner_trust != new_trust:
                     self.change_key_trust(key, new_trust)
-                    row[columns["Owner\nTrust"].index] = trusts[new_trust]
+                    row[columns["Owner Trust"].index] = trusts[new_trust]
 
     def on_undefined_trust_activate(self, obj):
         self.on_change_trust(1)
@@ -389,8 +402,7 @@ class PyGtkGpgKeys:
         #    impkey = result.imports
         #    while impkey:
         #        if impkey.status & constants.import.NEW:
-        #            self.add_key(self.context.get_key(impkey.fpr,
-        #                                              self.only_secret))
+        #            self.add_key(self.context.get_key(impkey.fpr, 0))
         #        impkey = impkey.next
 
     def on_delete_activate(self, obj):
@@ -554,7 +566,7 @@ class PyGtkGpgKeys:
             return True
         elif status == 0:
             fpr = self.context.op_genkey_result().fpr
-            self.add_key(self.context.get_key(fpr, self.only_secret))            
+            self.add_key(self.context.get_key(fpr, 0), True)
         self.wtree.get_widget("GenerateProgress").hide()
         self.progress = None
 
@@ -584,11 +596,6 @@ class PyGtkGpgKeys:
         return result
 
     def on_reload_all_activate(self, obj):
-        self.only_secret = 0
-        self.load_keys()
-
-    def on_reload_secret_activate(self, obj):
-        self.only_secret = 1
         self.load_keys()
 
     def on_about_activate(self, obj):
@@ -614,7 +621,6 @@ class PyGtkGpgKeys:
         self.context.set_progress_cb(self.gen_progress, None)
         # Use mode.SIGS to include signatures in the list.
         self.context.set_keylist_mode(mode.SIGS)
-        self.only_secret = 0
         self.load_keys(True)
 
         self.treeview.set_model(self.model)

@@ -47,22 +47,12 @@
 		    <widget class="GtkMenu" id="menuitem1_menu">
 
 		      <child>
-			<widget class="GtkMenuItem" id="reload_all_keys">
+			<widget class="GtkMenuItem" id="reload_keys">
 			  <property name="visible">True</property>
 			  <property name="tooltip" translatable="yes">Reload all keys from the keyring</property>
-			  <property name="label" translatable="yes">_Reload (all keys)</property>
+			  <property name="label" translatable="yes">_Reload</property>
 			  <property name="use_underline">True</property>
-			  <signal name="activate" handler="on_reload_all_activate" last_modification_time="Thu, 24 Mar 2005 12:54:36 GMT"/>
-			</widget>
-		      </child>
-
-		      <child>
-			<widget class="GtkMenuItem" id="reload_secret_keys">
-			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">Load only secret keys from the keyring</property>
-			  <property name="label" translatable="yes">Reload (_secret only)</property>
-			  <property name="use_underline">True</property>
-			  <signal name="activate" handler="on_reload_secret_activate" last_modification_time="Thu, 24 Mar 2005 12:54:36 GMT"/>
+			  <signal name="activate" handler="on_reload_activate" last_modification_time="Sat, 26 Mar 2005 17:12:46 GMT"/>
 			</widget>
 		      </child>
 
@@ -228,85 +218,10 @@
 	      </child>
 
 	      <child>
-		<widget class="GtkMenuItem" id="menuitem3">
+		<widget class="GtkMenuItem" id="view_menu">
 		  <property name="visible">True</property>
 		  <property name="label" translatable="yes">_View</property>
 		  <property name="use_underline">True</property>
-
-		  <child>
-		    <widget class="GtkMenu" id="menuitem3_menu">
-
-		      <child>
-			<widget class="GtkCheckMenuItem" id="owner_trust_check">
-			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">View owner_trust field</property>
-			  <property name="label" translatable="yes">Owner _Trust</property>
-			  <property name="use_underline">True</property>
-			  <property name="active">True</property>
-			</widget>
-		      </child>
-
-		      <child>
-			<widget class="GtkCheckMenuItem" id="expires_check">
-			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">View expires (expiration date) field</property>
-			  <property name="label" translatable="yes">E_xpiration Date</property>
-			  <property name="use_underline">True</property>
-			  <property name="active">True</property>
-			</widget>
-		      </child>
-
-		      <child>
-			<widget class="GtkCheckMenuItem" id="timestamp_check">
-			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">View timestamp (creation date) field</property>
-			  <property name="label" translatable="yes">C_reated Date</property>
-			  <property name="use_underline">True</property>
-			  <property name="active">True</property>
-			</widget>
-		      </child>
-
-		      <child>
-			<widget class="GtkCheckMenuItem" id="can_authenticate_check">
-			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">View can_authenticate field</property>
-			  <property name="label" translatable="yes">Can _Auth</property>
-			  <property name="use_underline">True</property>
-			  <property name="active">False</property>
-			</widget>
-		      </child>
-
-		      <child>
-			<widget class="GtkCheckMenuItem" id="can_certify_check">
-			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">View can_certificate field</property>
-			  <property name="label" translatable="yes">Can _Cert</property>
-			  <property name="use_underline">True</property>
-			  <property name="active">False</property>
-			</widget>
-		      </child>
-
-		      <child>
-			<widget class="GtkCheckMenuItem" id="can_encrypt_check">
-			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">View can_encrypt field</property>
-			  <property name="label" translatable="yes">Can _Encr</property>
-			  <property name="use_underline">True</property>
-			  <property name="active">False</property>
-			</widget>
-		      </child>
-
-		      <child>
-			<widget class="GtkCheckMenuItem" id="can_sign_check">
-			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">View can_sign field</property>
-			  <property name="label" translatable="yes">Can _Sign</property>
-			  <property name="use_underline">True</property>
-			  <property name="active">False</property>
-			</widget>
-		      </child>
-		    </widget>
-		  </child>
 		</widget>
 	      </child>
 
