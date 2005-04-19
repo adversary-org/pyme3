@@ -150,6 +150,5 @@ void pygpgme_set_progress_cb(gpgme_ctx_t ctx, PyObject *cb, PyObject **freelater
   }
   Py_INCREF(cb);
   *freelater = cb;
-  fprintf(stderr, "Sending callback %p to gpgme\n", cb);
   gpgme_set_progress_cb(ctx, (gpgme_progress_cb_t) pyProgressCb, (void *) cb);
 }

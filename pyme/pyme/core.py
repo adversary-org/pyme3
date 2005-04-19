@@ -52,18 +52,24 @@ class Context(GpgmeWrapper):
             return 1
         return 0
 
-    def __init__(self):
-        tmp = gpgme.new_gpgme_ctx_t_p()
-        errorcheck(gpgme.gpgme_new(tmp))
-        self.wrapped = gpgme.gpgme_ctx_t_p_value(tmp)
-        gpgme.delete_gpgme_ctx_t_p(tmp)
+    def __init__(self, wrapped=None):
+        if wrapped:
+            self.wrapped = wrapped
+            self.own = False
+        else:
+            tmp = gpgme.new_gpgme_ctx_t_p()
+            errorcheck(gpgme.gpgme_new(tmp))
+            self.wrapped = gpgme.gpgme_ctx_t_p_value(tmp)
+            gpgme.delete_gpgme_ctx_t_p(tmp)
+            self.own = True
         self.last_passcb = None
         self.last_progresscb = None
 
     def __del__(self):
         self._free_passcb()
         self._free_progresscb()
-        gpgme.gpgme_release(self.wrapped)
+        if self.own:
+            gpgme.gpgme_release(self.wrapped)
 
     def _free_passcb(self):
         if self.last_passcb != None:
@@ -415,15 +421,14 @@ def wait(hang):
     For finished anynch calls it returns a tuple (status, context):
         status  - status return by asnynchronous call.
         context - context which caused this call to return.
-    On timeout it returns None
         
     Please read the GPGME manual of more information."""
     ptr = gpgme.new_gpgme_error_t_p()
     context = gpgme.gpgme_wait(None, ptr, hang)
     status = gpgme.gpgme_error_t_p_value(ptr)
-    gpgme.gpgme_error_t_p_delete(ptr)
+    gpgme.delete_gpgme_error_t_p(ptr)
     if context == None:
         errorcheck(status)
-        return None
     else:
-        return (status, context)
+        context = Context(context)
+    return (status, context)

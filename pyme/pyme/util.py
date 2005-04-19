@@ -40,6 +40,15 @@ class GpgmeWrapper:
     def __str__(self):
         return repr(self)
 
+    def __hash__(self):
+        return hash(repr(self.wrapped))
+
+    def __eq__(self, other):
+        if other == None:
+            return False
+        else:
+            return repr(self.wrapped) == repr(other.wrapped)
+
     def _getctype(self):
         raise NotImplementedException
     
