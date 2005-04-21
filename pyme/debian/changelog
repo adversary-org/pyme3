@@ -1,14 +1,16 @@
 pyme (0.6.3) unstable; urgency=low
 
   * Removed workaround in Context.wait()
+  * Updated core.wait() to return Context() object instead of GPGME pointer.
   * Made Context.wait() and Context.op_edit() throw exception on failure.
   * Added exception handling for passphrase_cb and edit_cb
   * Allowed using None to unset previous callback and made hook argument
     optional
   * Fixed passphrase_cb to pass previously missing prev_bad argument as well
   * Got rid of "warning: function declaration isn't a prototype" in helpers.h
+  * License on PyMe is changed from GPL to LGPL. Examples keep GPL license.
 
- -- Igor Belyi <belyi@users.sourceforge.net>  Tue,  5 Apr 2005 01:33:14 -0400
+ -- Igor Belyi <belyi@users.sourceforge.net>  Wed, 20 Apr 2005 23:39:12 -0400
 
 pyme (0.6.2) unstable; urgency=low
 
