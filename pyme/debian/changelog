@@ -1,4 +1,4 @@
-pyme (0.6.3) unstable; urgency=low
+pyme (0.7.0) unstable; urgency=low
 
   * Removed workaround in Context.wait()
   * Updated core.wait() to return Context() object instead of GPGME pointer.

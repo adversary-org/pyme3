@@ -1,7 +1,7 @@
 # $Id$
 
 productname = 'pyme'
-versionstr = "0.6.3"
+versionstr = "0.7.0"
 revno = long('$Rev: 281 $'[6:-2])
 revstr = "Rev %d" % revno
 datestr = '$Date$'
