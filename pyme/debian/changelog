@@ -9,8 +9,9 @@ pyme (0.7.0) unstable; urgency=low
   * Fixed passphrase_cb to pass previously missing prev_bad argument as well
   * Got rid of "warning: function declaration isn't a prototype" in helpers.h
   * License on PyMe is changed from GPL to LGPL. Examples keep GPL license.
+  * Added pygpa.py example to illustrate gpa functionality using python.
 
- -- Igor Belyi <belyi@users.sourceforge.net>  Wed, 20 Apr 2005 23:39:12 -0400
+ -- Igor Belyi <belyi@users.sourceforge.net>  Wed, 27 Apr 2005 17:22:11 -0400
 
 pyme (0.6.2) unstable; urgency=low
 
