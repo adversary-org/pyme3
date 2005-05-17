@@ -18,7 +18,7 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 import sys
-from pyme import core, constants
+from pyme import core, constants, errors
 import pyme.constants.validity
 
 # Set up our input and output buffers.
@@ -38,8 +38,13 @@ name = sys.stdin.readline().strip()
 c.op_keylist_start(name, 0)
 r = c.op_keylist_next()
 
-# Do the encryption.
-
-c.op_encrypt([r], 1, plain, cipher)
-cipher.seek(0,0)
-print cipher.read()
+if r == None:
+    print "The key for user \"%s\" was not found" % name
+else:
+    # Do the encryption.
+    try:
+        c.op_encrypt([r], 1, plain, cipher)
+        cipher.seek(0,0)
+        print cipher.read()
+    except errors.GPGMEError, ex:
+        print ex.getstring()
