@@ -67,6 +67,7 @@ index = 0
 while sign:
     index += 1
     print "signature", index, ":"
+    print "  summary:    ", sign.summary
     print "  status:     ", sign.status
     print "  timestamp:  ", sign.timestamp
     print "  fingerprint:", sign.fpr
