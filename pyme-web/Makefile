@@ -1,12 +1,14 @@
 # $Id$
 
-WEBFILES=index.html
+WEBFILES=index.html $(shell find doc -name "*.html")
 PROJPATH=/home/groups/p/py/pyme
 DOCPATH=$(PROJPATH)/htdocs
 
 install:
-	scp $(WEBFILES) shell.sf.net:$(DOCPATH)
-	ssh shell.sf.net "cd $(DOCPATH) && chmod a+r $(WEBFILES)"
+	for FILE in $(WEBFILES); do \
+	  scp -p $$FILE shell.sf.net:$(DOCPATH)/$$FILE; \
+	  ssh shell.sf.net "cd $(DOCPATH) && chmod a+r $$FILE"; \
+	done
 
 clean:
-	rm -f *~
+	$(shell find ./ -name '*~' -exec rm -f {} \;)
