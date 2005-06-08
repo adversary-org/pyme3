@@ -1,0 +1,166 @@
+
+<!doctype html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: package pyme</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>pyme</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/belyi/Projects/PyMe/pyme/build/lib.linux-i686-2.3/pyme/__init__.py">/home/belyi/Projects/PyMe/pyme/build/lib.linux-i686-2.3/pyme/__init__.py</a></font></td></tr></table>
+    <p><tt>Pyme:&nbsp;GPGME&nbsp;Interface&nbsp;for&nbsp;Python<br>
+Copyright&nbsp;(C)&nbsp;2004&nbsp;Igor&nbsp;Belyi&nbsp;&lt;belyi@users.sourceforge.net&gt;<br>
+Copyright&nbsp;(C)&nbsp;2002&nbsp;John&nbsp;Goerzen&nbsp;&lt;jgoerzen@complete.org&gt;<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;This&nbsp;library&nbsp;is&nbsp;free&nbsp;software;&nbsp;you&nbsp;can&nbsp;redistribute&nbsp;it&nbsp;and/or<br>
+&nbsp;&nbsp;&nbsp;modify&nbsp;it&nbsp;under&nbsp;the&nbsp;terms&nbsp;of&nbsp;the&nbsp;GNU&nbsp;Lesser&nbsp;General&nbsp;Public<br>
+&nbsp;&nbsp;&nbsp;License&nbsp;as&nbsp;published&nbsp;by&nbsp;the&nbsp;Free&nbsp;Software&nbsp;Foundation;&nbsp;either<br>
+&nbsp;&nbsp;&nbsp;version&nbsp;2.1&nbsp;of&nbsp;the&nbsp;License,&nbsp;or&nbsp;(at&nbsp;your&nbsp;option)&nbsp;any&nbsp;later&nbsp;version.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;This&nbsp;library&nbsp;is&nbsp;distributed&nbsp;in&nbsp;the&nbsp;hope&nbsp;that&nbsp;it&nbsp;will&nbsp;be&nbsp;useful,<br>
+&nbsp;&nbsp;&nbsp;but&nbsp;WITHOUT&nbsp;ANY&nbsp;WARRANTY;&nbsp;without&nbsp;even&nbsp;the&nbsp;implied&nbsp;warranty&nbsp;of<br>
+&nbsp;&nbsp;&nbsp;MERCHANTABILITY&nbsp;or&nbsp;FITNESS&nbsp;FOR&nbsp;A&nbsp;PARTICULAR&nbsp;PURPOSE.&nbsp;&nbsp;See&nbsp;the&nbsp;GNU<br>
+&nbsp;&nbsp;&nbsp;Lesser&nbsp;General&nbsp;Public&nbsp;License&nbsp;for&nbsp;more&nbsp;details.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;You&nbsp;should&nbsp;have&nbsp;received&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;GNU&nbsp;Lesser&nbsp;General&nbsp;Public<br>
+&nbsp;&nbsp;&nbsp;License&nbsp;along&nbsp;with&nbsp;this&nbsp;library;&nbsp;if&nbsp;not,&nbsp;write&nbsp;to&nbsp;the&nbsp;Free&nbsp;Software<br>
+&nbsp;&nbsp;&nbsp;Foundation,&nbsp;Inc.,&nbsp;59&nbsp;Temple&nbsp;Place,&nbsp;Suite&nbsp;330,&nbsp;Boston,&nbsp;MA&nbsp;02111-1307&nbsp;&nbsp;USA<br>
+&nbsp;<br>
+Welcome&nbsp;to&nbsp;PyME,&nbsp;the&nbsp;GPGME&nbsp;Interface&nbsp;for&nbsp;Python.&nbsp;&nbsp;"Pyme",&nbsp;when&nbsp;prounced,<br>
+rhymes&nbsp;with&nbsp;"Pine".<br>
+&nbsp;<br>
+The&nbsp;latest&nbsp;release&nbsp;of&nbsp;this&nbsp;package&nbsp;may&nbsp;be&nbsp;obtained&nbsp;from<br>
+<a href="http://pyme.sourceforge.net">http://pyme.sourceforge.net</a><br>
+Previous&nbsp;releases&nbsp;of&nbsp;this&nbsp;package&nbsp;can&nbsp;be&nbsp;obtained&nbsp;from<br>
+<a href="http://quux.org/devel/pyme/">http://quux.org/devel/pyme/</a><br>
+&nbsp;<br>
+FEATURES<br>
+--------<br>
+&nbsp;<br>
+&nbsp;*&nbsp;Feature-rich,&nbsp;full&nbsp;implementation&nbsp;of&nbsp;the&nbsp;GPGME&nbsp;library.&nbsp;&nbsp;Supports<br>
+&nbsp;&nbsp;&nbsp;all&nbsp;GPGME&nbsp;features&nbsp;except&nbsp;interactive&nbsp;editing&nbsp;(coming&nbsp;soon).<br>
+&nbsp;&nbsp;&nbsp;Callback&nbsp;functions&nbsp;may&nbsp;be&nbsp;written&nbsp;in&nbsp;pure&nbsp;Python.<br>
+&nbsp;<br>
+&nbsp;*&nbsp;Ability&nbsp;to&nbsp;sign,&nbsp;encrypt,&nbsp;decrypt,&nbsp;and&nbsp;verify&nbsp;data.<br>
+&nbsp;<br>
+&nbsp;*&nbsp;Ability&nbsp;to&nbsp;list&nbsp;keys,&nbsp;export&nbsp;and&nbsp;import&nbsp;keys,&nbsp;and&nbsp;manage&nbsp;the&nbsp;keyring.<br>
+&nbsp;<br>
+&nbsp;*&nbsp;Fully&nbsp;object-oriented&nbsp;with&nbsp;convenient&nbsp;classes&nbsp;and&nbsp;modules.<br>
+&nbsp;<br>
+GENERAL&nbsp;OVERVIEW<br>
+----------------<br>
+&nbsp;<br>
+For&nbsp;those&nbsp;of&nbsp;you&nbsp;familiar&nbsp;with&nbsp;GPGME,&nbsp;you&nbsp;will&nbsp;be&nbsp;right&nbsp;at&nbsp;home&nbsp;here.<br>
+&nbsp;<br>
+Pyme&nbsp;is,&nbsp;for&nbsp;the&nbsp;most&nbsp;part,&nbsp;a&nbsp;direct&nbsp;interface&nbsp;to&nbsp;the&nbsp;C&nbsp;GPGME<br>
+library.&nbsp;&nbsp;However,&nbsp;it&nbsp;is&nbsp;re-packaged&nbsp;in&nbsp;a&nbsp;more&nbsp;Pythonic&nbsp;way&nbsp;--<br>
+object-oriented&nbsp;with&nbsp;classes&nbsp;and&nbsp;modules.&nbsp;&nbsp;Take&nbsp;a&nbsp;look&nbsp;at&nbsp;the&nbsp;classes<br>
+defined&nbsp;here&nbsp;--&nbsp;they&nbsp;correspond&nbsp;directly&nbsp;to&nbsp;certain&nbsp;object&nbsp;types&nbsp;in&nbsp;GPGME<br>
+for&nbsp;C.&nbsp;&nbsp;For&nbsp;instance,&nbsp;the&nbsp;following&nbsp;C&nbsp;code:<br>
+&nbsp;<br>
+gpgme_ctx_t&nbsp;context;<br>
+&nbsp;<br>
+gpgme_new(&amp;context);<br>
+&nbsp;<br>
+...<br>
+gpgme_op_encrypt(context,&nbsp;recp,&nbsp;1,&nbsp;plain,&nbsp;cipher);<br>
+&nbsp;<br>
+Translates&nbsp;into&nbsp;the&nbsp;following&nbsp;Python&nbsp;code:<br>
+&nbsp;<br>
+context&nbsp;=&nbsp;core.Context()<br>
+...<br>
+context.op_encrypt(recp,&nbsp;1,&nbsp;plain,&nbsp;cipher)<br>
+&nbsp;<br>
+The&nbsp;Python&nbsp;module&nbsp;automatically&nbsp;does&nbsp;error-checking&nbsp;and&nbsp;raises&nbsp;Python<br>
+exception&nbsp;pyme.errors.GPGMEError&nbsp;when&nbsp;GPGME&nbsp;signals&nbsp;an&nbsp;error.&nbsp;getcode()<br>
+and&nbsp;getsource()&nbsp;of&nbsp;this&nbsp;exception&nbsp;return&nbsp;code&nbsp;and&nbsp;source&nbsp;of&nbsp;the&nbsp;error.<br>
+&nbsp;<br>
+IMPORTANT&nbsp;NOTE<br>
+--------------<br>
+This&nbsp;documentation&nbsp;only&nbsp;covers&nbsp;a&nbsp;small&nbsp;subset&nbsp;of&nbsp;available&nbsp;GPGME&nbsp;functions&nbsp;and<br>
+methods.&nbsp;&nbsp;Please&nbsp;consult&nbsp;the&nbsp;documentation&nbsp;for&nbsp;the&nbsp;C&nbsp;library<br>
+for&nbsp;comprehensive&nbsp;coverage.<br>
+&nbsp;<br>
+This&nbsp;library&nbsp;uses&nbsp;Python's&nbsp;reflection&nbsp;to&nbsp;automatically&nbsp;detect&nbsp;the&nbsp;methods<br>
+that&nbsp;are&nbsp;available&nbsp;for&nbsp;each&nbsp;class,&nbsp;and&nbsp;as&nbsp;such,&nbsp;most&nbsp;of&nbsp;those&nbsp;methods<br>
+do&nbsp;not&nbsp;appear&nbsp;explicitly&nbsp;anywhere.&nbsp;You&nbsp;can&nbsp;use&nbsp;dir()&nbsp;python&nbsp;built-in&nbsp;command<br>
+on&nbsp;an&nbsp;object&nbsp;to&nbsp;see&nbsp;what&nbsp;methods&nbsp;and&nbsp;fields&nbsp;it&nbsp;has&nbsp;but&nbsp;their&nbsp;meaning&nbsp;can<br>
+be&nbsp;found&nbsp;only&nbsp;in&nbsp;GPGME&nbsp;documentation.<br>
+&nbsp;<br>
+QUICK&nbsp;START&nbsp;SAMPLE&nbsp;PROGRAM<br>
+--------------------------<br>
+This&nbsp;program&nbsp;is&nbsp;not&nbsp;for&nbsp;serious&nbsp;encryption,&nbsp;but&nbsp;for&nbsp;example&nbsp;purposes&nbsp;only!<br>
+&nbsp;<br>
+import&nbsp;sys<br>
+from&nbsp;pyme&nbsp;import&nbsp;core,&nbsp;constants<br>
+&nbsp;<br>
+#&nbsp;Set&nbsp;up&nbsp;our&nbsp;input&nbsp;and&nbsp;output&nbsp;buffers.<br>
+&nbsp;<br>
+plain&nbsp;=&nbsp;core.Data('This&nbsp;is&nbsp;my&nbsp;message.')<br>
+cipher&nbsp;=&nbsp;core.Data()<br>
+&nbsp;<br>
+#&nbsp;Initialize&nbsp;our&nbsp;context.<br>
+&nbsp;<br>
+c&nbsp;=&nbsp;core.Context()<br>
+c.set_armor(1)<br>
+&nbsp;<br>
+#&nbsp;Set&nbsp;up&nbsp;the&nbsp;recipients.<br>
+&nbsp;<br>
+sys.stdout.write("Enter&nbsp;name&nbsp;of&nbsp;your&nbsp;recipient:&nbsp;")<br>
+name&nbsp;=&nbsp;sys.stdin.readline().strip()<br>
+c.op_keylist_start(name,&nbsp;0)<br>
+r&nbsp;=&nbsp;c.op_keylist_next()<br>
+&nbsp;<br>
+#&nbsp;Do&nbsp;the&nbsp;encryption.<br>
+&nbsp;<br>
+c.op_encrypt([r],&nbsp;1,&nbsp;plain,&nbsp;cipher)<br>
+cipher.seek(0,0)<br>
+print&nbsp;cipher.read()<br>
+&nbsp;<br>
+Note&nbsp;that&nbsp;although&nbsp;there&nbsp;is&nbsp;no&nbsp;explicit&nbsp;error&nbsp;checking&nbsp;done&nbsp;here,&nbsp;the<br>
+Python&nbsp;GPGME&nbsp;library&nbsp;is&nbsp;automatically&nbsp;doing&nbsp;error-checking,&nbsp;and&nbsp;will<br>
+raise&nbsp;an&nbsp;exception&nbsp;if&nbsp;there&nbsp;is&nbsp;any&nbsp;problem.<br>
+&nbsp;<br>
+This&nbsp;program&nbsp;is&nbsp;in&nbsp;the&nbsp;Pyme&nbsp;distribution&nbsp;as&nbsp;examples/simple.py.&nbsp;&nbsp;The&nbsp;examples<br>
+directory&nbsp;contains&nbsp;more&nbsp;advanced&nbsp;samples&nbsp;as&nbsp;well.<br>
+&nbsp;<br>
+FOR&nbsp;MORE&nbsp;INFORMATION<br>
+--------------------<br>
+PYME&nbsp;homepage:&nbsp;<a href="http://pyme.sourceforge.net">http://pyme.sourceforge.net</a><br>
+GPGME&nbsp;documentation:&nbsp;<a href="http://www.fifi.org/cgi-bin/info2www?%28gpgme%29">http://www.fifi.org/cgi-bin/info2www?%28gpgme%29</a><br>
+GPGME&nbsp;homepage:&nbsp;<a href="http://www.gnupg.org/gpgme.html">http://www.gnupg.org/gpgme.html</a><br>
+&nbsp;<br>
+Base&nbsp;classes:&nbsp;pyme.core&nbsp;(START&nbsp;HERE!)<br>
+Error&nbsp;classes:&nbsp;pyme.errors<br>
+Constants:&nbsp;pyme.constants<br>
+Version&nbsp;information:&nbsp;pyme.version<br>
+Utilities:&nbsp;pyme.util<br>
+&nbsp;<br>
+Base&nbsp;classes&nbsp;are&nbsp;documented&nbsp;at&nbsp;pyme.core.<br>
+Classes&nbsp;of&nbsp;pyme.util&nbsp;usually&nbsp;are&nbsp;not&nbsp;instantiated&nbsp;by&nbsp;users<br>
+directly&nbsp;but&nbsp;return&nbsp;by&nbsp;methods&nbsp;of&nbsp;base&nbsp;classes.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Package Contents</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="pyme._gpgme.html">_gpgme</a><br>
+<a href="pyme.callbacks.html">callbacks</a><br>
+</td><td width="25%" valign=top><a href="pyme.constants.html"><strong>constants</strong>&nbsp;(package)</a><br>
+<a href="pyme.core.html">core</a><br>
+</td><td width="25%" valign=top><a href="pyme.errors.html">errors</a><br>
+<a href="pyme.gpgme.html">gpgme</a><br>
+</td><td width="25%" valign=top><a href="pyme.util.html">util</a><br>
+<a href="pyme.version.html">version</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>__all__</strong> = ['core', 'errors', 'constants', 'util', 'version']</td></tr></table>
+</body></html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                      "http://www.w3.org/TR/html40/loose.dtd">
+<HTML>
+<!-- Created on June, 7 2005 by texi2html 1.66 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<HEAD>
+<TITLE>The `GnuPG Made Easy' Reference Manual: Building the Source</TITLE>
+
+<META NAME="description" CONTENT="The `GnuPG Made Easy' Reference Manual: Building the Source">
+<META NAME="keywords" CONTENT="The `GnuPG Made Easy' Reference Manual: Building the Source">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META NAME="Generator" CONTENT="texi2html 1.66">
+
+</HEAD>
+
+<BODY LANG="en" BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#800080" ALINK="#FF0000">
+
+<A NAME="SEC7"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_6.html#SEC6"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_8.html#SEC8"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_5.html#SEC5"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_5.html#SEC5"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_14.html#SEC14"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_81.html#SEC81">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<HR SIZE=1>
+<H2> 2.2 Building the Source </H2>
+<!--docid::SEC7::-->
+<P>
+
+If you want to compile a source file including the `gpgme.h' header
+file, you must make sure that the compiler can find it in the
+directory hierarchy.  This is accomplished by adding the path to the
+directory in which the header file is located to the compilers include
+file search path (via the `<SAMP>-I</SAMP>' option).
+</P>
+<P>
+
+However, the path to the include file is determined at the time the
+source is configured.  To solve this problem, gpgme ships with a small
+helper program <CODE>gpgme-config</CODE> that knows about the path to the
+include file and other configuration options.  The options that need
+to be added to the compiler invocation at compile time are output by
+the `<SAMP>--cflags</SAMP>' option to <CODE>gpgme-config</CODE>.  The following
+example shows how it can be used at the command line:
+</P>
+<P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>gcc -c foo.c `gpgme-config --cflags`
+</pre></td></tr></table><P>
+
+Adding the output of `<SAMP>gpgme-config --cflags</SAMP>' to the compiler
+command line will ensure that the compiler can find the
+<FONT SIZE="-1">GPGME</FONT> header file.
+</P>
+<P>
+
+A similar problem occurs when linking the program with the library.
+Again, the compiler has to find the library files.  For this to work,
+the path to the library files has to be added to the library search
+path (via the `<SAMP>-L</SAMP>' option).  For this, the option
+`<SAMP>--libs</SAMP>' to <CODE>gpgme-config</CODE> can be used.  For
+convenience, this option also outputs all other options that are
+required to link the program with <FONT SIZE="-1">GPGME</FONT> (in particular, the
+`<SAMP>-lgpgme</SAMP>' option).  The example shows how to link `<TT>foo.o</TT>'
+with the <FONT SIZE="-1">GPGME</FONT> library to a program <CODE>foo</CODE>.
+</P>
+<P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>gcc -o foo foo.o `gpgme-config --libs`
+</pre></td></tr></table><P>
+
+Of course you can also combine both examples to a single command by
+specifying both options to <CODE>gpgme-config</CODE>:
+</P>
+<P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>gcc -o foo foo.c `gpgme-config --cflags --libs`
+</pre></td></tr></table><P>
+
+If you want to link to one of the thread-safe versions of
+<FONT SIZE="-1">GPGME</FONT>, you must specify the `<SAMP>--thread</SAMP>' option before
+any other option to select the thread package you want to link with.
+Supported thread packages are `<SAMP>--thread=pth</SAMP>' and
+`<SAMP>--thread=pthread</SAMP>'.
+</P>
+<P>
+
+<A NAME="Largefile Support (LFS)"></A>
+<HR SIZE=1>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_6.html#SEC6"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_8.html#SEC8"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_5.html#SEC5"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_5.html#SEC5"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_14.html#SEC14"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_81.html#SEC81">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<BR>
+<FONT SIZE="-1">
+This document was generated
+by <I>Igor Belyi</I> on <I>June, 7 2005</I>
+using <A HREF="http://texi2html.cvshome.org"><I>texi2html</I></A>
+</FONT>
+
+</BODY>
+</HTML>

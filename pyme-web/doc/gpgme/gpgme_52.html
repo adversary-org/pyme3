@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                      "http://www.w3.org/TR/html40/loose.dtd">
+<HTML>
+<!-- Created on June, 7 2005 by texi2html 1.66 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<HEAD>
+<TITLE>The `GnuPG Made Easy' Reference Manual: Exporting Keys</TITLE>
+
+<META NAME="description" CONTENT="The `GnuPG Made Easy' Reference Manual: Exporting Keys">
+<META NAME="keywords" CONTENT="The `GnuPG Made Easy' Reference Manual: Exporting Keys">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META NAME="Generator" CONTENT="texi2html 1.66">
+
+</HEAD>
+
+<BODY LANG="en" BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#800080" ALINK="#FF0000">
+
+<A NAME="SEC52"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_51.html#SEC51"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_53.html#SEC53"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_34.html#SEC34"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_46.html#SEC46"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_78.html#SEC78"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_81.html#SEC81">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<HR SIZE=1>
+<H3> 7.4.6 Exporting Keys </H3>
+<!--docid::SEC52::-->
+<P>
+
+<A NAME="IDX107"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_error_t <B>gpgme_op_export</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>, const char *<VAR>pattern</VAR>, unsigned int <VAR>reserved</VAR>, gpgme_data_t <VAR>keydata</VAR>)</I>
+<DD>The function <CODE>gpgme_op_export</CODE> extracts public keys and returns
+them in the data buffer <VAR>keydata</VAR>.  The output format of the key
+data returned is determined by the <FONT SIZE="-1">ASCII</FONT> armor attribute set
+for the context <VAR>ctx</VAR>.
+<P>
+
+If <VAR>pattern</VAR> is <CODE>NULL</CODE>, all available keys are returned.
+Otherwise, <VAR>pattern</VAR> contains an engine specific expression that
+is used to limit the list to all keys matching the pattern.
+</P>
+<P>
+
+<VAR>reserved</VAR> is reserved for future use and must be <CODE>0</CODE>.
+</P>
+<P>
+
+The function returns the error code <CODE>GPG_ERR_NO_ERROR</CODE> if the
+operation completed successfully, <CODE>GPG_ERR_INV_VALUE</CODE> if
+<VAR>keydata</VAR> is not a valid empty data buffer, and passes through any
+errors that are reported by the crypto engine support routines.
+</P>
+</DL>
+<P>
+
+<A NAME="IDX108"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_error_t <B>gpgme_op_export_start</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>, const char *<VAR>pattern</VAR>, unsigned int <VAR>reserved</VAR>, gpgme_data_t <VAR>keydata</VAR>)</I>
+<DD>The function <CODE>gpgme_op_export_start</CODE> initiates a
+<CODE>gpgme_op_export</CODE> operation.  It can be completed by calling
+<CODE>gpgme_wait</CODE> on the context.  See section <A HREF="gpgme_69.html#SEC69">7.7.1 Waiting For Completion</A>.
+<P>
+
+The function returns the error code <CODE>GPG_ERR_NO_ERROR</CODE> if the
+operation could be started successfully, and <CODE>GPG_ERR_INV_VALUE</CODE>
+if <VAR>keydata</VAR> is not a valid empty data buffer.
+</P>
+</DL>
+<P>
+
+<A NAME="IDX109"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_error_t <B>gpgme_op_export_ext</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>, const char *<VAR>pattern</VAR>[], unsigned int <VAR>reserved</VAR>, gpgme_data_t <VAR>keydata</VAR>)</I>
+<DD>The function <CODE>gpgme_op_export</CODE> extracts public keys and returns
+them in the data buffer <VAR>keydata</VAR>.  The output format of the key
+data returned is determined by the <FONT SIZE="-1">ASCII</FONT> armor attribute set
+for the context <VAR>ctx</VAR>.
+<P>
+
+If <VAR>pattern</VAR> or <VAR>*pattern</VAR> is <CODE>NULL</CODE>, all available keys
+are returned.  Otherwise, <VAR>pattern</VAR> is a <CODE>NULL</CODE> terminated
+array of strings that are used to limit the list to all keys matching
+at least one of the patterns verbatim.
+</P>
+<P>
+
+<VAR>reserved</VAR> is reserved for future use and must be <CODE>0</CODE>.
+</P>
+<P>
+
+The function returns the error code <CODE>GPG_ERR_NO_ERROR</CODE> if the
+operation completed successfully, <CODE>GPG_ERR_INV_VALUE</CODE> if
+<VAR>keydata</VAR> is not a valid empty data buffer, and passes through any
+errors that are reported by the crypto engine support routines.
+</P>
+</DL>
+<P>
+
+<A NAME="IDX110"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_error_t <B>gpgme_op_export_ext_start</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>, const char *<VAR>pattern</VAR>[], unsigned int <VAR>reserved</VAR>, gpgme_data_t <VAR>keydata</VAR>)</I>
+<DD>The function <CODE>gpgme_op_export_ext_start</CODE> initiates a
+<CODE>gpgme_op_export_ext</CODE> operation.  It can be completed by calling
+<CODE>gpgme_wait</CODE> on the context.  See section <A HREF="gpgme_69.html#SEC69">7.7.1 Waiting For Completion</A>.
+<P>
+
+The function returns the error code <CODE>GPG_ERR_NO_ERROR</CODE> if the
+operation could be started successfully, and <CODE>GPG_ERR_INV_VALUE</CODE>
+if <VAR>keydata</VAR> is not a valid empty data buffer.
+</P>
+</DL>
+<P>
+
+<A NAME="Importing Keys"></A>
+<HR SIZE=1>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_51.html#SEC51"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_53.html#SEC53"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_34.html#SEC34"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_46.html#SEC46"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_78.html#SEC78"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_81.html#SEC81">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<BR>
+<FONT SIZE="-1">
+This document was generated
+by <I>Igor Belyi</I> on <I>June, 7 2005</I>
+using <A HREF="http://texi2html.cvshome.org"><I>texi2html</I></A>
+</FONT>
+
+</BODY>
+</HTML>

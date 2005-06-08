@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                      "http://www.w3.org/TR/html40/loose.dtd">
+<HTML>
+<!-- Created on June, 7 2005 by texi2html 1.66 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<HEAD>
+<TITLE>The `GnuPG Made Easy' Reference Manual: Manipulating Data Buffers</TITLE>
+
+<META NAME="description" CONTENT="The `GnuPG Made Easy' Reference Manual: Manipulating Data Buffers">
+<META NAME="keywords" CONTENT="The `GnuPG Made Easy' Reference Manual: Manipulating Data Buffers">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META NAME="Generator" CONTENT="texi2html 1.66">
+
+</HEAD>
+
+<BODY LANG="en" BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#800080" ALINK="#FF0000">
+
+<A NAME="SEC33"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_32.html#SEC32"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_34.html#SEC34"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_27.html#SEC27"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_27.html#SEC27"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_34.html#SEC34"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_81.html#SEC81">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<HR SIZE=1>
+<H2> 6.3 Manipulating Data Buffers </H2>
+<!--docid::SEC33::-->
+<P>
+
+<A NAME="IDX52"></A>
+</P>
+<DL>
+<DT><U>Function:</U> ssize_t <B>gpgme_data_read</B> <I>(gpgme_data_t <VAR>dh</VAR>, void *<VAR>buffer</VAR>, size_t <VAR>length</VAR>)</I>
+<DD>The function <CODE>gpgme_data_read</CODE> reads up to <VAR>length</VAR> bytes
+from the data object with the handle <VAR>dh</VAR> into the space starting
+at <VAR>buffer</VAR>.
+<P>
+
+If no error occurs, the actual amount read is returned.  If the end of
+the data object is reached, the function returns 0.
+</P>
+<P>
+
+In all other cases, the function returns -1 and sets <VAR>errno</VAR>.
+</P>
+</DL>
+<P>
+
+<A NAME="IDX53"></A>
+</P>
+<DL>
+<DT><U>Function:</U> ssize_t <B>gpgme_data_write</B> <I>(gpgme_data_t <VAR>dh</VAR>, const void *<VAR>buffer</VAR>, size_t <VAR>size</VAR>)</I>
+<DD>The function <CODE>gpgme_data_write</CODE> writes up to <VAR>size</VAR> bytes
+starting from <VAR>buffer</VAR> into the data object with the handle
+<VAR>dh</VAR> at the current write position.
+<P>
+
+The function returns the number of bytes actually written, or -1 if an
+error occurs.  If an error occurs, <VAR>errno</VAR> is set.
+</P>
+</DL>
+<P>
+
+<A NAME="IDX54"></A>
+</P>
+<DL>
+<DT><U>Function:</U> off_t <B>gpgme_data_seek</B> <I>(gpgme_data_t <VAR>dh</VAR>, off_t *<VAR>offset</VAR>, int <VAR>whence</VAR>)</I>
+<DD>The function <CODE>gpgme_data_seek</CODE> changes the current read/write
+position.
+<P>
+
+The <VAR>whence</VAR> argument specifies how the <VAR>offset</VAR> should be
+interpreted.  It must be one of the following symbolic constants:
+</P>
+<P>
+
+</P>
+<DL COMPACT>
+<DT><CODE>SEEK_SET</CODE>
+<DD>Specifies that <VAR>whence</VAR> is a count of characters from the
+beginning of the data object.
+<P>
+
+</P>
+<DT><CODE>SEEK_CUR</CODE>
+<DD>Specifies that <VAR>whence</VAR> is a count of characters from the current
+file position.  This count may be positive or negative.
+<P>
+
+</P>
+<DT><CODE>SEEK_END</CODE>
+<DD>Specifies that <VAR>whence</VAR> is a count of characters from the end of
+the data object.  A negative count specifies a position within the
+current extent of the data object; a positive count specifies a
+position past the current end.  If you set the position past the
+current end, and actually write data, you will extend the data object
+with zeros up to that position.
+</DL>
+<P>
+
+If successful, the function returns the resulting file position,
+measured in bytes from the beginning of the data object.  You can use
+this feature together with <CODE>SEEK_CUR</CODE> to read the current
+read/write position.
+</P>
+<P>
+
+If the function fails, -1 is returned and <VAR>errno</VAR> is set.
+</P>
+</DL>
+<P>
+
+The following function is deprecated and should not be used.  It will
+be removed in a future version of <FONT SIZE="-1">GPGME</FONT>.
+</P>
+<P>
+
+<A NAME="IDX55"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_error_t <B>gpgme_data_rewind</B> <I>(gpgme_data_t <VAR>dh</VAR>)</I>
+<DD>The function <CODE>gpgme_data_rewind</CODE> is equivalent to:
+<P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>  return (gpgme_data_seek (dh, 0, SEEK_SET) == -1)
+    ? gpgme_error_from_errno (errno) : 0;
+</pre></td></tr></table></DL>
+<P>
+
+<A NAME="IDX56"></A>
+</P>
+<DL>
+<DT><U>Data type:</U> <B>enum gpgme_data_encoding_t</B>
+<DD><A NAME="IDX57"></A>
+The <CODE>gpgme_data_encoding_t</CODE> type specifies the encoding of a
+<CODE>gpgme_data_t</CODE> object.  This encoding is useful to give the backend
+a hint on the type of data.  The following data types are available:
+<P>
+
+</P>
+<DL COMPACT>
+<DT><CODE>GPGME_DATA_ENCODING_NONE</CODE>
+<DD>This specifies that the encoding is not known.  This is the default
+for a new data object.  The backend will try its best to detect the
+encoding automatically.
+<P>
+
+</P>
+<DT><CODE>GPGME_DATA_ENCODING_BINARY</CODE>
+<DD>This specifies that the data is encoding in binary form; i.e. there is
+no special encoding.
+<P>
+
+</P>
+<DT><CODE>GPGME_DATA_ENCODING_BASE64</CODE>
+<DD>This specifies that the data is encoded using the Base-64 encoding
+scheme as used by <FONT SIZE="-1">MIME</FONT> and other protocols.
+<P>
+
+</P>
+<DT><CODE>GPGME_DATA_ENCODING_ARMOR</CODE>
+<DD>This specifies that the data is encoded in an armored form as used by
+OpenPGP and PEM.
+</DL>
+</DL>
+<P>
+
+<A NAME="IDX58"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_data_encoding_t <B>gpgme_data_get_encoding</B> <I>(gpgme_data_t <VAR>dh</VAR>)</I>
+<DD>The function <CODE>gpgme_data_get_encoding</CODE> returns the encoding of
+the data object with the handle <VAR>dh</VAR>.  If <VAR>dh</VAR> is not a valid
+pointer (e.g. <CODE>NULL</CODE>) <CODE>GPGME_DATA_ENCODING_NONE</CODE> is
+returned.
+</DL>
+<P>
+
+<A NAME="IDX59"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_error_t <B>gpgme_data_set_encoding</B> <I>(gpgme_data_t <VAR>dh</VAR>, gpgme_data_encoding_t <VAR>enc</VAR>)</I>
+<DD>The function <CODE>gpgme_data_set_encoding</CODE> changes the encoding of
+the data object with the handle <VAR>dh</VAR> to <VAR>enc</VAR>.
+</DL>
+<P>
+
+<A NAME="Contexts"></A>
+<HR SIZE=1>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_32.html#SEC32"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_34.html#SEC34"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_27.html#SEC27"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_27.html#SEC27"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_34.html#SEC34"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_81.html#SEC81">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<BR>
+<FONT SIZE="-1">
+This document was generated
+by <I>Igor Belyi</I> on <I>June, 7 2005</I>
+using <A HREF="http://texi2html.cvshome.org"><I>texi2html</I></A>
+</FONT>
+
+</BODY>
+</HTML>

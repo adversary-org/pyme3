@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                      "http://www.w3.org/TR/html40/loose.dtd">
+<HTML>
+<!-- Created on June, 7 2005 by texi2html 1.66 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<HEAD>
+<TITLE>The `GnuPG Made Easy' Reference Manual: Run Control</TITLE>
+
+<META NAME="description" CONTENT="The `GnuPG Made Easy' Reference Manual: Run Control">
+<META NAME="keywords" CONTENT="The `GnuPG Made Easy' Reference Manual: Run Control">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META NAME="Generator" CONTENT="texi2html 1.66">
+
+</HEAD>
+
+<BODY LANG="en" BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#800080" ALINK="#FF0000">
+
+<A NAME="SEC68"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_67.html#SEC67"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_69.html#SEC69"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_34.html#SEC34"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_34.html#SEC34"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_78.html#SEC78"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_81.html#SEC81">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<HR SIZE=1>
+<H2> 7.7 Run Control </H2>
+<!--docid::SEC68::-->
+<P>
+
+<FONT SIZE="-1">GPGME</FONT> supports running operations synchronously and
+asynchronously.  You can use asynchronous operation to set up a
+context up to initiating the desired operation, but delay performing
+it to a later point.
+</P>
+<P>
+
+Furthermore, you can use an external event loop to control exactly
+when <FONT SIZE="-1">GPGME</FONT> runs.  This ensures that <FONT SIZE="-1">GPGME</FONT> only
+runs when necessary and also prevents it from blocking for a long
+time.
+</P>
+<P>
+
+<TABLE BORDER="0" CELLSPACING="0">
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="gpgme_69.html#SEC69">7.7.1 Waiting For Completion</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Waiting until an operation is completed.</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="gpgme_70.html#SEC70">7.7.2 Using External Event Loops</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Advanced control over what happens when.</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="gpgme_77.html#SEC77">7.7.3 Cancellation</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">How to end pending operations prematurely.</TD></TR>
+</TABLE>
+<P>
+
+<A NAME="Waiting For Completion"></A>
+<HR SIZE=1>
+<BR>
+<FONT SIZE="-1">
+This document was generated
+by <I>Igor Belyi</I> on <I>June, 7 2005</I>
+using <A HREF="http://texi2html.cvshome.org"><I>texi2html</I></A>
+</FONT>
+
+</BODY>
+</HTML>

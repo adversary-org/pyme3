@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                      "http://www.w3.org/TR/html40/loose.dtd">
+<HTML>
+<!-- Created on June, 7 2005 by texi2html 1.66 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<HEAD>
+<TITLE>The `GnuPG Made Easy' Reference Manual: Public Key Algorithms</TITLE>
+
+<META NAME="description" CONTENT="The `GnuPG Made Easy' Reference Manual: Public Key Algorithms">
+<META NAME="keywords" CONTENT="The `GnuPG Made Easy' Reference Manual: Public Key Algorithms">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META NAME="Generator" CONTENT="texi2html 1.66">
+
+</HEAD>
+
+<BODY LANG="en" BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#800080" ALINK="#FF0000">
+
+<A NAME="SEC20"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_19.html#SEC19"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_21.html#SEC21"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_19.html#SEC19"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_19.html#SEC19"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_22.html#SEC22"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_81.html#SEC81">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<HR SIZE=1>
+<H2> 4.1 Public Key Algorithms </H2>
+<!--docid::SEC20::-->
+<P>
+
+Public key algorithms are used for encryption, decryption, signing and
+verification of signatures.
+</P>
+<P>
+
+<A NAME="IDX12"></A>
+</P>
+<DL>
+<DT><U>Data type:</U> <B>enum gpgme_pubkey_algo_t</B>
+<DD><A NAME="IDX13"></A>
+The <CODE>gpgme_pubkey_algo_t</CODE> type specifies the set of all public key
+algorithms that are supported by <FONT SIZE="-1">GPGME</FONT>.  Possible values
+are:
+<P>
+
+</P>
+<DL COMPACT>
+<DT><CODE>GPGME_PK_RSA</CODE>
+<DD>This value indicates the RSA (Rivest, Shamir, Adleman) algorithm.
+<P>
+
+</P>
+<DT><CODE>GPGME_PK_RSA_E</CODE>
+<DD>Deprecated.  This value indicates the RSA (Rivest, Shamir, Adleman)
+algorithm for encryption and decryption only.
+<P>
+
+</P>
+<DT><CODE>GPGME_PK_RSA_S</CODE>
+<DD>Deprecated.  This value indicates the RSA (Rivest, Shamir, Adleman)
+algorithm for signing and verification only.
+<P>
+
+</P>
+<DT><CODE>GPGME_PK_DSA</CODE>
+<DD>This value indicates DSA, the Digital Signature Algorithm.
+<P>
+
+</P>
+<DT><CODE>GPGME_PK_ELG</CODE>
+<DD>This value indicates ElGamal.
+<P>
+
+</P>
+<DT><CODE>GPGME_PK_ELG_E</CODE>
+<DD>This value also indicates ElGamal and is used specifically in GnuPG.
+</DL>
+</DL>
+<P>
+
+<A NAME="IDX14"></A>
+</P>
+<DL>
+<DT><U>Function:</U> const char * <B>gpgme_pubkey_algo_name</B> <I>(gpgme_pubkey_algo_t <VAR>algo</VAR>)</I>
+<DD>The function <CODE>gpgme_pubkey_algo_name</CODE> returns a pointer to a
+statically allocated string containing a description of the public key
+algorithm <VAR>algo</VAR>.  This string can be used to output the name of
+the public key algorithm to the user.
+<P>
+
+If <VAR>algo</VAR> is not a valid public key algorithm, <CODE>NULL</CODE> is
+returned.
+</P>
+</DL>
+<P>
+
+<A NAME="Hash Algorithms"></A>
+<HR SIZE=1>
+<BR>
+<FONT SIZE="-1">
+This document was generated
+by <I>Igor Belyi</I> on <I>June, 7 2005</I>
+using <A HREF="http://texi2html.cvshome.org"><I>texi2html</I></A>
+</FONT>
+
+</BODY>
+</HTML>

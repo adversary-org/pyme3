@@ -1,0 +1,626 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                      "http://www.w3.org/TR/html40/loose.dtd">
+<HTML>
+<!-- Created on June, 7 2005 by texi2html 1.66 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<HEAD>
+<TITLE>The `GnuPG Made Easy' Reference Manual: Verify</TITLE>
+
+<META NAME="description" CONTENT="The `GnuPG Made Easy' Reference Manual: Verify">
+<META NAME="keywords" CONTENT="The `GnuPG Made Easy' Reference Manual: Verify">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META NAME="Generator" CONTENT="texi2html 1.66">
+
+</HEAD>
+
+<BODY LANG="en" BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#800080" ALINK="#FF0000">
+
+<A NAME="SEC61"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_60.html#SEC60"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_62.html#SEC62"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_34.html#SEC34"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_59.html#SEC59"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_78.html#SEC78"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_81.html#SEC81">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<HR SIZE=1>
+<H3> 7.6.2 Verify </H3>
+<!--docid::SEC61::-->
+<P>
+
+<A NAME="IDX133"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_error_t <B>gpgme_op_verify</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>, gpgme_data_t <VAR>sig</VAR>, gpgme_data_t <VAR>signed_text</VAR>, gpgme_data_t <VAR>plain</VAR>)</I>
+<DD>The function <CODE>gpgme_op_verify</CODE> verifies that the signature in the
+data object <VAR>sig</VAR> is a valid signature.  If <VAR>sig</VAR> is a
+detached signature, then the signed text should be provided in
+<VAR>signed_text</VAR> and <VAR>plain</VAR> should be a null pointer.
+Otherwise, if <VAR>sig</VAR> is a normal (or cleartext) signature,
+<VAR>signed_text</VAR> should be a null pointer and <VAR>plain</VAR> should be a
+writable data object that will contain the plaintext after successful
+verification.
+<P>
+
+The results of the individual signature verifications can be retrieved
+with <CODE>gpgme_op_verify_result</CODE>.
+</P>
+<P>
+
+The function returns the error code <CODE>GPG_ERR_NO_ERROR</CODE> if the
+operation could be completed successfully, <CODE>GPG_ERR_INV_VALUE</CODE> if
+<VAR>ctx</VAR>, <VAR>sig</VAR> or <VAR>plain</VAR> is not a valid pointer,
+<CODE>GPG_ERR_NO_DATA</CODE> if <VAR>sig</VAR> does not contain any data to
+verify, and passes through any errors that are reported by the crypto
+engine support routines.
+</P>
+</DL>
+<P>
+
+<A NAME="IDX134"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_error_t <B>gpgme_op_verify_start</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>, gpgme_data_t <VAR>sig</VAR>, gpgme_data_t <VAR>signed_text</VAR>, gpgme_data_t <VAR>plain</VAR>)</I>
+<DD>The function <CODE>gpgme_op_verify_start</CODE> initiates a
+<CODE>gpgme_op_verify</CODE> operation.  It can be completed by calling
+<CODE>gpgme_wait</CODE> on the context.  See section <A HREF="gpgme_69.html#SEC69">7.7.1 Waiting For Completion</A>.
+<P>
+
+The function returns the error code <CODE>GPG_ERR_NO_ERROR</CODE> if the
+operation could be started successfully, <CODE>GPG_ERR_INV_VALUE</CODE> if
+<VAR>ctx</VAR>, <VAR>sig</VAR> or <VAR>plain</VAR> is not a valid pointer, and
+<CODE>GPG_ERR_NO_DATA</CODE> if <VAR>sig</VAR> or <VAR>plain</VAR> does not contain
+any data to verify.
+</P>
+</DL>
+<P>
+
+<A NAME="IDX135"></A>
+</P>
+<DL>
+<DT><U>Data type:</U> <B>gpgme_sig_notation_t</B>
+<DD>This is a pointer to a structure used to store a part of the result of
+a <CODE>gpgme_op_verify</CODE> operation.  The structure contains the
+following members:
+<P>
+
+</P>
+<DL COMPACT>
+<DT><CODE>gpgme_sig_notation_t next</CODE>
+<DD>This is a pointer to the next new signature notation structure in the
+linked list, or <CODE>NULL</CODE> if this is the last element.
+<P>
+
+</P>
+<DT><CODE>char *name</CODE>
+<DD>The name of the notation field.  If this is <CODE>NULL</CODE>, then the
+member <CODE>value</CODE> will contain a policy URL.
+<P>
+
+</P>
+<DT><CODE>char *value</CODE>
+<DD>The value of the notation field.  If <CODE>name</CODE> is <CODE>NULL</CODE>, then
+this is a policy URL.
+</DL>
+</DL>
+<P>
+
+<A NAME="IDX136"></A>
+</P>
+<DL>
+<DT><U>Data type:</U> <B>gpgme_signature_t</B>
+<DD>This is a pointer to a structure used to store a part of the result of
+a <CODE>gpgme_op_verify</CODE> operation.  The structure contains the
+following members:
+<P>
+
+</P>
+<DL COMPACT>
+<DT><CODE>gpgme_signature_t next</CODE>
+<DD>This is a pointer to the next new signature structure in the linked
+list, or <CODE>NULL</CODE> if this is the last element.
+<P>
+
+</P>
+<DT><CODE>gpgme_sigsum_t summary</CODE>
+<DD>This is a bit vector giving a summary of the signature status.  It
+provides an easy interface to a defined semantic of the signature
+status.  Checking just one bit is sufficient to see whether a
+signature is valid without any restrictions.
+<P>
+
+The defined bits are:
+</P>
+<DL COMPACT>
+<DT><CODE>GPGME_SIGSUM_VALID</CODE>
+<DD>  The signature is fully valid.
+<P>
+
+</P>
+<DT><CODE>GPGME_SIGSUM_GREEN</CODE>
+<DD>  The signature is good but one might want to display some extra
+  information.  Check the other bits.
+<P>
+
+</P>
+<DT><CODE>GPGME_SIGSUM_RED</CODE>
+<DD>  The signature is bad. It might be useful to check other bits and
+  display more information, i.e. a revoked certificate might not render a
+  signature invalid when the message was received prior to the cause for
+  the revocation.
+<P>
+
+</P>
+<DT><CODE>GPGME_SIGSUM_KEY_REVOKED</CODE>
+<DD>  The key or at least one certificate has been revoked.
+<P>
+
+</P>
+<DT><CODE>GPGME_SIGSUM_KEY_EXPIRED</CODE>
+<DD>  The key or one of the certificates has expired. It is probably a good
+  idea to display the date of the expiration.
+<P>
+
+</P>
+<DT><CODE>GPGME_SIGSUM_SIG_EXPIRED</CODE>
+<DD>  The signature has expired.
+<P>
+
+</P>
+<DT><CODE>GPGME_SIGSUM_KEY_MISSING</CODE>
+<DD>  Can't verify due to a missing key or certificate.
+<P>
+
+</P>
+<DT><CODE>GPGME_SIGSUM_CRL_MISSING</CODE>
+<DD>  The CRL (or an equivalent mechanism) is not available. 
+<P>
+
+</P>
+<DT><CODE>GPGME_SIGSUM_CRL_TOO_OLD</CODE>
+<DD>  Available CRL is too old.
+<P>
+
+</P>
+<DT><CODE>GPGME_SIGSUM_BAD_POLICY</CODE>
+<DD>  A policy requirement was not met. 
+<P>
+
+</P>
+<DT><CODE>GPGME_SIGSUM_SYS_ERROR</CODE>
+<DD>  A system error occured. 
+</DL>
+<P>
+
+</P>
+<DT><CODE>char *fpr</CODE>
+<DD>This is the fingerprint or key ID of the signature.
+<P>
+
+</P>
+<DT><CODE>gpgme_error_t status</CODE>
+<DD>This is the status of the signature.  In particular, the following
+status codes are of interest:
+<P>
+
+</P>
+<DL COMPACT>
+<DT><CODE>GPG_ERR_NO_ERROR</CODE>
+<DD>  This status indicates that the signature is valid.  For the combined
+  result this status means that all signatures are valid.
+<P>
+
+</P>
+<DT><CODE>GPG_ERR_SIG_EXPIRED</CODE>
+<DD>  This status indicates that the signature is valid but expired.  For
+  the combined result this status means that all signatures are valid
+  and expired.
+<P>
+
+</P>
+<DT><CODE>GPG_ERR_KEY_EXPIRED</CODE>
+<DD>  This status indicates that the signature is valid but the key used to
+  verify the signature has expired.  For the combined result this status
+  means that all signatures are valid and all keys are expired.
+<P>
+
+</P>
+<DT><CODE>GPG_ERR_CERT_REVOKED</CODE>
+<DD>  This status indicates that the signature is valid but the key used
+  to verify the signature has been revoked.  For the combined result
+  this status means that all signatures are valid and all keys are
+  revoked.
+<P>
+
+</P>
+<DT><CODE>GPG_ERR_BAD_SIGNATURE</CODE>
+<DD>  This status indicates that the signature is invalid.  For the combined
+  result this status means that all signatures are invalid.
+<P>
+
+</P>
+<DT><CODE>GPG_ERR_NO_PUBKEY</CODE>
+<DD>  This status indicates that the signature could not be verified due to
+  a missing key.  For the combined result this status means that all
+  signatures could not be checked due to missing keys.
+<P>
+
+</P>
+<DT><CODE>GPG_ERR_GENERAL</CODE>
+<DD>  This status indicates that there was some other error which prevented
+  the signature verification.
+</DL>
+<P>
+
+</P>
+<DT><CODE>gpgme_sig_notation_t notations</CODE>
+<DD>This is a linked list with the notation data and policy URLs.
+<P>
+
+</P>
+<DT><CODE>unsigned long timestamp</CODE>
+<DD>The creation timestamp of this signature.
+<P>
+
+</P>
+<DT><CODE>unsigned long exp_timestamp</CODE>
+<DD>The expiration timestamp of this signature, or 0 if the signature does
+not expire.
+<P>
+
+</P>
+<DT><CODE>unsigned int wrong_key_usage : 1</CODE>
+<DD>This is true if the key was not used according to its policy.
+<P>
+
+</P>
+<DT><CODE>gpgme_validity_t validity</CODE>
+<DD>The validity of the signature.
+<P>
+
+</P>
+<DT><CODE>gpgme_error_t validity_reason</CODE>
+<DD>If a signature is not valid, this provides a reason why.
+<P>
+
+</DL>
+</DL>
+<P>
+
+<A NAME="IDX137"></A>
+</P>
+<DL>
+<DT><U>Data type:</U> <B>gpgme_verify_result_t</B>
+<DD>This is a pointer to a structure used to store the result of a
+<CODE>gpgme_op_verify</CODE> operation.  After verifying a signature, you
+can retrieve the pointer to the result with
+<CODE>gpgme_op_verify_result</CODE>.  If the operation failed this might be
+a <CODE>NULL</CODE> pointer.  The structure contains the following member:
+<P>
+
+</P>
+<DL COMPACT>
+<DT><CODE>gpgme_signature_t signatures</CODE>
+<DD>A linked list with information about all signatures for which a
+verification was attempted.
+</DL>
+</DL>
+<P>
+
+<A NAME="IDX138"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_verify_result_t <B>gpgme_op_verify_result</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>)</I>
+<DD>The function <CODE>gpgme_op_verify_result</CODE> returns a
+<CODE>gpgme_verify_result_t</CODE> pointer to a structure holding the result
+of a <CODE>gpgme_op_verify</CODE> operation.  The pointer is only valid if
+the last operation on the context was a <CODE>gpgme_op_verify</CODE>,
+<CODE>gpgme_op_verify_start</CODE>, <CODE>gpgme_op_decrypt_verify</CODE> or
+<CODE>gpgme_op_decrypt_verify_start</CODE> operation, and if this operation
+finished successfully (for <CODE>gpgme_op_decrypt_verify</CODE> and
+<CODE>gpgme_op_decrypt_verify_start</CODE>, the error code
+<CODE>GPG_ERR_NO_DATA</CODE> counts as successful in this context).  The
+returned pointer is only valid until the next operation is started on
+the context.
+</DL>
+<P>
+
+The following interfaces are deprecated and only provided for backward
+compatibility.  Don't use them.  They will be removed in a future
+version of <FONT SIZE="-1">GPGME</FONT>.
+</P>
+<P>
+
+<A NAME="IDX139"></A>
+</P>
+<DL>
+<DT><U>Data type:</U> <B>enum gpgme_sig_stat_t</B>
+<DD><A NAME="IDX140"></A>
+The <CODE>gpgme_sig_stat_t</CODE> type holds the result of a signature check, or
+the combined result of all signatures.  The following results are
+possible:
+<P>
+
+</P>
+<DL COMPACT>
+<DT><CODE>GPGME_SIG_STAT_NONE</CODE>
+<DD>This status should not occur in normal operation.
+<P>
+
+</P>
+<DT><CODE>GPGME_SIG_STAT_GOOD</CODE>
+<DD>This status indicates that the signature is valid.  For the combined
+result this status means that all signatures are valid.
+<P>
+
+</P>
+<DT><CODE>GPGME_SIG_STAT_GOOD_EXP</CODE>
+<DD>This status indicates that the signature is valid but expired.  For
+the combined result this status means that all signatures are valid
+and expired.
+<P>
+
+</P>
+<DT><CODE>GPGME_SIG_STAT_GOOD_EXPKEY</CODE>
+<DD>This status indicates that the signature is valid but the key used to
+verify the signature has expired.  For the combined result this status
+means that all signatures are valid and all keys are expired.
+<P>
+
+</P>
+<DT><CODE>GPGME_SIG_STAT_BAD</CODE>
+<DD>This status indicates that the signature is invalid.  For the combined
+result this status means that all signatures are invalid.
+<P>
+
+</P>
+<DT><CODE>GPGME_SIG_STAT_NOKEY</CODE>
+<DD>This status indicates that the signature could not be verified due to
+a missing key.  For the combined result this status means that all
+signatures could not be checked due to missing keys.
+<P>
+
+</P>
+<DT><CODE>GPGME_SIG_STAT_NOSIG</CODE>
+<DD>This status indicates that the signature data provided was not a real
+signature.
+<P>
+
+</P>
+<DT><CODE>GPGME_SIG_STAT_ERROR</CODE>
+<DD>This status indicates that there was some other error which prevented
+the signature verification.
+<P>
+
+</P>
+<DT><CODE>GPGME_SIG_STAT_DIFF</CODE>
+<DD>For the combined result this status means that at least two signatures
+have a different status.  You can get each key's status with
+<CODE>gpgme_get_sig_status</CODE>.
+</DL>
+</DL>
+<P>
+
+<A NAME="IDX141"></A>
+</P>
+<DL>
+<DT><U>Function:</U> const char * <B>gpgme_get_sig_status</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>, int <VAR>idx</VAR>, gpgme_sig_stat_t *<VAR>r_stat</VAR>, time_t *<VAR>r_created</VAR>)</I>
+<DD>The function <CODE>gpgme_get_sig_status</CODE> is equivalent to:
+ 
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>  gpgme_verify_result_t result;
+  gpgme_signature_t sig;
+
+  result = gpgme_op_verify_result (ctx);
+  sig = result-&gt;signatures;
+
+  while (sig &amp;&amp; idx)
+    {
+      sig = sig-&gt;next;
+      idx--;
+    }
+  if (!sig || idx)
+    return NULL;
+
+  if (r_stat)
+    {
+      switch (gpg_err_code (sig-&gt;status))
+	{
+	case GPG_ERR_NO_ERROR:
+	  *r_stat = GPGME_SIG_STAT_GOOD;
+	  break;
+	  
+	case GPG_ERR_BAD_SIGNATURE:
+	  *r_stat = GPGME_SIG_STAT_BAD;
+	  break;
+	  
+	case GPG_ERR_NO_PUBKEY:
+	  *r_stat = GPGME_SIG_STAT_NOKEY;
+	  break;
+	  
+	case GPG_ERR_NO_DATA:
+	  *r_stat = GPGME_SIG_STAT_NOSIG;
+	  break;
+	  
+	case GPG_ERR_SIG_EXPIRED:
+	  *r_stat = GPGME_SIG_STAT_GOOD_EXP;
+	  break;
+	  
+	case GPG_ERR_KEY_EXPIRED:
+	  *r_stat = GPGME_SIG_STAT_GOOD_EXPKEY;
+	  break;
+	  
+	default:
+	  *r_stat = GPGME_SIG_STAT_ERROR;
+	  break;
+	}
+    }
+  if (r_created)
+    *r_created = sig-&gt;timestamp;
+  return sig-&gt;fpr;
+</pre></td></tr></table></DL>
+<P>
+
+<A NAME="IDX142"></A>
+</P>
+<DL>
+<DT><U>Function:</U> const char * <B>gpgme_get_sig_string_attr</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>, int <VAR>idx</VAR>, gpgme_attr_t <VAR>what</VAR>, int <VAR>whatidx</VAR>)</I>
+<DD>The function <CODE>gpgme_get_sig_string_attr</CODE> is equivalent to:
+ 
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>  gpgme_verify_result_t result;
+  gpgme_signature_t sig;
+
+  result = gpgme_op_verify_result (ctx);
+  sig = result-&gt;signatures;
+
+  while (sig &amp;&amp; idx)
+    {
+      sig = sig-&gt;next;
+      idx--;
+    }
+  if (!sig || idx)
+    return NULL;
+
+  switch (what)
+    {
+    case GPGME_ATTR_FPR:
+      return sig-&gt;fpr;
+
+    case GPGME_ATTR_ERRTOK:
+      if (whatidx == 1)
+        return sig-&gt;wrong_key_usage ? &quot;Wrong_Key_Usage&quot; : &quot;&quot;;
+      else
+	return &quot;&quot;;
+    default:
+      break;
+    }
+
+  return NULL;
+</pre></td></tr></table></DL>
+<P>
+
+<A NAME="IDX143"></A>
+</P>
+<DL>
+<DT><U>Function:</U> const char * <B>gpgme_get_sig_ulong_attr</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>, int <VAR>idx</VAR>, gpgme_attr_t <VAR>waht</VAR>, int <VAR>whatidx</VAR>)</I>
+<DD>The function <CODE>gpgme_get_sig_ulong_attr</CODE> is equivalent to:
+ 
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>  gpgme_verify_result_t result;
+  gpgme_signature_t sig;
+
+  result = gpgme_op_verify_result (ctx);
+  sig = result-&gt;signatures;
+
+  while (sig &amp;&amp; idx)
+    {
+      sig = sig-&gt;next;
+      idx--;
+    }
+  if (!sig || idx)
+    return 0;
+
+  switch (what)
+    {
+    case GPGME_ATTR_CREATED:
+      return sig-&gt;timestamp;
+
+    case GPGME_ATTR_EXPIRE:
+      return sig-&gt;exp_timestamp;
+
+    case GPGME_ATTR_VALIDITY:
+      return (unsigned long) sig-&gt;validity;
+
+    case GPGME_ATTR_SIG_STATUS:
+      switch (sig-&gt;status)
+	{
+	case GPG_ERR_NO_ERROR:
+	  return GPGME_SIG_STAT_GOOD;
+	  
+	case GPG_ERR_BAD_SIGNATURE:
+	  return GPGME_SIG_STAT_BAD;
+	  
+	case GPG_ERR_NO_PUBKEY:
+	  return GPGME_SIG_STAT_NOKEY;
+	  
+	case GPG_ERR_NO_DATA:
+	  return GPGME_SIG_STAT_NOSIG;
+	  
+	case GPG_ERR_SIG_EXPIRED:
+	  return GPGME_SIG_STAT_GOOD_EXP;
+	  
+	case GPG_ERR_KEY_EXPIRED:
+	  return GPGME_SIG_STAT_GOOD_EXPKEY;
+	  
+	default:
+	  return GPGME_SIG_STAT_ERROR;
+	}
+
+    case GPGME_ATTR_SIG_SUMMARY:
+      return sig-&gt;summary;
+
+    default:
+      break;
+    }
+  return 0;
+</pre></td></tr></table></DL>
+<P>
+
+<A NAME="IDX144"></A>
+</P>
+<DL>
+<DT><U>Function:</U> const char * <B>gpgme_get_sig_key</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>, int <VAR>idx</VAR>, gpgme_key_t *<VAR>r_key</VAR>)</I>
+<DD>The function <CODE>gpgme_get_sig_key</CODE> is equivalent to:
+<P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>  gpgme_verify_result_t result;
+  gpgme_signature_t sig;
+
+  result = gpgme_op_verify_result (ctx);
+  sig = result-&gt;signatures;
+
+  while (sig &amp;&amp; idx)
+    {
+      sig = sig-&gt;next;
+      idx--;
+    }
+  if (!sig || idx)
+    return gpg_error (GPG_ERR_EOF);
+
+  return gpgme_get_key (ctx, sig-&gt;fpr, r_key, 0);
+</pre></td></tr></table></DL>
+<P>
+
+<A NAME="Decrypt and Verify"></A>
+<HR SIZE=1>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_60.html#SEC60"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_62.html#SEC62"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_34.html#SEC34"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_59.html#SEC59"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_78.html#SEC78"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_81.html#SEC81">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<BR>
+<FONT SIZE="-1">
+This document was generated
+by <I>Igor Belyi</I> on <I>June, 7 2005</I>
+using <A HREF="http://texi2html.cvshome.org"><I>texi2html</I></A>
+</FONT>
+
+</BODY>
+</HTML>

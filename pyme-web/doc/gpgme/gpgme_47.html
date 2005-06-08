@@ -1,0 +1,292 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                      "http://www.w3.org/TR/html40/loose.dtd">
+<HTML>
+<!-- Created on June, 7 2005 by texi2html 1.66 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<HEAD>
+<TITLE>The `GnuPG Made Easy' Reference Manual: Listing Keys</TITLE>
+
+<META NAME="description" CONTENT="The `GnuPG Made Easy' Reference Manual: Listing Keys">
+<META NAME="keywords" CONTENT="The `GnuPG Made Easy' Reference Manual: Listing Keys">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META NAME="Generator" CONTENT="texi2html 1.66">
+
+</HEAD>
+
+<BODY LANG="en" BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#800080" ALINK="#FF0000">
+
+<A NAME="SEC47"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_46.html#SEC46"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_48.html#SEC48"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_34.html#SEC34"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_46.html#SEC46"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_78.html#SEC78"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_81.html#SEC81">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<HR SIZE=1>
+<H3> 7.4.1 Listing Keys </H3>
+<!--docid::SEC47::-->
+<P>
+
+<A NAME="IDX86"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_error_t <B>gpgme_op_keylist_start</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>, const char *<VAR>pattern</VAR>, int <VAR>secret_only</VAR>)</I>
+<DD>The function <CODE>gpgme_op_keylist_start</CODE> initiates a key listing
+operation inside the context <VAR>ctx</VAR>.  It sets everything up so that
+subsequent invocations of <CODE>gpgme_op_keylist_next</CODE> return the keys
+in the list.
+<P>
+
+If <VAR>pattern</VAR> is <CODE>NULL</CODE>, all available keys are returned.
+Otherwise, <VAR>pattern</VAR> contains an engine specific expression that
+is used to limit the list to all keys matching the pattern.  Note that
+the total length of the pattern is restricted to an engine-specific
+maximum (a couple of hundred characters are usually accepted).  The
+pattern should be used to restrict the search to a certain common name
+or user, not to list many specific keys at once by listing their
+fingerprints or key IDs.
+</P>
+<P>
+
+If <VAR>secret_only</VAR> is not <CODE>0</CODE>, the list is restricted to secret
+keys only.
+</P>
+<P>
+
+The context will be busy until either all keys are received (and
+<CODE>gpgme_op_keylist_next</CODE> returns <CODE>GPG_ERR_EOF</CODE>), or
+<CODE>gpgme_op_keylist_end</CODE> is called to finish the operation.
+</P>
+<P>
+
+The function returns the error code <CODE>GPG_ERR_INV_VALUE</CODE> if
+<VAR>ctx</VAR> is not a valid pointer, and passes through any errors that
+are reported by the crypto engine support routines.
+</P>
+</DL>
+<P>
+
+<A NAME="IDX87"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_error_t <B>gpgme_op_keylist_ext_start</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>, const char *<VAR>pattern</VAR>[], int <VAR>secret_only</VAR>, int <VAR>reserved</VAR>)</I>
+<DD>The function <CODE>gpgme_op_keylist_ext_start</CODE> initiates an extended
+key listing operation inside the context <VAR>ctx</VAR>.  It sets
+everything up so that subsequent invocations of
+<CODE>gpgme_op_keylist_next</CODE> return the keys in the list.
+<P>
+
+If <VAR>pattern</VAR> or <VAR>*pattern</VAR> is <CODE>NULL</CODE>, all available keys
+are returned.  Otherwise, <VAR>pattern</VAR> is a <CODE>NULL</CODE> terminated
+array of strings that are used to limit the list to all keys matching
+at least one of the patterns verbatim.  Note that the total length of
+all patterns is restricted to an engine-specific maximum (the exact
+limit also depends on the number of patterns and amount of quoting
+required, but a couple of hundred characters are usually accepted).
+Patterns should be used to restrict the search to a certain common
+name or user, not to list many specific keys at once by listing their
+fingerprints or key IDs.
+</P>
+<P>
+
+If <VAR>secret_only</VAR> is not <CODE>0</CODE>, the list is restricted to secret
+keys only.
+</P>
+<P>
+
+The value of <VAR>reserved</VAR> must be <CODE>0</CODE>.
+</P>
+<P>
+
+The context will be busy until either all keys are received (and
+<CODE>gpgme_op_keylist_next</CODE> returns <CODE>GPG_ERR_EOF</CODE>), or
+<CODE>gpgme_op_keylist_end</CODE> is called to finish the operation.
+</P>
+<P>
+
+The function returns the error code <CODE>GPG_ERR_INV_VALUE</CODE> if
+<VAR>ctx</VAR> is not a valid pointer, and passes through any errors that
+are reported by the crypto engine support routines.
+</P>
+</DL>
+<P>
+
+<A NAME="IDX88"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_error_t <B>gpgme_op_keylist_next</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>, gpgme_key_t *<VAR>r_key</VAR>)</I>
+<DD>The function <CODE>gpgme_op_keylist_next</CODE> returns the next key in the
+list created by a previous <CODE>gpgme_op_keylist_start</CODE> operation in
+the context <VAR>ctx</VAR>.  The key will have one reference for the user.
+See section <A HREF="gpgme_50.html#SEC50">7.4.4 Manipulating Keys</A>.
+<P>
+
+This is the only way to get at <CODE>gpgme_key_t</CODE> objects in
+<FONT SIZE="-1">GPGME</FONT>.
+</P>
+<P>
+
+If the last key in the list has already been returned,
+<CODE>gpgme_op_keylist_next</CODE> returns <CODE>GPG_ERR_EOF</CODE>.
+</P>
+<P>
+
+The function returns the error code <CODE>GPG_ERR_INV_VALUE</CODE> if
+<VAR>ctx</VAR> or <VAR>r_key</VAR> is not a valid pointer, and
+<CODE>GPG_ERR_ENOMEM</CODE> if there is not enough memory for the operation.
+</P>
+</DL>
+<P>
+
+<A NAME="IDX89"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_error_t <B>gpgme_op_keylist_end</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>)</I>
+<DD>The function <CODE>gpgme_op_keylist_next</CODE> ends a pending key list
+operation in the context <VAR>ctx</VAR>.
+<P>
+
+After the operation completed successfully, the result of the key
+listing operation can be retrieved with
+<CODE>gpgme_op_keylist_result</CODE>.
+</P>
+<P>
+
+The function returns the error code <CODE>GPG_ERR_INV_VALUE</CODE> if
+<VAR>ctx</VAR> is not a valid pointer, and <CODE>GPG_ERR_ENOMEM</CODE> if at some
+time during the operation there was not enough memory available.
+</P>
+</DL>
+<P>
+
+The following example illustrates how all keys containing a certain
+string (<CODE>g10code</CODE>) can be listed with their key ID and the name
+and e-mail address of the main user ID:
+</P>
+<P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>gpgme_ctx_t ctx;
+gpgme_error_t err = gpgme_new (&amp;ctx);
+
+if (!err)
+  {
+    err = gpgme_op_keylist_start (ctx, &quot;g10code&quot;, 0);
+    while (!err)
+      {
+        err = gpgme_op_keylist_next (ctx, &amp;key);
+        if (err)
+          break;
+        printf (&quot;%s: %s &lt;%s&gt;\n&quot;, key-&gt;keyid, key-&gt;name, key-&gt;email);
+        gpgme_key_release (key);
+      }
+    gpgme_release (ctx);
+  }
+if (gpg_err_code (err) != GPG_ERR_EOF)
+  {
+    fprintf (stderr, &quot;%s: can not list keys: %s\n&quot;,
+             argv[0], gpgme_strerror (err));
+    exit (1);
+  }
+</pre></td></tr></table><P>
+
+<A NAME="IDX90"></A>
+</P>
+<DL>
+<DT><U>Data type:</U> <B>gpgme_keylist_result_t</B>
+<DD>This is a pointer to a structure used to store the result of a
+<CODE>gpgme_op_keylist_*</CODE> operation.  After successfully ending a key
+listing operation, you can retrieve the pointer to the result with
+<CODE>gpgme_op_keylist_result</CODE>.  The structure contains the following
+member:
+<P>
+
+</P>
+<DL COMPACT>
+<DT><CODE>unsigned int truncated : 1</CODE>
+<DD>This is true if the crypto backend had to truncate the result, and
+less than the desired keys could be listed.
+</DL>
+</DL>
+<P>
+
+<A NAME="IDX91"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_keylist_result_t <B>gpgme_op_keylist_result</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>)</I>
+<DD>The function <CODE>gpgme_op_keylist_result</CODE> returns a
+<CODE>gpgme_keylist_result_t</CODE> pointer to a structure holding the
+result of a <CODE>gpgme_op_keylist_*</CODE> operation.  The pointer is only
+valid if the last operation on the context was a key listing
+operation, and if this operation finished successfully.  The returned
+pointer is only valid until the next operation is started on the
+context.
+</DL>
+<P>
+
+In a simple program, for which a blocking operation is acceptable, the
+following function can be used to retrieve a single key.
+</P>
+<P>
+
+<A NAME="IDX92"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_error_t <B>gpgme_get_key</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>, const char *<VAR>fpr</VAR>, gpgme_key_t *<VAR>r_key</VAR>, int <VAR>secret</VAR>)</I>
+<DD>The function <CODE>gpgme_get_key</CODE> gets the key with the fingerprint
+(or key ID) <VAR>fpr</VAR> from the crypto backend and return it in
+<VAR>r_key</VAR>.  If <VAR>secret</VAR> is true, get the secret key.  The
+currently active keylist mode is used to retrieve the key.  The key
+will have one reference for the user.
+<P>
+
+If the key is not found in the keyring, <CODE>gpgme_get_key</CODE> returns
+the error code <CODE>GPG_ERR_NO_ERROR</CODE> and *<VAR>r_key</VAR> will be set to
+<CODE>NULL</CODE>.
+</P>
+<P>
+
+The function returns the error code <CODE>GPG_ERR_INV_VALUE</CODE> if
+<VAR>ctx</VAR> or <VAR>r_key</VAR> is not a valid pointer or <VAR>fpr</VAR> is not a
+fingerprint or key ID, <CODE>GPG_ERR_AMBIGUOUS_NAME</CODE> if the key ID was
+not a unique specifier for a key, and <CODE>GPG_ERR_ENOMEM</CODE> if at some
+time during the operation there was not enough memory available.
+</P>
+</DL>
+<P>
+
+<A NAME="Information About Keys"></A>
+<HR SIZE=1>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_46.html#SEC46"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_48.html#SEC48"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_34.html#SEC34"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_46.html#SEC46"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_78.html#SEC78"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_81.html#SEC81">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<BR>
+<FONT SIZE="-1">
+This document was generated
+by <I>Igor Belyi</I> on <I>June, 7 2005</I>
+using <A HREF="http://texi2html.cvshome.org"><I>texi2html</I></A>
+</FONT>
+
+</BODY>
+</HTML>

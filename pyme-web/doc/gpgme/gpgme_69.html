@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                      "http://www.w3.org/TR/html40/loose.dtd">
+<HTML>
+<!-- Created on June, 7 2005 by texi2html 1.66 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<HEAD>
+<TITLE>The `GnuPG Made Easy' Reference Manual: Waiting For Completion</TITLE>
+
+<META NAME="description" CONTENT="The `GnuPG Made Easy' Reference Manual: Waiting For Completion">
+<META NAME="keywords" CONTENT="The `GnuPG Made Easy' Reference Manual: Waiting For Completion">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META NAME="Generator" CONTENT="texi2html 1.66">
+
+</HEAD>
+
+<BODY LANG="en" BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#800080" ALINK="#FF0000">
+
+<A NAME="SEC69"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_68.html#SEC68"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_70.html#SEC70"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_34.html#SEC34"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_68.html#SEC68"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_78.html#SEC78"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_81.html#SEC81">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<HR SIZE=1>
+<H3> 7.7.1 Waiting For Completion </H3>
+<!--docid::SEC69::-->
+<P>
+
+<A NAME="IDX163"></A>
+</P>
+<DL>
+<DT><U>Function:</U> gpgme_ctx_t <B>gpgme_wait</B> <I>(gpgme_ctx_t <VAR>ctx</VAR>, gpgme_error_t *<VAR>status</VAR>, int <VAR>hang</VAR>)</I>
+<DD>The function <CODE>gpgme_wait</CODE> continues the pending operation within
+the context <VAR>ctx</VAR>.  In particular, it ensures the data exchange
+between <FONT SIZE="-1">GPGME</FONT> and the crypto backend and watches over the
+run time status of the backend process.
+<P>
+
+If <VAR>hang</VAR> is true, the function does not return until the
+operation is completed or cancelled.  Otherwise the function will not
+block for a long time.
+</P>
+<P>
+
+The error status of the finished operation is returned in <VAR>status</VAR>
+if <CODE>gpgme_wait</CODE> does not return <CODE>NULL</CODE>.
+</P>
+<P>
+
+The <VAR>ctx</VAR> argument can be <CODE>NULL</CODE>.  In that case,
+<CODE>gpgme_wait</CODE> waits for any context to complete its operation.
+</P>
+<P>
+
+<CODE>gpgme_wait</CODE> can be used only in conjunction with any context
+that has a pending operation initiated with one of the
+<CODE>gpgme_op_*_start</CODE> functions except <CODE>gpgme_op_keylist_start</CODE>
+and <CODE>gpgme_op_trustlist_start</CODE> (for which you should use the
+corresponding <CODE>gpgme_op_*_next</CODE> functions).  If <VAR>ctx</VAR> is
+<CODE>NULL</CODE>, all of such contexts are waited upon and possibly
+returned.  Synchronous operations running in parallel, as well as key
+and trust item list operations, do not affect <CODE>gpgme_wait</CODE>.
+</P>
+<P>
+
+In a multi-threaded environment, only one thread should ever call
+<CODE>gpgme_wait</CODE> at any time, irregardless if <VAR>ctx</VAR> is specified
+or not.  This means that all calls to this function should be fully
+synchronized by locking primitives.  It is safe to start asynchronous
+operations while a thread is running in <CODE>gpgme_wait</CODE>.
+</P>
+<P>
+
+The function returns the <VAR>ctx</VAR> of the context which has finished
+the operation.  If <VAR>hang</VAR> is false, and the timeout expires,
+<CODE>NULL</CODE> is returned and <CODE>*status</CODE> will be set to 0.  If an
+error occurs, <CODE>NULL</CODE> is returned and the error is returned in
+<CODE>*status</CODE>.
+</P>
+</DL>
+<P>
+
+<A NAME="Using External Event Loops"></A>
+<HR SIZE=1>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_68.html#SEC68"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_70.html#SEC70"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_34.html#SEC34"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_68.html#SEC68"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_78.html#SEC78"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_81.html#SEC81">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="gpgme_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<BR>
+<FONT SIZE="-1">
+This document was generated
+by <I>Igor Belyi</I> on <I>June, 7 2005</I>
+using <A HREF="http://texi2html.cvshome.org"><I>texi2html</I></A>
+</FONT>
+
+</BODY>
+</HTML>
