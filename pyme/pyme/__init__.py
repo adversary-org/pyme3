@@ -134,4 +134,4 @@ directly but return by methods of base classes.
 
 """
 
-__all__ = ['core', 'errors', 'constants', 'util', 'version']
+__all__ = ['core', 'errors', 'constants', 'util', 'callbacks', 'version']

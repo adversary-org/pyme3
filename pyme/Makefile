@@ -25,7 +25,7 @@ HFILE = $(FILE).h
 USRHFILE = /usr/include/$(HFILE)
 SWIGSOURCE = $(FILE).i
 DOCMODSDIRS := $(shell find pyme -type d | grep -v CVS | sed 'sx/x.xg')
-DOCMODSFILES := $(shell find pyme -name "*.py" | egrep -v __init__ | grep -v gpgme.py | grep -v CVS | sed 'sx/x.xg')
+DOCMODSFILES := $(shell find pyme -name "*.py" | egrep -v __init__ | grep -v gpgme.py | sed 'sx/x.xg')
 DOCMODS := $(DOCMODSDIRS) $(DOCMODSFILES:.py=)
 SWIGOPT := `gpgme-config --cflags` -I/usr/include 
 PYMEVERS := $(shell python -c "from pyme.version import *;print versionstr")
@@ -61,7 +61,7 @@ clean:
 reallyclean: clean
 	rm -f doc/*.html doc/gpgme/*.html $(CFILE) $(PYPATH)/$(PYFILE) $(HFILE)
 
-docs:
+docs: build
 	rm -f doc/*.html
 	cd doc; for MOD in $(DOCMODS); do PYTHONPATH=`echo ../build/lib*` pydoc -w $$MOD; done
 
