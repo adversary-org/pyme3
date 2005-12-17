@@ -31,20 +31,52 @@ sys.path.append("pyme")
 import version
 
 def getconfig(what):
-    cmd = os.popen("gpgme-config --%s" % what, "r")
+    cmd = os.popen("sh gpgme-config --%s" % what, "r")
     confdata = cmd.read()
     confdata = confdata.replace("\n", " ")
     assert cmd.close() == None, "error getting GPG config"
     confdata = confdata.replace("  ", " ")
     return [x for x in confdata.split(' ') if x != '']
 
-cflags = getconfig('cflags')
+include_dirs = [os.getcwd()]
+define_macros = []
+library_dirs = []
 libs = getconfig('libs')
+for item in getconfig('cflags'):
+    if item.startswith("-I"):
+        include_dirs.append(item[2:])
+    elif item.startswith("-D"):
+        defitem = item[2:].split("=", 1)
+        if len(defitem)==2:
+            define_macros.append((defitem[0], defitem[1]))
+        else:
+            define_macros.append((defitem[0], None))
+
+# Adjust include and library locations in case of win32
+uname_s = os.popen("uname -s").read()
+if uname_s.startswith("MINGW32"):
+   mnts = [x.split()[0:3:2] for x in os.popen("mount").read().split("\n") if x] 
+   tmplist = [(len(x[1]), x[1], x[0]) for x in mnts]
+   tmplist.sort()
+   tmplist.reverse()
+   extra_dirs = []
+   for item in include_dirs:
+       for ln, mnt, tgt in tmplist:
+           if item.startswith(mnt):
+               extra_dirs.append(os.path.realpath(tgt+item[ln:]))
+               break
+   include_dirs += extra_dirs
+   for item in [x[2:] for x in libs if x.startswith("-L")]:
+       for ln, mnt, tgt in tmplist:
+           if item.startswith(mnt):
+               library_dirs.append(os.path.realpath(tgt+item[ln:]))
+               break
 
 swige = Extension("pyme._gpgme", ["gpgme_wrap.c", "helpers.c"],
-                  extra_compile_args = cflags,
-                  include_dirs = [os.getcwd()],
-                  extra_link_args = cflags + libs)
+                  include_dirs = include_dirs,
+                  define_macros = define_macros,
+                  library_dirs = library_dirs,
+                  extra_link_args = libs)
 
 setup(name = "gpgme",
       version = version.versionstr,

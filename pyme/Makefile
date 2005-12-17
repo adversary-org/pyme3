@@ -22,19 +22,24 @@ PYPATH = pyme
 PYFILE = $(FILE).py
 CFILE = $(FILE)_wrap.c
 HFILE = $(FILE).h
-USRHFILE = /usr/include/$(HFILE)
+USRHFILE = $(shell gpgme-config --prefix)/include/$(HFILE)
 SWIGSOURCE = $(FILE).i
 DOCMODSDIRS := $(shell find pyme -type d | grep -v CVS | sed 'sx/x.xg')
 DOCMODSFILES := $(shell find pyme -name "*.py" | egrep -v __init__ | grep -v gpgme.py | sed 'sx/x.xg')
 DOCMODS := $(DOCMODSDIRS) $(DOCMODSFILES:.py=)
-SWIGOPT := `gpgme-config --cflags` -I/usr/include 
+SWIGOPT := $(shell gpgme-config --cflags) -I/usr/include 
 PYMEVERS := $(shell python -c "from pyme.version import *;print versionstr")
+SYSTEM = $(shell uname -s | sed 's/_.*//')
 
 build: swig
+ifeq ($(SYSTEM),MINGW32)
+	$(PYTHON) setup.py build -b build --compiler=mingw32
+else
 	$(PYTHON) setup.py build -b build
+endif
 
 install: build
-	$(PYTHON) setup.py install
+	$(PYTHON) setup.py install --skip-build
 
 info:
 	@echo $(DOCMODS)

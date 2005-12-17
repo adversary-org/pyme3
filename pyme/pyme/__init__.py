@@ -119,7 +119,7 @@ directory contains more advanced samples as well.
 FOR MORE INFORMATION
 --------------------
 PYME homepage: http://pyme.sourceforge.net
-GPGME documentation: http://www.fifi.org/cgi-bin/info2www?%28gpgme%29
+GPGME documentation: http://pyme.sourceforge.net/doc/gpgme/index.html
 GPGME homepage: http://www.gnupg.org/gpgme.html
 
 Base classes: pyme.core (START HERE!)

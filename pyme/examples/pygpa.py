@@ -588,7 +588,8 @@ class PyGpa:
     def on_default_keys_changed(self, treeview):
         "This callback is called when default key is changed in Preferences"
         model, rows = treeview.get_selection().get_selected_rows()
-        self.set_default_key(model[rows[0]][-1].key)
+        if model and rows:
+            self.set_default_key(model[rows[0]][-1].key)
 
     def add_default_key(self, model, path, iter, def_model):
         "Helper function to add secret keys to the list of possible defaults"
