@@ -19,7 +19,7 @@
 # import generators for portability with python2.2
 from __future__ import generators
 
-import gpgme
+import pygpgme
 from errors import errorcheck
 import errors
 from util import GpgmeWrapper
@@ -57,10 +57,10 @@ class Context(GpgmeWrapper):
             self.wrapped = wrapped
             self.own = False
         else:
-            tmp = gpgme.new_gpgme_ctx_t_p()
-            errorcheck(gpgme.gpgme_new(tmp))
-            self.wrapped = gpgme.gpgme_ctx_t_p_value(tmp)
-            gpgme.delete_gpgme_ctx_t_p(tmp)
+            tmp = pygpgme.new_gpgme_ctx_t_p()
+            errorcheck(pygpgme.gpgme_new(tmp))
+            self.wrapped = pygpgme.gpgme_ctx_t_p_value(tmp)
+            pygpgme.delete_gpgme_ctx_t_p(tmp)
             self.own = True
         self.last_passcb = None
         self.last_progresscb = None
@@ -69,18 +69,18 @@ class Context(GpgmeWrapper):
         self._free_passcb()
         self._free_progresscb()
         if self.own:
-            gpgme.gpgme_release(self.wrapped)
+            pygpgme.gpgme_release(self.wrapped)
 
     def _free_passcb(self):
         if self.last_passcb != None:
-            gpgme.pygpgme_clear_generic_cb(self.last_passcb)
-            gpgme.delete_PyObject_p_p(self.last_passcb)
+            pygpgme.pygpgme_clear_generic_cb(self.last_passcb)
+            pygpgme.delete_PyObject_p_p(self.last_passcb)
             self.last_passcb = None
 
     def _free_progresscb(self):
         if self.last_progresscb != None:
-            gpgme.pygpgme_clear_generic_cb(self.last_progresscb)
-            gpgme.delete_PyObject_p_p(self.last_progresscb)
+            pygpgme.pygpgme_clear_generic_cb(self.last_progresscb)
+            pygpgme.delete_PyObject_p_p(self.last_progresscb)
             self.last_progresscb = None
 
     def op_keylist_all(self, *args, **kwargs):
@@ -94,23 +94,23 @@ class Context(GpgmeWrapper):
         """Returns the next key in the list created
         by a call to op_keylist_start().  The object returned
         is of type Key."""
-        ptr = gpgme.new_gpgme_key_t_p()
+        ptr = pygpgme.new_gpgme_key_t_p()
         try:
-            errorcheck(gpgme.gpgme_op_keylist_next(self.wrapped, ptr))
-            key = gpgme.gpgme_key_t_p_value(ptr)
+            errorcheck(pygpgme.gpgme_op_keylist_next(self.wrapped, ptr))
+            key = pygpgme.gpgme_key_t_p_value(ptr)
         except errors.GPGMEError, excp:
             key = None
             if excp.getcode() != errors.EOF:
                 raise excp
-        gpgme.delete_gpgme_key_t_p(ptr)
+        pygpgme.delete_gpgme_key_t_p(ptr)
         return key
     
     def get_key(self, fpr, secret):
         """Return the key corresponding to the fingerprint 'fpr'"""
-        ptr = gpgme.new_gpgme_key_t_p()
-        errorcheck(gpgme.gpgme_get_key(self.wrapped, fpr, ptr, secret))
-        key = gpgme.gpgme_key_t_p_value(ptr)
-        gpgme.delete_gpgme_key_t_p(ptr)
+        ptr = pygpgme.new_gpgme_key_t_p()
+        errorcheck(pygpgme.gpgme_get_key(self.wrapped, fpr, ptr, secret))
+        key = pygpgme.gpgme_key_t_p_value(ptr)
+        pygpgme.delete_gpgme_key_t_p(ptr)
         return key
 
     def op_trustlist_all(self, *args, **kwargs):
@@ -124,15 +124,15 @@ class Context(GpgmeWrapper):
         """Returns the next trust item in the list created
         by a call to op_trustlist_start().  The object returned
         is of type TrustItem."""
-        ptr = gpgme.new_gpgme_trust_item_t_p()
+        ptr = pygpgme.new_gpgme_trust_item_t_p()
         try:
-            errorcheck(gpgme.gpgme_op_trustlist_next(self.wrapped, ptr))
-            trust = gpgme.gpgme_trust_item_t_p_value(ptr)
+            errorcheck(pygpgme.gpgme_op_trustlist_next(self.wrapped, ptr))
+            trust = pygpgme.gpgme_trust_item_t_p_value(ptr)
         except errors.GPGMEError, excp:
             trust = None
             if excp.getcode() != errors.EOF:
                 raise
-        gpgme.delete_gpgme_trust_item_t_p(ptr)
+        pygpgme.delete_gpgme_trust_item_t_p(ptr)
         return trust
 
     def set_passphrase_cb(self, func, hook=None):
@@ -153,12 +153,12 @@ class Context(GpgmeWrapper):
         if func == None:
             hookdata = None
         else:
-            self.last_passcb = gpgme.new_PyObject_p_p()
+            self.last_passcb = pygpgme.new_PyObject_p_p()
             if hook == None:
                 hookdata = func
             else:
                 hookdata = (func, hook)
-        gpgme.pygpgme_set_passphrase_cb(self.wrapped, hookdata, self.last_passcb)
+        pygpgme.pygpgme_set_passphrase_cb(self.wrapped, hookdata, self.last_passcb)
 
     def set_progress_cb(self, func, hook=None):
         """Sets the progress meter callback to the function specified by
@@ -171,12 +171,12 @@ class Context(GpgmeWrapper):
         if func == None:
             hookdata = None
         else:
-            self.last_progresscb = gpgme.new_PyObject_p_p()
+            self.last_progresscb = pygpgme.new_PyObject_p_p()
             if hook == None:
                 hookdata = func
             else:
                 hookdata = (func, hook)
-        gpgme.pygpgme_set_progress_cb(self.wrapped, hookdata, self.last_progresscb)
+        pygpgme.pygpgme_set_progress_cb(self.wrapped, hookdata, self.last_progresscb)
 
     def wait(self, hang):
         """Wait for asynchronous call to finish. Wait forever if hang is True
@@ -186,10 +186,10 @@ class Context(GpgmeWrapper):
             On timeout - None.
 
         Please read the GPGME manual for more information."""
-        ptr = gpgme.new_gpgme_error_t_p()
-        context = gpgme.gpgme_wait(self.wrapped, ptr, hang)
-        status = gpgme.gpgme_error_t_p_value(ptr)
-        gpgme.delete_gpgme_error_t_p(ptr)
+        ptr = pygpgme.new_gpgme_error_t_p()
+        context = pygpgme.gpgme_wait(self.wrapped, ptr, hang)
+        status = pygpgme.gpgme_error_t_p_value(ptr)
+        pygpgme.delete_gpgme_error_t_p(ptr)
         
         if context == None:
             errorcheck(status)
@@ -202,7 +202,7 @@ class Context(GpgmeWrapper):
         if key == None:
             raise ValueError("op_edit: First argument cannot be None")
         opaquedata = (func, fnc_value)
-        errorcheck(gpgme.gpgme_op_edit(self.wrapped, key, opaquedata, out))
+        errorcheck(pygpgme.gpgme_op_edit(self.wrapped, key, opaquedata, out))
     
 class Data(GpgmeWrapper):
     """From the GPGME C manual:
@@ -277,43 +277,43 @@ class Data(GpgmeWrapper):
 
     def __del__(self):
         if self.wrapped != None:
-            gpgme.gpgme_data_release(self.wrapped)
+            pygpgme.gpgme_data_release(self.wrapped)
         self._free_readcb()
 
     def _free_readcb(self):
         if self.last_readcb != None:
-            gpgme.pygpgme_clear_generic_cb(self.last_readcb)
-            gpgme.delete_PyObject_p_p(self.last_readcb)
+            pygpgme.pygpgme_clear_generic_cb(self.last_readcb)
+            pygpgme.delete_PyObject_p_p(self.last_readcb)
             self.last_readcb = None
 
     def new(self):
-        tmp = gpgme.new_gpgme_data_t_p()
-        errorcheck(gpgme.gpgme_data_new(tmp))
-        self.wrapped = gpgme.gpgme_data_t_p_value(tmp)
-        gpgme.delete_gpgme_data_t_p(tmp)
+        tmp = pygpgme.new_gpgme_data_t_p()
+        errorcheck(pygpgme.gpgme_data_new(tmp))
+        self.wrapped = pygpgme.gpgme_data_t_p_value(tmp)
+        pygpgme.delete_gpgme_data_t_p(tmp)
 
     def new_from_mem(self, string, copy = 1):
-        tmp = gpgme.new_gpgme_data_t_p()
-        errorcheck(gpgme.gpgme_data_new_from_mem(tmp,string,len(string),copy))
-        self.wrapped = gpgme.gpgme_data_t_p_value(tmp)
-        gpgme.delete_gpgme_data_t_p(tmp)
+        tmp = pygpgme.new_gpgme_data_t_p()
+        errorcheck(pygpgme.gpgme_data_new_from_mem(tmp,string,len(string),copy))
+        self.wrapped = pygpgme.gpgme_data_t_p_value(tmp)
+        pygpgme.delete_gpgme_data_t_p(tmp)
 
     def new_from_file(self, filename, copy = 1):
-        tmp = gpgme.new_gpgme_data_t_p()
-        errorcheck(gpgme.gpgme_data_new_from_file(tmp, filename, copy))
-        self.wrapped = gpgme.gpgme_data_t_p_value(tmp)
-        gpgme.delete_gpgme_data_t_p(tmp)
+        tmp = pygpgme.new_gpgme_data_t_p()
+        errorcheck(pygpgme.gpgme_data_new_from_file(tmp, filename, copy))
+        self.wrapped = pygpgme.gpgme_data_t_p_value(tmp)
+        pygpgme.delete_gpgme_data_t_p(tmp)
 
     def new_from_cbs(self, funcs, hook):
         """Argument funcs must be a 4 element tuple with callbacks:
         (read_cb, write_cb, seek_cb, release_cb)"""
-        tmp = gpgme.new_gpgme_data_t_p()
+        tmp = pygpgme.new_gpgme_data_t_p()
         self._free_readcb()
-        self.last_readcb = gpgme.new_PyObject_p_p()
+        self.last_readcb = pygpgme.new_PyObject_p_p()
         hookdata = (funcs, hook)
-        gpgme.pygpgme_data_new_from_cbs(tmp, hookdata, self.last_readcb)
-        self.wrapped = gpgme.gpgme_data_t_p_value(tmp)
-        gpgme.delete_gpgme_data_t_p(tmp)
+        pygpgme.pygpgme_data_new_from_cbs(tmp, hookdata, self.last_readcb)
+        self.wrapped = pygpgme.gpgme_data_t_p_value(tmp)
+        pygpgme.delete_gpgme_data_t_p(tmp)
 
     def new_from_filepart(self, file, offset, length):
         """This wraps the GPGME gpgme_data_new_from_filepart() function.
@@ -323,36 +323,36 @@ class Data(GpgmeWrapper):
         3. a a file-like object. supporting the fileno() call and the mode
            attribute."""
 
-        tmp = gpgme.new_gpgme_data_t_p()
+        tmp = pygpgme.new_gpgme_data_t_p()
         filename = None
         fp = None
 
         if type(file) == type("x"):
             filename = file
         else:
-            fp = gpgme.fdopen(file.fileno(), file.mode)
+            fp = pygpgme.fdopen(file.fileno(), file.mode)
             if fp == None:
                 raise ValueError, "Failed to open file from %s arg %s" % \
                       (str(type(file)), str(file))
 
-        errorcheck(gpgme.gpgme_data_new_from_filepart(tmp, filename, fp,
+        errorcheck(pygpgme.gpgme_data_new_from_filepart(tmp, filename, fp,
                                                       offset, length))
-        self.wrapped = gpgme.gpgme_data_t_p_value(tmp)
-        gpgme.delete_gpgme_data_t_p(tmp)
+        self.wrapped = pygpgme.gpgme_data_t_p_value(tmp)
+        pygpgme.delete_gpgme_data_t_p(tmp)
 
     def new_from_fd(self, file):
         """This wraps the GPGME gpgme_data_new_from_fd() function.
         The argument "file" may be a file-like object, supporting the fileno()
         call and the mode attribute."""
         
-        tmp = gpgme.new_gpgme_data_t_p()
-        fp = gpgme.fdopen(file.fileno(), file.mode)
+        tmp = pygpgme.new_gpgme_data_t_p()
+        fp = pygpgme.fdopen(file.fileno(), file.mode)
         if fp == None:
             raise ValueError, "Failed to open file from %s arg %s" % \
                   (str(type(file)), str(file))
         errorcheck(gpgme_data_new_from_fd(tmp, fp))
-        self.wrapped = gpgme.gpgme_data_t_p_value(tmp)
-        gpgme.delete_gpgme_data_t_p(tmp)
+        self.wrapped = pygpgme.gpgme_data_t_p_value(tmp)
+        pygpgme.delete_gpgme_data_t_p(tmp)
 
     def new_from_stream(self, file):
         """This wrap around gpgme_data_new_from_stream is an alias for
@@ -361,7 +361,7 @@ class Data(GpgmeWrapper):
         self.new_from_fd(file)
     
     def write(self, buffer):
-        errorcheck(gpgme.gpgme_data_write(self.wrapped, buffer, len(buffer)))
+        errorcheck(pygpgme.gpgme_data_write(self.wrapped, buffer, len(buffer)))
 
     def read(self, size = -1):
         """Read at most size bytes, returned as a string.
@@ -375,43 +375,43 @@ class Data(GpgmeWrapper):
             return ''
 
         if size > 0:
-            return gpgme.gpgme_data_read(self.wrapped, size)
+            return pygpgme.gpgme_data_read(self.wrapped, size)
         else:
             retval = ''
             while 1:
-                result = gpgme.gpgme_data_read(self.wrapped, 10240)
+                result = pygpgme.gpgme_data_read(self.wrapped, 10240)
                 if len(result) == 0:
                     break
                 retval += result
             return retval
 
 def pubkey_algo_name(algo):
-    return gpgme.gpgme_pubkey_algo_name(algo)
+    return pygpgme.gpgme_pubkey_algo_name(algo)
 
 def hash_algo_name(algo):
-    return gpgme.gpgme_hash_algo_name(algo)
+    return pygpgme.gpgme_hash_algo_name(algo)
 
 def get_protocol_name(proto):
-    return gpgme.gpgme_get_protocol_name(proto)
+    return pygpgme.gpgme_get_protocol_name(proto)
 
 def check_version(version):
-    return gpgme.gpgme_check_version(version)
+    return pygpgme.gpgme_check_version(version)
 
 def engine_check_version (proto):
     try:
-        errorcheck(gpgme.gpgme_engine_check_version(proto))
+        errorcheck(pygpgme.gpgme_engine_check_version(proto))
         return True
     except errors.GPGMEError:
         return False
 
 def get_engine_info():
-    ptr = gpgme.new_gpgme_engine_info_t_p()
+    ptr = pygpgme.new_gpgme_engine_info_t_p()
     try:
-        errorcheck(gpgme.gpgme_get_engine_info(ptr))
-        info = gpgme.gpgme_engine_info_t_p_value(ptr)
+        errorcheck(pygpgme.gpgme_get_engine_info(ptr))
+        info = pygpgme.gpgme_engine_info_t_p_value(ptr)
     except errors.GPGMEError:
         info = None
-    gpgme.delete_gpgme_engine_info_t_p(ptr)
+    pygpgme.delete_gpgme_engine_info_t_p(ptr)
     return info
 
 def wait(hang):
@@ -423,12 +423,13 @@ def wait(hang):
         context - context which caused this call to return.
         
     Please read the GPGME manual of more information."""
-    ptr = gpgme.new_gpgme_error_t_p()
-    context = gpgme.gpgme_wait(None, ptr, hang)
-    status = gpgme.gpgme_error_t_p_value(ptr)
-    gpgme.delete_gpgme_error_t_p(ptr)
+    ptr = pygpgme.new_gpgme_error_t_p()
+    context = pygpgme.gpgme_wait(None, ptr, hang)
+    status = pygpgme.gpgme_error_t_p_value(ptr)
+    pygpgme.delete_gpgme_error_t_p(ptr)
     if context == None:
         errorcheck(status)
     else:
         context = Context(context)
     return (status, context)
+

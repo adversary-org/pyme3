@@ -17,13 +17,13 @@
 #    License along with this library; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 */
-%module gpgme
+%module pygpgme
 %include "cpointer.i"
 %include "cstring.i"
 
 // Allow use of None for strings.
 
-%typemap(python,in) const char * {
+%typemap(in) const char * {
   if ($input == Py_None)
     $1 = NULL;
   else if (PyString_Check($input))
@@ -35,6 +35,7 @@
     return NULL;
   }
 }
+%typemap(freearg) const char * "";
 
 // Release returned buffers as necessary.
 %typemap(newfree) char * "free($1);";
@@ -71,16 +72,18 @@ PyObject* object_to_gpgme_t(PyObject* input, const char* objtype, int argnum) {
 }
 %}
 
-%typemap(python,in) gpgme_key_t recp[] {
+%typemap(arginit) gpgme_key_t recp[] {
+  $1 = NULL;
+}
+
+%typemap(in) gpgme_key_t recp[] {
   int i, numb = 0;
   if (!PySequence_Check($input)) {
     PyErr_Format(PyExc_ValueError, "arg %d: Expected a list of gpgme_key_t",
 		 $argnum);
     return NULL;
   }
-  if((numb = PySequence_Length($input)) == 0) {
-    $1 = NULL;
-  } else {
+  if((numb = PySequence_Length($input)) != 0) {
     $1 = (gpgme_key_t*)malloc((numb+1)*sizeof(gpgme_key_t));
     for(i=0; i<numb; i++) {
       PyObject *pypointer = PySequence_GetItem($input, i);
@@ -103,7 +106,7 @@ PyObject* object_to_gpgme_t(PyObject* input, const char* objtype, int argnum) {
 }
 
 // Special handling for references to our objects.
-%typemap(python,in) gpgme_data_t DATAIN {
+%typemap(in) gpgme_data_t DATAIN {
   if ($input == Py_None)
     $1 = NULL;
   else {
@@ -159,7 +162,7 @@ PyObject* object_to_gpgme_t(PyObject* input, const char* objtype, int argnum) {
 }
 
 // Include mapper for edit callbacks
-%typemap(python,in) (gpgme_edit_cb_t fnc, void *fnc_value) {
+%typemap(in) (gpgme_edit_cb_t fnc, void *fnc_value) {
   $1 = (gpgme_edit_cb_t) pyEditCb;
   if ($input == Py_None)
     $2 = NULL;

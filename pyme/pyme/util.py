@@ -16,18 +16,18 @@
 #    License along with this library; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 
-import gpgme
+import pygpgme
 from errors import errorcheck
 
 def process_constants(starttext, dict):
     """Called by the constant libraries to load up the appropriate constants
     from the C library."""
     index = len(starttext)
-    for identifier in dir(gpgme):
+    for identifier in dir(pygpgme):
         if not identifier.startswith(starttext):
             continue
         name = identifier[index:]
-        dict[name] = getattr(gpgme, identifier)
+        dict[name] = getattr(pygpgme, identifier)
         
 class GpgmeWrapper:
     """Base class all Pyme wrappers for GPGME functionality.  Not to be
@@ -60,12 +60,12 @@ class GpgmeWrapper:
         if self._errorcheck(name):
             def _funcwrap(*args, **kwargs):
                 args = [self.wrapped] + list(args)
-                return errorcheck(apply(getattr(gpgme, name), args, kwargs),
+                return errorcheck(apply(getattr(pygpgme, name), args, kwargs),
                                   "Invocation of " + name)
         else:
             def _funcwrap(*args, **kwargs):
                 args = [self.wrapped] + list(args)
-                return apply(getattr(gpgme, name), args, kwargs)
+                return apply(getattr(pygpgme, name), args, kwargs)
             
         return _funcwrap
 

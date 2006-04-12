@@ -17,9 +17,10 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 
 PYTHON = python
+MODULE = pygpgme
 FILE = gpgme
 PYPATH = pyme
-PYFILE = $(FILE).py
+PYFILE = $(MODULE).py
 CFILE = $(FILE)_wrap.c
 HFILE = $(FILE).h
 USRHFILE = $(shell gpgme-config --prefix)/include/$(HFILE)

@@ -72,13 +72,13 @@ if uname_s.startswith("MINGW32"):
                library_dirs.append(os.path.realpath(tgt+item[ln:]))
                break
 
-swige = Extension("pyme._gpgme", ["gpgme_wrap.c", "helpers.c"],
+swige = Extension("pyme._pygpgme", ["gpgme_wrap.c", "helpers.c"],
                   include_dirs = include_dirs,
                   define_macros = define_macros,
                   library_dirs = library_dirs,
                   extra_link_args = libs)
 
-setup(name = "gpgme",
+setup(name = "pygpgme",
       version = version.versionstr,
       description = version.description,
       author = version.author,

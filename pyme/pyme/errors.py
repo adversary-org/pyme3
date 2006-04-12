@@ -16,7 +16,7 @@
 #    License along with this library; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 
-import gpgme
+import pygpgme
 
 class GPGMEError(Exception):
     def __init__(self, error = None, message = None):
@@ -24,22 +24,22 @@ class GPGMEError(Exception):
         self.message = message
     
     def getstring(self):
-        message = "%s: %s" % (gpgme.gpgme_strsource(self.error),
-                              gpgme.gpgme_strerror(self.error))
+        message = "%s: %s" % (pygpgme.gpgme_strsource(self.error),
+                              pygpgme.gpgme_strerror(self.error))
         if self.message != None:
             message = "%s: %s" % (self.message, message)
         return message
 
     def getcode(self):
-        return gpgme.gpgme_err_code(self.error)
+        return pygpgme.gpgme_err_code(self.error)
 
     def getsource(self):
-        return gpgme.gpgme_err_source(self.error)
+        return pygpgme.gpgme_err_source(self.error)
     
     def __str__(self):
         return "%s (%d,%d)"%(self.getstring(),self.getsource(),self.getcode())
 
-EOF = getattr(gpgme, "EOF")
+EOF = getattr(pygpgme, "EOF")
 
 def errorcheck(retval, extradata = None):
     if retval:
