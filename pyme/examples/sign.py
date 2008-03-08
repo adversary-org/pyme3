@@ -20,6 +20,8 @@
 from pyme import core, callbacks
 from pyme.constants.sig import mode
 
+core.check_version(None)
+
 plain = core.Data("Test message")
 sig = core.Data()
 c = core.Context()

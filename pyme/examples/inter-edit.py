@@ -17,8 +17,11 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 import os, sys
+from pyme import core
 from pyme.core import Data, Context
 from pyme.constants import status
+
+core.check_version(None)
 
 # Get names for the status codes
 stat2str = {}

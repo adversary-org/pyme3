@@ -18,11 +18,16 @@
 
 import gtk, gobject, gtk.glade
 import time, sys, os
-from pyme import callbacks, errors
+from pyme import callbacks, core, errors
 from pyme.core import Data, Context, pubkey_algo_name
 from pyme import constants
 from pyme.constants import validity
 from pyme.constants.keylist import mode
+
+# Thanks to Bernhard Reiter for pointing out the following:
+# gpgme_check_version() necessary for initialisation according to 
+# gpgme 1.1.6 and this is not done automatically in pyme-0.7.0
+print "gpgme version:", core.check_version(None)
 
 # Convert trust constant into a string
 trusts = {validity.UNKNOWN: "",

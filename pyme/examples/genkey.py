@@ -20,6 +20,7 @@
 from pyme import core, callbacks
 
 # Initialize our context.
+core.check_version(None)
 
 c = core.Context()
 c.set_armor(1)

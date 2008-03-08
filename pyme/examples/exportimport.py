@@ -23,6 +23,8 @@
 import sys
 from pyme import core
 
+core.check_version(None)
+
 expkey = core.Data()
 c = core.Context()
 c.set_armor(1)

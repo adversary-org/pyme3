@@ -21,8 +21,11 @@ This program will try to encrypt a simple message to each key on your keyring.
 If your keyring has any invalid keys on it, those keys will be removed
 and it will re-try the encryption."""
 
+from pyme import core
 from pyme.core import Data, Context
 from pyme.constants import validity
+
+core.check_version(None)
 
 plain = Data('This is my message.')
 

@@ -17,7 +17,10 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 import os
+from pyme import core
 from pyme.core import Data, Context
+
+core.check_version(None)
 
 class KeyEditor:
     def __init__(self):

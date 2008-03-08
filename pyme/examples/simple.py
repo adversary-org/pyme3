@@ -21,6 +21,8 @@ import sys
 from pyme import core, constants, errors
 import pyme.constants.validity
 
+core.check_version(None)
+
 # Set up our input and output buffers.
 
 plain = core.Data('This is my message.')

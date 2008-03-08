@@ -22,6 +22,8 @@
 
 from pyme import core
 
+core.check_version(None)
+
 c = core.Context()
 # 0 in keylist means to list not only public but secret keys as well.
 for thekey in [x for x in c.op_keylist_all("joe@foo.bar", 0)]:
