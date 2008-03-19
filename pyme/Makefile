@@ -1,5 +1,5 @@
 # $Id$
-# Copyright (C) 2004 Igor Belyi <belyi@users.sourceforge.net>
+# Copyright (C) 2004,2008 Igor Belyi <belyi@users.sourceforge.net>
 # Copyright (C) 2002 John Goerzen <jgoerzen@complete.org>
 #
 #    This library is free software; you can redistribute it and/or

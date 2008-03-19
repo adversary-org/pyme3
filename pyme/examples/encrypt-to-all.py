@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # $Id$
+# Copyright (C) 2008 Igor Belyi <belyi@users.sourceforge.net>
 # Copyright (C) 2002 John Goerzen <jgoerzen@complete.org>
 #
 #    This program is free software; you can redistribute it and/or modify
@@ -40,10 +41,9 @@ def sendto(keylist):
 
 names = []
 for key in c.op_keylist_all(None, 0):
-    print " *** Found key for %s" % key.uids.uid
+    print " *** Found key for %s" % key.uids[0].uid
     valid = 0
-    subkey = key.subkeys
-    while subkey:
+    for subkey in key.subkeys:
         keyid = subkey.keyid
         if keyid == None:
             break
@@ -51,7 +51,6 @@ for key in c.op_keylist_all(None, 0):
         valid += can_encrypt
         print "     Subkey %s: encryption %s" % \
               (keyid, can_encrypt and "enabled" or "disabled")
-        subkey = subkey.next
     
     if valid:
         names.append(key)

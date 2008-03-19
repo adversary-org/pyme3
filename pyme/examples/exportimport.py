@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # $Id$
-# Copyright (C) 2004 Igor Belyi
-# <belyi@users.sourceforge.net>
+# Copyright (C) 2004,2008 Igor Belyi <belyi@users.sourceforge.net>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -67,11 +66,9 @@ if result:
         if not k in result.__dict__ and not k.startswith("_"):
             if k == "imports":
                 print k, ":"
-                impkey = result.__getattr__(k)
-                while impkey:
+                for impkey in result.__getattr__(k):
                     print "    fpr=%s result=%d status=%x" % \
                           (impkey.fpr, impkey.result, impkey.status)
-                    impkey = impkey.next
             else:
                 print k, ":", result.__getattr__(k)
 else:

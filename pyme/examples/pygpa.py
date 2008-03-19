@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # $Id$
-# Copyright (C) 2005 Igor Belyi <belyi@users.sourceforge.net>
+# Copyright (C) 2005,2008 Igor Belyi <belyi@users.sourceforge.net>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ gtk.glade.textdomain('gpa')
 
 # Thanks to Bernhard Reiter for pointing out the following:
 # gpgme_check_version() necessary for initialisation according to 
-# gogme 1.1.6 and this is not done automatically in pyme-0.7.0
+# gpgme 1.1.6 and this is not done automatically in pyme-0.7.0
 print "gpgme version:", core.check_version(None)
 
 # Helper functions to convert non-string data into printable strings
@@ -60,7 +60,7 @@ def keyvalid2str(key):
     if key.revoked: return _("Revoked")
     if key.expired: return _("Expired")
     if key.disabled: return _("Disabled")
-    if not key.uids or key.uids.invalid: return _("Incomplete")
+    if not key.uids or key.uids[0].invalid: return _("Incomplete")
     return _("Unknown")
 
 def subvalid2str(subkey):
@@ -109,12 +109,11 @@ def fpr2str(fpr):
     return " ".join(result)
 
 # Helper functions for tasks unrelated to any class
-def obj2model(obj, columns):
+def obj2model(objs, columns):
     "Create a model from the obj (key, subkey, or signature) using columns"
     model = gtk.ListStore(*[x.ctype for x in columns])
-    while obj:
+    for obj in objs:
         model.append([x.cfunc(obj) for x in columns])
-        obj = obj.next
     return model
 
 def labels2table(key_labels):
@@ -228,20 +227,17 @@ class KeyInfo:
         labels = []
         if type(self.key) != int:
             if self.key.uids:
-                uid = self.key.uids
-                labels.append((_("User Name:"), uid.uid))
-                uid = uid.next
-                while uid:
+                labels.append((_("User Name:"), self.key.uids[0].uid))
+		for uid in self.key.uids[1:]:
                     labels.append(("", uid.uid))
-                    uid = uid.next
             if fpr:
-                labels += [(_("Fingerprint:"), fpr2str(self.key.subkeys.fpr))]
+                labels += [(_("Fingerprint:"), fpr2str(self.key.subkeys[0].fpr))]
             else:
-                labels += [(_("Key ID:"), self.key.subkeys.keyid[-8:])]
+                labels += [(_("Key ID:"), self.key.subkeys[0].keyid[-8:])]
         return labels
 
     def key_expires_label(self):
-        return sec2str(self.key.subkeys.expires,_("never expires"))
+        return sec2str(self.key.subkeys[0].expires,_("never expires"))
 
     def details(self):
         "Create a widget for 'Details' notebook tab"
@@ -288,13 +284,13 @@ class KeyInfo:
         key_info_labels.append(("", ability))
 
         key_info_labels += self.key_print_labels() + [
-            (_("Fingerprint:"), fpr2str(self.key.subkeys.fpr)),
+            (_("Fingerprint:"), fpr2str(self.key.subkeys[0].fpr)),
             (_("Expires at:"), self.key_expires_label()),
             (_("Owner Trust:"), validity2str(self.key.owner_trust)),
             (_("Key Validity:"), keyvalid2str(self.key)),
             (_("Key Type:"), _("%s %u bits") % \
-             (algo2str(self.key.subkeys.pubkey_algo),self.key.subkeys.length)),
-            (_("Created at:"), sec2str(self.key.subkeys.timestamp))
+             (algo2str(self.key.subkeys[0].pubkey_algo),self.key.subkeys[0].length)),
+            (_("Created at:"), sec2str(self.key.subkeys[0].timestamp))
             ]
 
         return labels2table(key_info_labels)
@@ -303,10 +299,8 @@ class KeyInfo:
         "Create a model for ComboBox of uids in 'Signatures' notebook tab"
         model = gtk.ListStore(str, gtk.ListStore)
         if type(self.key) != int:
-            uid = self.key.uids
-            while(uid):
+            for uid in self.key.uids:
                 model.append([uid.uid, obj2model(uid.signatures,sign_columns)])
-                uid = uid.next
         return model
 
     def subkey_model(self):
@@ -331,9 +325,9 @@ class Column:
 
 # Columns for the list of keys which can be used as default
 def_keys_columns = [
-    Column(_("Key ID"), str, lambda x,y: x.subkeys.keyid[-8:]),
+    Column(_("Key ID"), str, lambda x,y: x.subkeys[0].keyid[-8:]),
     Column(_("User Name"), str,
-           lambda x,y: (x.uids and x.uids.uid) or _("[Unknown user ID]")),
+           lambda x,y: (x.uids and x.uids[0].uid) or _("[Unknown user ID]")),
     Column(None, gobject.TYPE_PYOBJECT, lambda x,y: KeyInfo(x,y))
     ]
 
@@ -342,7 +336,7 @@ keys_columns = [
     Column("", str, lambda x,y: (y and "sec") or "pub"),
     def_keys_columns[0],
     Column(_("Expiry Date"), str,
-           lambda x,y: sec2str(x.subkeys.expires, _("never expires")), True),
+           lambda x,y: sec2str(x.subkeys[0].expires, _("never expires")), True),
     Column(_("Owner Trust"),str,lambda x,y:validity2str(x.owner_trust),True),
     Column(_("Key Validity"), str, lambda x,y: keyvalid2str(x), True)
     ] + def_keys_columns[1:]
@@ -571,12 +565,12 @@ class PyGpa:
         context = Context()
         sec_keys = {}
         for key in context.op_keylist_all(None, 1):
-            sec_keys[key.subkeys.fpr] = 1
+            sec_keys[key.subkeys[0].fpr] = 1
         model = gtk.ListStore(*[x.ctype for x in keys_columns])
         encrypt_model = gtk.ListStore(*[x.ctype for x in keys_columns])
         context.set_keylist_mode(keylist.mode.SIGS)
         for key in context.op_keylist_all(None, 0):
-            secret = sec_keys.has_key(key.subkeys.fpr)
+            secret = sec_keys.has_key(key.subkeys[0].fpr)
             data = [x.cfunc(key, secret) for x in keys_columns]
             if key.can_encrypt: encrypt_model.append(data)
             model.append(data)
@@ -586,9 +580,9 @@ class PyGpa:
     def set_default_key(self, key):
         "Setup default key and update status bar with it"
         self.default_key = key
-        self.status_uid.set_text((key.uids and key.uids.uid) or \
+        self.status_uid.set_text((key.uids and key.uids[0].uid) or \
                                  _("[Unknown user ID]"))
-        self.status_keyid.set_text(key.subkeys.keyid[-8:])
+        self.status_keyid.set_text(key.subkeys[0].keyid[-8:])
 
     def on_default_keys_changed(self, treeview):
         "This callback is called when default key is changed in Preferences"
@@ -856,7 +850,7 @@ class PyGpa:
         row_list = []
         treeview.get_model().foreach(lambda m,p,i,l: l.append(m[p]), row_list)
         for row in row_list:
-            if row[-1].key.subkeys.fpr == key.subkeys.fpr:
+            if row[-1].key.subkeys[0].fpr == key.subkeys[0].fpr:
                 row.model.remove(row.iter)
 
     def on_delete_activate(self, obj):
@@ -941,7 +935,7 @@ class PyGpa:
         for row in self.get_selected_keys():
             if row[-1].key == self.default_key:
                 continue
-            if row[-1].key.uids and row[-1].key.uids.next:
+            if len(row[-1].key.uids) > 1:
                 self.sign_manyuids_label.show()
             else:
                 self.sign_manyuids_label.hide()
@@ -952,7 +946,7 @@ class PyGpa:
                 try:
                     sign_key(context, row[-1].key, self.default_key,
                              self.sign_locally_cb.get_active())
-                    row[-1].key=context.get_key(row[-1].key.subkeys.fpr,0)
+                    row[-1].key=context.get_key(row[-1].key.subkeys[0].fpr,0)
                     self.on_keys_changed(self.keys_treeview)
                 except errors.GPGMEError, exc:
                     self.error_message(exc)
@@ -973,8 +967,8 @@ class PyGpa:
 
     def on_change_expiration_clicked(self, obj, key_info):
         "Callback for 'Change expiration' button in editor for a private key"
-        if key_info.key.subkeys.expires:
-            year, month, day = time.localtime(key_info.key.subkeys.expires)[:3]
+        if key_info.key.subkeys[0].expires:
+            year, month, day = time.localtime(key_info.key.subkeys[0].expires)[:3]
             self.change_expiry_calendar.select_month(month-1, year)
             self.change_expiry_calendar.select_day(day)
             self.change_expiry_expireon_rb.set_active(True)
@@ -989,7 +983,7 @@ class PyGpa:
                 context.set_passphrase_cb(self.password_cb)
                 change_key_expire(context, key_info.key, expire)
                 context.set_keylist_mode(keylist.mode.SIGS)
-                key_info.key=context.get_key(key_info.key.subkeys.fpr,0)
+                key_info.key=context.get_key(key_info.key.subkeys[0].fpr,0)
                 self.on_keys_changed(self.keys_treeview)
                 self.edit_key_date_label.set_text(key_info.key_expires_label())
             except errors.GPGMEError, exc:
@@ -1098,7 +1092,7 @@ class PyGpa:
         context.set_armor(armor)
         export_keys = Data()
         for row in self.get_selected_keys():
-            context.op_export(row[-1].key.subkeys.fpr, 0, export_keys)
+            context.op_export(row[-1].key.subkeys[0].fpr, 0, export_keys)
         export_keys.seek(0,0)
         return export_keys
         
@@ -1276,17 +1270,15 @@ class PyGpa:
                                            _("User Name")]):
                 treeview.append_column(gtk.TreeViewColumn(
                     title, gtk.CellRendererText(), text=index))
-            sign = result.signatures
-            while sign:
+            for sign in result.signatures:
                 key = self.progress_context.get_key(sign.fpr, 0)
                 if key and key.uids:
-                    keyid = key.subkeys.keyid[-8:]
-                    userid = key.uids.uid
+                    keyid = key.subkeys[0].keyid[-8:]
+                    userid = key.uids[0].uid
                 else:
                     keyid = sign.fpr[-8:]
                     userid = _("[Unknown user ID]")
                 model.append([keyid, sigsum2str(sign.summary), userid])
-                sign = sign.next
                     
             vbox = gtk.VBox()
             if self.out_name:

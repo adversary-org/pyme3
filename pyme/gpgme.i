@@ -1,6 +1,6 @@
 /*
 # $Id$
-# Copyright (C) 2004 Igor Belyi <belyi@users.sourceforge.net>
+# Copyright (C) 2004,2008 Igor Belyi <belyi@users.sourceforge.net>
 # Copyright (C) 2002 John Goerzen <jgoerzen@complete.org>
 #
 #    This library is free software; you can redistribute it and/or
@@ -159,6 +159,23 @@ PyObject* object_to_gpgme_t(PyObject* input, const char* objtype, int argnum) {
   }
   $result = PyString_FromStringAndSize($1,result);
   free($1);
+}
+
+%typemap(out) gpgme_sig_notation_t, gpgme_engine_info_t, gpgme_subkey_t, gpgme_key_sig_t,
+	gpgme_user_id_t, gpgme_invalid_key_t, gpgme_recipient_t, gpgme_new_signature_t,
+	gpgme_signature_t, gpgme_import_status_t, gpgme_conf_arg_t, gpgme_conf_opt_t,
+	gpgme_conf_comp_t {
+  int i;
+  int size = 0;
+  $1_ltype curr;
+  for (curr = $1; curr != NULL; curr = curr->next) {
+    size++;
+  }
+  $result = PyList_New(size);
+  for (i=0,curr=$1; i<size; i++,curr=curr->next) {
+    PyObject *o = SWIG_NewPointerObj(SWIG_as_voidptr(curr), $1_descriptor, %newpointer_flags);
+    PyList_SetItem($result, i, o);
+  }
 }
 
 // Include mapper for edit callbacks

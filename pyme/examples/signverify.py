@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # $Id$
-# Copyright (C) 2004 Igor Belyi
-# <belyi@users.sourceforge.net>
+# Copyright (C) 2004,2008 Igor Belyi <belyi@users.sourceforge.net>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -33,7 +32,7 @@ user = "joe@foo.bar"
 
 c.signers_clear()
 # Add joe@foo.bar's keys in the list of signers
-for sigkey in [x for x in c.op_keylist_all(user, 1)]:
+for sigkey in c.op_keylist_all(user, 1):
     if sigkey.can_sign:
         c.signers_add(sigkey)
 if not c.signers_enum(0):
@@ -64,17 +63,15 @@ c.op_verify(sig2, None, plain2)
 result = c.op_verify_result()
 
 # List results for all signatures. Status equal 0 means "Ok".
-sign = result.signatures
 index = 0
-while sign:
+for sign in result.signatures:
     index += 1
     print "signature", index, ":"
     print "  summary:    ", sign.summary
     print "  status:     ", sign.status
     print "  timestamp:  ", sign.timestamp
     print "  fingerprint:", sign.fpr
-    print "  uid:        ", c.get_key(sign.fpr, 0).uids.uid
-    sign = sign.next
+    print "  uid:        ", c.get_key(sign.fpr, 0).uids[0].uid
 
 # Print "unsigned" text. Rewind since verify put plain2 at EOF.
 plain2.seek(0,0)

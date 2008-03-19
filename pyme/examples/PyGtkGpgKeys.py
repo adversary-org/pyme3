@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # $Id$
-# Copyright (C) 2005 Igor Belyi <belyi@users.sourceforge.net>
+# Copyright (C) 2005,2008 Igor Belyi <belyi@users.sourceforge.net>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -163,70 +163,65 @@ class PyGtkGpgKeys:
         if not first_time: self.model.clear()
         secret_keys = {}
         for key in self.context.op_keylist_all(None, 1):
-            secret_keys[key.subkeys.fpr] = 1
+            secret_keys[key.subkeys[0].fpr] = 1
         for key in self.context.op_keylist_all(None, 0):
-            self.add_key(key, secret_keys.has_key(key.subkeys.fpr))
+            self.add_key(key, secret_keys.has_key(key.subkeys[0].fpr))
     
     def add_key(self, key, secret):
         "self.add_key(key) - add key to the TreeStore model"
-        uid = key.uids
-        subkey = key.subkeys
         iter = self.model.append(None)
         # Can delete only the whole key
         param = (iter,) + pair("Secret", secret)
         # Key information is a combination of the key and first uid and subkey
         for col in key_columns: param += pair(col, key)
-        for col in uid_columns: param += pair(col, uid)
-        for col in sub_columns: param += pair(col, subkey)
-        for col in sub_sign_columns: param += pair(col, subkey)
+        for col in uid_columns: param += pair(col, key.uids[0])
+        for col in sub_columns: param += pair(col, key.subkeys[0])
+        for col in sub_sign_columns: param += pair(col, key.subkeys[0])
         self.model.set(*param)
-        if uid:
-            self.add_signatures(uid.signatures, iter)
-            self.add_uids(uid.next, iter)
-        self.add_subkeys(subkey.next, iter)
+        if key.uids:
+            self.add_signatures(key.uids[0].signatures, iter)
+            self.add_uids(key.uids[1:], iter)
+        self.add_subkeys(key.subkeys[1:], iter)
 
-    def add_subkeys(self, subkey, iter):
+    def add_subkeys(self, subkeys, iter):
         "self.add_subkeys(subkey, iter) - add subkey as child to key's iter"
-        if not subkey:
+        if not subkeys:
             return
         key_iter = self.model.append(iter)
         self.model.set(key_iter, columns["Name"].index, "Subkeys", *name_only)
-        while subkey:
+        for subkey in subkeys:
             child_iter = self.model.append(key_iter)
             param = (child_iter,)
             for col in sub_columns: param += pair(col, subkey)
             for col in sub_sign_columns: param += pair(col, subkey)
             self.model.set(*param)
-            subkey = subkey.next
 
-    def add_uids(self, uid, iter):
+    def add_uids(self, uids, iter):
         "self.add_uids(uid, iter) - add uid as a child to key's iter"
-        if not uid:
+        if not uids:
             return
         uid_iter = self.model.append(iter)
         self.model.set(uid_iter,columns["Name"].index,"Other UIDs",*name_only)
-        while uid:
+        for uid in uids:
             child_iter = self.model.append(uid_iter)
             param = (child_iter,)
             for col in uid_columns: param += pair(col, uid)
             self.model.set(*param)
             self.add_signatures(uid.signatures, child_iter)
-            uid=uid.next
 
-    def add_signatures(self, sign, iter):
+    def add_signatures(self, signs, iter):
         "self.add_signatures(sign, iter) - add signature as a child to iter"
-        if not sign:
+        if not signs:
             return
         sign_iter = self.model.append(iter)
         self.model.set(sign_iter,columns["Name"].index,"Signatures",*name_only)
-        while sign:
+        for sign in signs:
             child_iter = self.model.append(sign_iter)
             param = (child_iter,)
             for col in uid_columns: param += pair(col, sign)
             for col in sign_columns: param += pair(col, sign)
             for col in sub_sign_columns: param += pair(col, sign)
             self.model.set(*param)
-            sign = sign.next
 
     def add_columns(self):
         "Add viewable columns for the data in TreeStore model"
@@ -310,8 +305,8 @@ class PyGtkGpgKeys:
         message = "Change trust to %s on the following keys?\n" % \
                   trusts[new_trust]
         for key, row in key_list:
-            message += "\n%s\t" % key.subkeys.keyid
-            if key.uids: message += key.uids.uid
+            message += "\n%s\t" % key.subkeys[0].keyid
+            if key.uids: message += key.uids[0].uid
             else:        message += "<undefined>"                
         if self.yesno_message(message):
             for key, row in key_list:
@@ -373,7 +368,7 @@ class PyGtkGpgKeys:
         selection.selected_foreach(self.collect_keys, key_list)
         expkeys = Data()
         for key, row in key_list:
-            self.context.op_export(key.subkeys.fpr, 0, expkeys)
+            self.context.op_export(key.subkeys[0].fpr, 0, expkeys)
         expkeys.seek(0,0)
         export_file.write(expkeys.read())
         export_file.close()
@@ -442,8 +437,8 @@ class PyGtkGpgKeys:
             
             message = "Delete selected keys?\n"
             for key, row in key_list:
-                message += "\n%s\t" % key.subkeys.keyid
-                if key.uids: message += key.uids.uid
+                message += "\n%s\t" % key.subkeys[0].keyid
+                if key.uids: message += key.uids[0].uid
                 else:        message += "<undefined>"                
             if self.yesno_message(message):
                 for key, row in key_list:

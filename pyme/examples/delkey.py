@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # $Id$
-# Copyright (C) 2004 Igor Belyi
-# <belyi@users.sourceforge.net>
+# Copyright (C) 2004,2008 Igor Belyi <belyi@users.sourceforge.net>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -23,6 +22,10 @@
 from pyme import core
 
 core.check_version(None)
+
+# Note that we need to collect all keys out of the iterator return by c.op_keylist_all()
+# method before starting to delete them. If you delete a key in the middle of iteration
+# c.op_keylist_next() will raise INV_VALUE exception
 
 c = core.Context()
 # 0 in keylist means to list not only public but secret keys as well.

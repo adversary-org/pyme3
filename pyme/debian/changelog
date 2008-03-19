@@ -1,3 +1,12 @@
+pyme (0.8.0) unstable; urgency=low
+
+  * Make all structure types containing 'next' field to be return as lists.
+    This includes when they are return from a function and when they are
+    member of another structure. Update all examples to use that updated
+    API.
+
+ --
+
 pyme (0.7.1) unstable; urgency=low
 
   * Add rules to build Windows version of the package.
@@ -7,8 +16,11 @@ pyme (0.7.1) unstable; urgency=low
   * Change name of the internal GPGME wrapper package from 'gpgme' to
     'pygpgme' to avoid conflict with gpgme.dll library on Windows.
   * Fix gpgme.i to work with SWIG version >= 1.3.28
+  * Add core.check_version(None) call to the examples to do the proper
+    startup initialization.
+  * Add verifydetails.py example provided by Bernhard Reiter.
 
- -- Igor Belyi <belyi@users.sourceforge.net>  Wed, 12 Apr 2006 14:06:16 -0400
+ -- Igor Belyi <belyi@users.sourceforge.net>  Sun, 09 Mar 2008 21:35:16 -0400
 
 pyme (0.7.0) unstable; urgency=low
 
