@@ -22,8 +22,8 @@ if len(sys.argv) < 2:
     sys.stderr.write("Usage: %s gpgme.h\n" % sys.argv[0])
     sys.exit(1)
 
-deprec_func=re.compile('^(typedef.*|.*\(.*\))\s*_GPGME_DEPRECATED;\s*',re.S)
-line_break=re.compile(';|\\$|^\s*#');
+deprec_func=re.compile('^(.*typedef.*|.*\(.*\))\s*_GPGME_DEPRECATED;\s*',re.S)
+line_break=re.compile(';|\\$|\\x0c|^\s*#');
 try:
     gpgme = file(sys.argv[1])
     tmp = gpgme.readline()
