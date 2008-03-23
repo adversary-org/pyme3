@@ -1,7 +1,7 @@
 # $Id$
 
 productname = 'pyme'
-versionstr = "0.7.1"
+versionstr = "0.8.0"
 revno = long('$Rev: 281 $'[6:-2])
 revstr = "Rev %d" % revno
 datestr = '$Date$'
@@ -10,7 +10,7 @@ versionlist = versionstr.split(".")
 major = versionlist[0]
 minor = versionlist[1]
 patch = versionlist[2]
-copyright = "Copyright (C) 2004 Igor Belyi, 2002 John Goerzen"
+copyright = "Copyright (C) 2004,2008 Igor Belyi, 2002 John Goerzen"
 author = "Igor Belyi"
 author_email = "belyi@users.sourceforge.net"
 description = "Python support for GPGME GnuPG cryptography library"
@@ -23,7 +23,7 @@ COPYING for details.  This is free software, and you are welcome
 to distribute it under the conditions laid out in COPYING."""
 
 homepage = "http://pyme.sourceforge.net"
-license = """Copyright (C) 2004 Igor Belyi <belyi@users.sourceforge.net>
+license = """Copyright (C) 2004,2008 Igor Belyi <belyi@users.sourceforge.net>
 Copyright (C) 2002 John Goerzen <jgoerzen@complete.org>
 
 This library is free software; you can redistribute it and/or

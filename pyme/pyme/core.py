@@ -394,7 +394,7 @@ def hash_algo_name(algo):
 def get_protocol_name(proto):
     return pygpgme.gpgme_get_protocol_name(proto)
 
-def check_version(version):
+def check_version(version=None):
     return pygpgme.gpgme_check_version(version)
 
 def engine_check_version (proto):

@@ -21,6 +21,9 @@
 %include "cpointer.i"
 %include "cstring.i"
 
+// Generate doc strings for all methods.
+%feature("autodoc", "0");
+
 // Allow use of None for strings.
 
 %typemap(in) const char * {
@@ -161,6 +164,8 @@ PyObject* object_to_gpgme_t(PyObject* input, const char* objtype, int argnum) {
   free($1);
 }
 
+// Make types containing 'next' field to be lists
+%ignore next;
 %typemap(out) gpgme_sig_notation_t, gpgme_engine_info_t, gpgme_subkey_t, gpgme_key_sig_t,
 	gpgme_user_id_t, gpgme_invalid_key_t, gpgme_recipient_t, gpgme_new_signature_t,
 	gpgme_signature_t, gpgme_import_status_t, gpgme_conf_arg_t, gpgme_conf_opt_t,

@@ -29,7 +29,7 @@ def process_constants(starttext, dict):
         name = identifier[index:]
         dict[name] = getattr(pygpgme, identifier)
         
-class GpgmeWrapper:
+class GpgmeWrapper(object):
     """Base class all Pyme wrappers for GPGME functionality.  Not to be
     instantiated directly."""
     def __repr__(self):
@@ -66,6 +66,7 @@ class GpgmeWrapper:
             def _funcwrap(*args, **kwargs):
                 args = [self.wrapped] + list(args)
                 return apply(getattr(pygpgme, name), args, kwargs)
-            
+
+        _funcwrap.__doc__ = getattr(getattr(pygpgme, name), "__doc__")
         return _funcwrap
 

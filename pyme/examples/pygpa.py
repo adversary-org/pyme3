@@ -31,7 +31,7 @@ gtk.glade.textdomain('gpa')
 # Thanks to Bernhard Reiter for pointing out the following:
 # gpgme_check_version() necessary for initialisation according to 
 # gpgme 1.1.6 and this is not done automatically in pyme-0.7.0
-print "gpgme version:", core.check_version(None)
+print "gpgme version:", core.check_version()
 
 # Helper functions to convert non-string data into printable strings
 def sec2str(secs, empty="_(Unknown)"):
