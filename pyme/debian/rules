@@ -9,7 +9,6 @@
 export DH_COMPAT=4
 
 
-
 ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -g
 endif
@@ -31,16 +30,11 @@ build-stamp: configure-stamp
 	dh_testdir
 
 	# Add here commands to compile the package.
-	#$(MAKE)
-	#/usr/bin/docbook-to-man debian/pyme.sgml > pyme.1
 	$(MAKE) swig
-	cp debian/setup.cfg-2.2 setup.cfg
-	python2.2 setup.py build -b `pwd`/build2.2
-	cp debian/setup.cfg-2.3 setup.cfg
-	python2.3 setup.py build -b `pwd`/build2.3
-	cp debian/setup.cfg-2.4 setup.cfg
-	python2.4 setup.py build -b `pwd`/build2.4
-	$(MAKE) docs
+	python2.3 setup.py build -b `pwd`/build
+	python2.4 setup.py build -b `pwd`/build
+	python2.5 setup.py build -b `pwd`/build
+	$(MAKE) PYSRCURL=file:/usr/share/pyshared/\\1 docs
 	touch build-stamp
 
 clean:
@@ -60,39 +54,24 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/pyme.
-	cp debian/setup.cfg-2.2 setup.cfg
-	python2.2 setup.py install --root=`pwd`/debian/python2.2-pyme
-	cp debian/setup.cfg-2.3 setup.cfg
-	python2.3 setup.py install --root=`pwd`/debian/python2.3-pyme
-	cp debian/setup.cfg-2.4 setup.cfg
-	python2.4 setup.py install --root=`pwd`/debian/python2.4-pyme
-
+	python2.3 setup.py install --root=`pwd`/debian/python-pyme
+	python2.4 setup.py install --root=`pwd`/debian/python-pyme
+	python2.5 setup.py install --root=`pwd`/debian/python-pyme
 
 
 # Build architecture-independent files here.
 binary-indep: build install
 	dh_testdir
 	dh_testroot
-#	dh_installdebconf	
 	dh_installdocs -i -XCVS
 	dh_installexamples -i -XCVS
 	dh_installmenu -i
-#	dh_installlogrotate
-#	dh_installemacsen
-#	dh_installpam
-#	dh_installmime
-#	dh_installinit
-#	dh_installcron
-#	dh_installman
-#	dh_installinfo
-#	dh_undocumented
 	dh_installchangelogs -i
 	dh_link -i
 	dh_strip -i
 	dh_compress -i
 	dh_fixperms -i
-#	dh_makeshlibs
-	dh_pysupport -i
+	dh_pycentral -i
 	dh_installdeb -i
 	dh_shlibdeps -i
 	dh_gencontrol -i
@@ -103,26 +82,15 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir
 	dh_testroot
-#	dh_installdebconf	
 	dh_installdocs -a -XCVS
 	dh_installexamples -a -XCVS
 	dh_installmenu -a
-#	dh_installlogrotate
-#	dh_installemacsen
-#	dh_installpam
-#	dh_installmime
-#	dh_installinit
-#	dh_installcron
-#	dh_installman
-#	dh_installinfo
-#	dh_undocumented
 	dh_installchangelogs -a
 	dh_link -a
 	dh_strip -a
 	dh_compress -a
 	dh_fixperms -a
-#	dh_makeshlibs
-	dh_pysupport -a
+	dh_pycentral -a
 	dh_installdeb -a
 	dh_shlibdeps -a
 	dh_gencontrol -a

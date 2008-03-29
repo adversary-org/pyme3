@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # $Id$
-# Copyright (C) 2004 Igor Belyi <belyi@users.sourceforge.net>
+# Copyright (C) 2004,2008 Igor Belyi <belyi@users.sourceforge.net>
 #
 #    This library is free software; you can redistribute it and/or
 #    modify it under the terms of the GNU Lesser General Public

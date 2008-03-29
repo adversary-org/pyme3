@@ -4,8 +4,10 @@ pyme (0.8.0) unstable; urgency=low
     This includes when they are return from a function and when they are
     member of another structure. Update all examples to use that updated
     API.
+  * Switch to using pycentral for debian packages.
+  * Add rules to update PY file location in generated doc files.
 
- --
+ -- Igor Belyi <belyi@users.sourceforge.net>  Sat, 29 Mar 2008 18:43:27 -0400
 
 pyme (0.7.1) unstable; urgency=low
 

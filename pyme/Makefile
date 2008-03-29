@@ -57,7 +57,7 @@ $(CFILE) $(PYPATH)/$(PYFILE): $(SWIGSOURCE) $(HFILE) helpers.h
 
 clean:
 	python setup.py clean --all
-	rm -rf build build2.2 build2.3 build2.4 setup.cfg
+	rm -rf build
 	rm -f `find . -name "*~"` `find . -name "*.pyc"` `find . -name "*.so"`
 	find . -name auth -exec rm -vf {}/password {}/username \;
 
@@ -70,6 +70,9 @@ reallyclean: clean
 docs: build
 	rm -f doc/*.html
 	cd doc; for MOD in $(DOCMODS); do PYTHONPATH=`echo ../build/lib*` pydoc -w $$MOD; done
+ifneq (, $(PYSRCURL))
+	cd doc; for MOD in $(DOCMODS); do sed -i -e "s#\"file:.*/site-packages/\(pyme/.*\)\">[^<]*</a>#\"$(PYSRCURL)\">\1</a>#" $$MOD.html; done
+endif
 
 nondeb-dist: reallyclean
 	rm -rf ../pyme-$(PYMEVERS)
