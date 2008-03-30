@@ -31,10 +31,18 @@ DOCMODS := $(DOCMODSDIRS) $(DOCMODSFILES:.py=)
 SWIGOPT := $(shell gpgme-config --cflags) -I/usr/include 
 PYMEVERS := $(shell python -c "from pyme.version import *;print versionstr")
 SYSTEM = $(shell uname -s | sed 's/_.*//')
+ifeq ($(SYSTEM),MINGW32)
+  DLLDIR := $(shell gpgme-config --exec-prefix)/bin
+  DLLFILES := $(DLLDIR)/libgpg-error-0.dll $(DLLDIR)/libgpgme-11.dll
+  SWIG = /c/cygwin/bin/swig
+else
+  SWIG = swig
+endif
 
 build: swig
 ifeq ($(SYSTEM),MINGW32)
 	$(PYTHON) setup.py build -b build --compiler=mingw32
+	cp $(DLLFILES) build/lib.win32-*/pyme
 else
 	$(PYTHON) setup.py build -b build
 endif
@@ -52,12 +60,12 @@ $(HFILE): $(USRHFILE)
 	$(PYTHON) gpgme-h-clean.py $(USRHFILE) >$(HFILE)
 
 $(CFILE) $(PYPATH)/$(PYFILE): $(SWIGSOURCE) $(HFILE) helpers.h
-	swig -python $(SWIGOPT) $(SWIGSOURCE)
+	$(SWIG) -python $(SWIGOPT) $(SWIGSOURCE)
 	mv $(PYFILE) $(PYPATH)/$(PYFILE)
 
 clean:
 	python setup.py clean --all
-	rm -rf build
+	rm -rf build dist
 	rm -f `find . -name "*~"` `find . -name "*.pyc"` `find . -name "*.so"`
 	find . -name auth -exec rm -vf {}/password {}/username \;
 
@@ -82,6 +90,9 @@ nondeb-dist: reallyclean
 	rm -rf ../pyme-$(PYMEVERS)
 
 dist:
+ifeq ($(SYSTEM),MINGW32)
+	$(PYTHON) setup.py bdist_wininst --skip-build
+else
 	fakeroot debian/rules clean
 	fakeroot debian/rules binary
 	fakeroot debian/rules clean
@@ -90,3 +101,4 @@ dist:
 	tar -c --exclude="CVS" * | tar -x -C ../pyme-$(PYMEVERS)
 	tar -czf ../pyme-$(PYMEVERS).tar.gz -C .. pyme-$(PYMEVERS)
 	rm -rf ../pyme-$(PYMEVERS)
+endif
