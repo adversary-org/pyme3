@@ -1,0 +1,27 @@
+#sidebar {
+  float: left;
+  width: 180px;
+  margin-top: 20px;
+  padding-right: 10px;
+  padding-bottom: 0;
+}
+
+#sidebar p.section {
+  text-align: center;
+  font-weight: bold;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  background-color: #d6e7ff;
+  border: 1px solid #9c99cd;
+}
+
+#sidebar ul {
+  padding: 0 10px 0 10px;
+  list-style-type: none;
+}
+
+#mainText {
+  margin: 10px 10px 0 200px;
+  text-align: justify;
+  padding: 0;
+}

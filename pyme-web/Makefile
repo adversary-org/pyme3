@@ -1,6 +1,6 @@
 # $Id$
 
-WEBFILES=index.html $(shell find doc -name "*.html")
+WEBFILES=index.html default.css $(shell find doc -name "*.html")
 PROJPATH=/home/groups/p/py/pyme
 DOCPATH=$(PROJPATH)/htdocs
 
