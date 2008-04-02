@@ -1,0 +1,59 @@
+<html lang="en">
+<head>
+<title>Hash Algorithms - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Algorithms.html#Algorithms" title="Algorithms">
+<link rel="prev" href="Public-Key-Algorithms.html#Public-Key-Algorithms" title="Public Key Algorithms">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Hash-Algorithms"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Public-Key-Algorithms.html#Public-Key-Algorithms">Public Key Algorithms</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Algorithms.html#Algorithms">Algorithms</a>
+<hr>
+</div>
+
+<h3 class="section">4.2 Hash Algorithms</h3>
+
+<p><a name="index-algorithms_002c-hash-53"></a><a name="index-algorithms_002c-message-digest-54"></a><a name="index-hash-algorithms-55"></a><a name="index-message-digest-algorithms-56"></a>
+Hash (message digest) algorithms are used to compress a long message
+to make it suitable for public key cryptography.
+
+<div class="defun">
+&mdash; Data type: <b>enum gpgme_hash_algo_t</b><var><a name="index-enum-gpgme_005fhash_005falgo_005ft-57"></a></var><br>
+<blockquote><p><a name="index-gpgme_005fhash_005falgo_005ft-58"></a>The <code>gpgme_hash_algo_t</code> type specifies the set of all hash algorithms
+that are supported by <acronym>GPGME</acronym>.  Possible values are:
+
+          <dl>
+<dt><code>GPGME_MD_MD5</code><br><dt><code>GPGME_MD_SHA1</code><br><dt><code>GPGME_MD_RMD160</code><br><dt><code>GPGME_MD_MD2</code><br><dt><code>GPGME_MD_TIGER</code><br><dt><code>GPGME_MD_HAVAL</code><br><dt><code>GPGME_MD_SHA256</code><br><dt><code>GPGME_MD_SHA384</code><br><dt><code>GPGME_MD_SHA512</code><br><dt><code>GPGME_MD_MD4</code><br><dt><code>GPGME_MD_CRC32</code><br><dt><code>GPGME_MD_CRC32_RFC1510</code><br><dt><code>GPGME_MD_CRC24_RFC2440</code><dd></dl>
+        </p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: const char * <b>gpgme_hash_algo_name</b> (<var>gpgme_hash_algo_t&nbsp;algo<!-- /@w --></var>)<var><a name="index-gpgme_005fhash_005falgo_005fname-59"></a></var><br>
+<blockquote><p>The function <code>gpgme_hash_algo_name</code> returns a pointer to a
+statically allocated string containing a description of the hash
+algorithm <var>algo</var>.  This string can be used to output the name of
+the hash algorithm to the user.
+
+        <p>If <var>algo</var> is not a valid hash algorithm, <code>NULL</code> is returned. 
+</p></blockquote></div>
+
+   </body></html>
+

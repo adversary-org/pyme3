@@ -1,0 +1,89 @@
+<html lang="en">
+<head>
+<title>Error Sources - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Error-Handling.html#Error-Handling" title="Error Handling">
+<link rel="prev" href="Error-Values.html#Error-Values" title="Error Values">
+<link rel="next" href="Error-Codes.html#Error-Codes" title="Error Codes">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Error-Sources"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Error-Codes.html#Error-Codes">Error Codes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Error-Values.html#Error-Values">Error Values</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Error-Handling.html#Error-Handling">Error Handling</a>
+<hr>
+</div>
+
+<h3 class="section">5.2 Error Sources</h3>
+
+<p><a name="index-error-codes_002c-list-of-75"></a>
+The library <code>libgpg-error</code> defines an error source for every
+component of the GnuPG system.  The error source part of an error
+value is not well defined.  As such it is mainly useful to improve the
+diagnostic error message for the user.
+
+   <p>If the error code part of an error value is <code>0</code>, the whole error
+value will be <code>0</code>.  In this case the error source part is of
+course <code>GPG_ERR_SOURCE_UNKNOWN</code>.
+
+   <p>The list of error sources that might occur in applications using
+<acronym>GPGME</acronym> is:
+
+     <dl>
+<dt><code>GPG_ERR_SOURCE_UNKNOWN</code><dd>The error source is not known.  The value of this error source is
+<code>0</code>.
+
+     <br><dt><code>GPG_ERR_SOURCE_GPGME</code><dd>The error source is <acronym>GPGME</acronym> itself.  This is the default for
+errors that occur in the <acronym>GPGME</acronym> library.
+
+     <br><dt><code>GPG_ERR_SOURCE_GPG</code><dd>The error source is GnuPG, which is the crypto engine used for the
+OpenPGP protocol.
+
+     <br><dt><code>GPG_ERR_SOURCE_GPGSM</code><dd>The error source is GPGSM, which is the crypto engine used for the
+CMS protocol.
+
+     <br><dt><code>GPG_ERR_SOURCE_GCRYPT</code><dd>The error source is <code>libgcrypt</code>, which is used by crypto engines
+to perform cryptographic operations.
+
+     <br><dt><code>GPG_ERR_SOURCE_GPGAGENT</code><dd>The error source is <samp><span class="command">gpg-agent</span></samp>, which is used by crypto
+engines to perform operations with the secret key.
+
+     <br><dt><code>GPG_ERR_SOURCE_PINENTRY</code><dd>The error source is <samp><span class="command">pinentry</span></samp>, which is used by
+<samp><span class="command">gpg-agent</span></samp> to query the passphrase to unlock a secret key.
+
+     <br><dt><code>GPG_ERR_SOURCE_SCD</code><dd>The error source is the SmartCard Daemon, which is used by
+<samp><span class="command">gpg-agent</span></samp> to delegate operations with the secret key to a
+SmartCard.
+
+     <br><dt><code>GPG_ERR_SOURCE_KEYBOX</code><dd>The error source is <code>libkbx</code>, a library used by the crypto
+engines to manage local keyrings.
+
+     <br><dt><code>GPG_ERR_SOURCE_USER_1</code><br><dt><code>GPG_ERR_SOURCE_USER_2</code><br><dt><code>GPG_ERR_SOURCE_USER_3</code><br><dt><code>GPG_ERR_SOURCE_USER_4</code><dd>These error sources are not used by any GnuPG component and can be
+used by other software.  For example, applications using
+<acronym>GPGME</acronym> can use them to mark error values coming from callback
+handlers.  Thus <code>GPG_ERR_SOURCE_USER_1</code> is the default for errors
+created with <code>gpgme_error</code> and <code>gpgme_error_from_errno</code>,
+unless you define <code>GPGME_ERR_SOURCE_DEFAULT</code> before including
+<samp><span class="file">gpgme.h</span></samp>. 
+</dl>
+
+   </body></html>
+

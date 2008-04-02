@@ -1,0 +1,99 @@
+<html lang="en">
+<head>
+<title>I/O Callback Example Qt - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Using-External-Event-Loops.html#Using-External-Event-Loops" title="Using External Event Loops">
+<link rel="prev" href="I_002fO-Callback-Example-GDK.html#I_002fO-Callback-Example-GDK" title="I/O Callback Example GDK">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="I%2fO-Callback-Example-Qt"></a>
+<a name="I_002fO-Callback-Example-Qt"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="I_002fO-Callback-Example-GDK.html#I_002fO-Callback-Example-GDK">I/O Callback Example GDK</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Using-External-Event-Loops.html#Using-External-Event-Loops">Using External Event Loops</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">7.7.2.6 I/O Callback Example Qt</h5>
+
+<p><a name="index-Qt_002c-using-_0040acronym_007bGPGME_007d-with-334"></a>
+The I/O callback interface can also be used to integrate
+<acronym>GPGME</acronym> with the Qt event loop.  The following code snippets
+show how this can be done using the appropriate register and remove
+I/O callback functions.  In this example, the private data of the
+register I/O callback function is unused.  The event notifications is
+missing because it does not require any Qt specific setup.
+
+<pre class="example">     #include &lt;qsocketnotifier.h&gt;
+     #include &lt;qapplication.h&gt;
+     
+     struct IOCB {
+       IOCB( GpgmeIOCb f, void * d, QSocketNotifier * n )
+         : func( f ), data( d ), notifier( n ) {}
+       GpgmeIOCb func;
+       void * data;
+       QSocketNotifier * notifier;
+     }
+     
+     class MyApp : public QApplication {
+     
+       // ...
+     
+       static void registerGpgmeIOCallback( void * data, int fd, int dir,
+                                            GpgmeIOCb func, void * func_data,
+                                            void ** tag ) {
+         QSocketNotifier * n =
+           new QSocketNotifier( fd, dir ? QSocketNotifier::Read
+                                        : QSocketNotifier::Write );
+         connect( n, SIGNAL(activated(int)),
+                  qApp, SLOT(slotGpgmeIOCallback(int)) );
+         qApp-&gt;mIOCBs.push_back( IOCB( func, func_data, n ) );
+         *tag = (void*)n;
+       }
+     
+       static void removeGpgmeIOCallback( void * tag ) {
+         if ( !tag ) return;
+         QSocketNotifier * n = static_cast&lt;QSocketNotifier*&gt;( tag );
+         for ( QValueList&lt;IOCB&gt;::iterator it = qApp-&gt;mIOCBs.begin() ;
+               it != qApp-&gt;mIOCBs.end() ; ++it )
+           if ( it-&gt;notifier == n ) {
+             delete it-&gt;notifier;
+             qApp-&gt;mIOCBs.erase( it );
+             return;
+           }
+       }
+     
+     public slots:
+       void slotGpgmeIOCallback( int fd ) {
+         for ( QValueList&lt;IOCB&gt;::const_iterator it = mIOCBs.begin() ;
+               it != mIOCBs.end() ; ++it )
+           if ( it-&gt;notifier &amp;&amp; it-&gt;notifier-&gt;socket() == fd )
+             (*(it-&gt;func)) ( it-&gt;func_data, fd );
+       }
+     
+       // ...
+     
+     private:
+       QValueList&lt;IOCB&gt; mIOCBs;
+       // ...
+     };
+</pre>
+   </body></html>
+

@@ -1,0 +1,70 @@
+<html lang="en">
+<head>
+<title>Destroying Data Buffers - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Exchanging-Data.html#Exchanging-Data" title="Exchanging Data">
+<link rel="prev" href="Creating-Data-Buffers.html#Creating-Data-Buffers" title="Creating Data Buffers">
+<link rel="next" href="Manipulating-Data-Buffers.html#Manipulating-Data-Buffers" title="Manipulating Data Buffers">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Destroying-Data-Buffers"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Manipulating-Data-Buffers.html#Manipulating-Data-Buffers">Manipulating Data Buffers</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Creating-Data-Buffers.html#Creating-Data-Buffers">Creating Data Buffers</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Exchanging-Data.html#Exchanging-Data">Exchanging Data</a>
+<hr>
+</div>
+
+<h3 class="section">6.2 Destroying Data Buffers</h3>
+
+<p><a name="index-data-buffer_002c-destruction-104"></a>
+
+<div class="defun">
+&mdash; Function: void <b>gpgme_data_release</b> (<var>gpgme_data_t&nbsp;dh<!-- /@w --></var>)<var><a name="index-gpgme_005fdata_005frelease-105"></a></var><br>
+<blockquote><p>The function <code>gpgme_data_release</code> destroys the data object with
+the handle <var>dh</var>.  It releases all associated resources that were
+not provided by the user in the first place. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: char * <b>gpgme_data_release_and_get_mem</b> (<var>gpgme_data_t&nbsp;dh<!-- /@w -->, size_t&nbsp;*length<!-- /@w --></var>)<var><a name="index-gpgme_005fdata_005frelease_005fand_005fget_005fmem-106"></a></var><br>
+<blockquote><p>The function <code>gpgme_data_release_and_get_mem</code> is like
+<code>gpgme_data_release</code>, except that it returns the data buffer and
+its length that was provided by the object.
+
+        <p>The user has to release the buffer with <code>gpgme_free</code>.  In case
+the user provided the data buffer in non-copy mode, a copy will be
+made for this purpose.
+
+        <p>In case an error returns, or there is no suitable data buffer that can
+be returned to the user, the function will return <code>NULL</code>.  In any
+case, the data object <var>dh</var> is destroyed. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>gpgme_free</b> (<var>void&nbsp;*buffer<!-- /@w --></var>)<var><a name="index-gpgme_005ffree-107"></a></var><br>
+<blockquote><p>The function <code>gpgme_free</code> releases the memory returned by
+<code>gpgme_data_release_and_get_mem</code>.  It should be used instead of
+the system libraries <code>free</code> function in case different allocators
+are used in a single program. 
+</p></blockquote></div>
+
+   </body></html>
+

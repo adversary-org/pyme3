@@ -1,0 +1,77 @@
+<html lang="en">
+<head>
+<title>Waiting For Completion - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Run-Control.html#Run-Control" title="Run Control">
+<link rel="next" href="Using-External-Event-Loops.html#Using-External-Event-Loops" title="Using External Event Loops">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Waiting-For-Completion"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Using-External-Event-Loops.html#Using-External-Event-Loops">Using External Event Loops</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Run-Control.html#Run-Control">Run Control</a>
+<hr>
+</div>
+
+<h4 class="subsection">7.7.1 Waiting For Completion</h4>
+
+<p><a name="index-cryptographic-operation_002c-wait-for-316"></a><a name="index-wait-for-completion-317"></a>
+
+<div class="defun">
+&mdash; Function: gpgme_ctx_t <b>gpgme_wait</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w -->, gpgme_error_t&nbsp;*status<!-- /@w -->, int&nbsp;hang<!-- /@w --></var>)<var><a name="index-gpgme_005fwait-318"></a></var><br>
+<blockquote><p>The function <code>gpgme_wait</code> continues the pending operation within
+the context <var>ctx</var>.  In particular, it ensures the data exchange
+between <acronym>GPGME</acronym> and the crypto backend and watches over the
+run time status of the backend process.
+
+        <p>If <var>hang</var> is true, the function does not return until the
+operation is completed or cancelled.  Otherwise the function will not
+block for a long time.
+
+        <p>The error status of the finished operation is returned in <var>status</var>
+if <code>gpgme_wait</code> does not return <code>NULL</code>.
+
+        <p>The <var>ctx</var> argument can be <code>NULL</code>.  In that case,
+<code>gpgme_wait</code> waits for any context to complete its operation.
+
+        <p><code>gpgme_wait</code> can be used only in conjunction with any context
+that has a pending operation initiated with one of the
+<code>gpgme_op_*_start</code> functions except <code>gpgme_op_keylist_start</code>
+and <code>gpgme_op_trustlist_start</code> (for which you should use the
+corresponding <code>gpgme_op_*_next</code> functions).  If <var>ctx</var> is
+<code>NULL</code>, all of such contexts are waited upon and possibly
+returned.  Synchronous operations running in parallel, as well as key
+and trust item list operations, do not affect <code>gpgme_wait</code>.
+
+        <p>In a multi-threaded environment, only one thread should ever call
+<code>gpgme_wait</code> at any time, irregardless if <var>ctx</var> is specified
+or not.  This means that all calls to this function should be fully
+synchronized by locking primitives.  It is safe to start asynchronous
+operations while a thread is running in <code>gpgme_wait</code>.
+
+        <p>The function returns the <var>ctx</var> of the context which has finished
+the operation.  If <var>hang</var> is false, and the timeout expires,
+<code>NULL</code> is returned and <code>*status</code> will be set to 0.  If an
+error occurs, <code>NULL</code> is returned and the error is returned in
+<code>*status</code>. 
+</p></blockquote></div>
+
+   </body></html>
+

@@ -1,0 +1,133 @@
+<html lang="en">
+<head>
+<title>Error Codes - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Error-Handling.html#Error-Handling" title="Error Handling">
+<link rel="prev" href="Error-Sources.html#Error-Sources" title="Error Sources">
+<link rel="next" href="Error-Strings.html#Error-Strings" title="Error Strings">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Error-Codes"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Error-Strings.html#Error-Strings">Error Strings</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Error-Sources.html#Error-Sources">Error Sources</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Error-Handling.html#Error-Handling">Error Handling</a>
+<hr>
+</div>
+
+<h3 class="section">5.3 Error Codes</h3>
+
+<p><a name="index-error-codes_002c-list-of-76"></a>
+The library <code>libgpg-error</code> defines many error values.  Most of
+them are not used by <code>GPGME</code> directly, but might be returned by
+<acronym>GPGME</acronym> because it received them from the crypto engine.  The
+below list only includes such error codes that have a specific meaning
+in <code>GPGME</code>, or which are so common that you should know about
+them.
+
+     <dl>
+<dt><code>GPG_ERR_EOF</code><dd>This value indicates the end of a list, buffer or file.
+
+     <br><dt><code>GPG_ERR_NO_ERROR</code><dd>This value indicates success.  The value of this error code is
+<code>0</code>.  Also, it is guaranteed that an error value made from the
+error code <code>0</code> will be <code>0</code> itself (as a whole).  This means
+that the error source information is lost for this error code,
+however, as this error code indicates that no error occured, this is
+generally not a problem.
+
+     <br><dt><code>GPG_ERR_GENERAL</code><dd>This value means that something went wrong, but either there is not
+enough information about the problem to return a more useful error
+value, or there is no separate error value for this type of problem.
+
+     <br><dt><code>GPG_ERR_ENOMEM</code><dd>This value means that an out-of-memory condition occurred.
+
+     <br><dt><code>GPG_ERR_E...</code><dd>System errors are mapped to GPG_ERR_FOO where FOO is the symbol for
+the system error.
+
+     <br><dt><code>GPG_ERR_INV_VALUE</code><dd>This value means that some user provided data was out of range.  This
+can also refer to objects.  For example, if an empty
+<code>gpgme_data_t</code> object was expected, but one containing data was
+provided, this error value is returned.
+
+     <br><dt><code>GPG_ERR_UNUSABLE_PUBKEY</code><dd>This value means that some recipients for a message were invalid.
+
+     <br><dt><code>GPG_ERR_UNUSABLE_SECKEY</code><dd>This value means that some signers were invalid.
+
+     <br><dt><code>GPG_ERR_NO_DATA</code><dd>This value means that a <code>gpgme_data_t</code> object which was expected
+to have content was found empty.
+
+     <br><dt><code>GPG_ERR_CONFLICT</code><dd>This value means that a conflict of some sort occurred.
+
+     <br><dt><code>GPG_ERR_NOT_IMPLEMENTED</code><dd>This value indicates that the specific function (or operation) is not
+implemented.  This error should never happen.  It can only occur if
+you use certain values or configuration options which do not work,
+but for which we think that they should work at some later time.
+
+     <br><dt><code>GPG_ERR_DECRYPT_FAILED</code><dd>This value indicates that a decryption operation was unsuccessful.
+
+     <br><dt><code>GPG_ERR_BAD_PASSPHRASE</code><dd>This value means that the user did not provide a correct passphrase
+when requested.
+
+     <br><dt><code>GPG_ERR_CANCELED</code><dd>This value means that the operation was canceled.
+
+     <br><dt><code>GPG_ERR_INV_ENGINE</code><dd>This value means that the engine that implements the desired protocol
+is currently not available.  This can either be because the sources
+were configured to exclude support for this engine, or because the
+engine is not installed properly.
+
+     <br><dt><code>GPG_ERR_AMBIGUOUS_NAME</code><dd>This value indicates that a user ID or other specifier did not specify
+a unique key.
+
+     <br><dt><code>GPG_ERR_WRONG_KEY_USAGE</code><dd>This value indicates that a key is not used appropriately.
+
+     <br><dt><code>GPG_ERR_CERT_REVOKED</code><dd>This value indicates that a key signature was revoced.
+
+     <br><dt><code>GPG_ERR_CERT_EXPIRED</code><dd>This value indicates that a key signature expired.
+
+     <br><dt><code>GPG_ERR_NO_CRL_KNOWN</code><dd>This value indicates that no certificate revocation list is known for
+the certificate.
+
+     <br><dt><code>GPG_ERR_NO_POLICY_MATCH</code><dd>This value indicates that a policy issue occured.
+
+     <br><dt><code>GPG_ERR_NO_SECKEY</code><dd>This value indicates that no secret key for the user ID is available.
+
+     <br><dt><code>GPG_ERR_MISSING_CERT</code><dd>This value indicates that a key could not be imported because the
+issuer certificate is missing.
+
+     <br><dt><code>GPG_ERR_BAD_CERT_CHAIN</code><dd>This value indicates that a key could not be imported because its
+certificate chain is not good, for example it could be too long.
+
+     <br><dt><code>GPG_ERR_UNSUPPORTED_ALGORITHM</code><dd>This value means a verification failed because the cryptographic
+algorithm is not supported by the crypto backend.
+
+     <br><dt><code>GPG_ERR_BAD_SIGNATURE</code><dd>This value means a verification failed because the signature is bad.
+
+     <br><dt><code>GPG_ERR_NO_PUBKEY</code><dd>This value means a verification failed because the public key is not
+available.
+
+     <br><dt><code>GPG_ERR_USER_1</code><br><dt><code>GPG_ERR_USER_2</code><br><dt><code>...</code><br><dt><code>GPG_ERR_USER_16</code><dd>These error codes are not used by any GnuPG component and can be
+freely used by other software.  Applications using <acronym>GPGME</acronym>
+might use them to mark specific errors returned by callback handlers
+if no suitable error codes (including the system errors) for
+these errors exist already. 
+</dl>
+
+   </body></html>
+

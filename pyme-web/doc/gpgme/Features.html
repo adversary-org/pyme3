@@ -1,0 +1,59 @@
+<html lang="en">
+<head>
+<title>Features - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Introduction.html#Introduction" title="Introduction">
+<link rel="prev" href="Getting-Started.html#Getting-Started" title="Getting Started">
+<link rel="next" href="Overview.html#Overview" title="Overview">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Features"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Overview.html#Overview">Overview</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Getting-Started.html#Getting-Started">Getting Started</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Introduction.html#Introduction">Introduction</a>
+<hr>
+</div>
+
+<h3 class="section">1.2 Features</h3>
+
+<p><acronym>GPGME</acronym> has a couple of advantages over other libraries doing
+a similar job, and over implementing support for GnuPG or other crypto
+engines into your application directly.
+
+     <dl>
+<dt>it's free software<dd>Anybody can use, modify, and redistribute it under the terms of the GNU
+Lesser General Public License (see <a href="Library-Copying.html#Library-Copying">Library Copying</a>).
+
+     <br><dt>it's flexible<dd><acronym>GPGME</acronym> provides transparent support for several cryptographic
+protocols by different engines.  Currently, <acronym>GPGME</acronym> supports
+the OpenPGP protocol using GnuPG as the backend, and the Cryptographic
+Message Syntax using GpgSM as the backend.
+
+     <br><dt>it's easy<dd><acronym>GPGME</acronym> hides the differences between the protocols and
+engines from the programmer behind an easy-to-use interface.  This way
+the programmer can focus on the other parts of the program, and still
+integrate strong cryptography in his application.  Once support for
+<acronym>GPGME</acronym> has been added to a program, it is easy to add support
+for other crypto protocols once <acronym>GPGME</acronym> backends provide them. 
+</dl>
+
+   </body></html>
+

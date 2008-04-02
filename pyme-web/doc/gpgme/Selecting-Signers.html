@@ -1,0 +1,64 @@
+<html lang="en">
+<head>
+<title>Selecting Signers - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Sign.html#Sign" title="Sign">
+<link rel="next" href="Creating-a-Signature.html#Creating-a-Signature" title="Creating a Signature">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Selecting-Signers"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Creating-a-Signature.html#Creating-a-Signature">Creating a Signature</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Sign.html#Sign">Sign</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">7.6.4.1 Selecting Signers</h5>
+
+<p><a name="index-signature_002c-selecting-signers-288"></a><a name="index-signers_002c-selecting-289"></a>
+
+<div class="defun">
+&mdash; Function: void <b>gpgme_signers_clear</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w --></var>)<var><a name="index-gpgme_005fsigners_005fclear-290"></a></var><br>
+<blockquote><p>The function <code>gpgme_signers_clear</code> releases a reference for each
+key on the signers list and removes the list of signers from the
+context <var>ctx</var>.
+
+        <p>Every context starts with an empty list. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_signers_add</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w -->, const&nbsp;gpgme_key_t&nbsp;key<!-- /@w --></var>)<var><a name="index-gpgme_005fsigners_005fadd-291"></a></var><br>
+<blockquote><p>The function <code>gpgme_signers_add</code> adds the key <var>key</var> to the
+list of signers in the context <var>ctx</var>.
+
+        <p>Calling this function acquires an additional reference for the key. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: gpgme_key_t <b>gpgme_signers_enum</b> (<var>const&nbsp;gpgme_ctx_t&nbsp;ctx<!-- /@w -->, int&nbsp;seq<!-- /@w --></var>)<var><a name="index-gpgme_005fsigners_005fenum-292"></a></var><br>
+<blockquote><p>The function <code>gpgme_signers_enum</code> returns the <var>seq</var>th key in
+the list of signers in the context <var>ctx</var>.  An additional reference
+is acquired for the user.
+
+        <p>If <var>seq</var> is out of range, <code>NULL</code> is returned. 
+</p></blockquote></div>
+
+   </body></html>
+

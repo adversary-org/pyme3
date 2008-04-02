@@ -1,0 +1,159 @@
+<html lang="en">
+<head>
+<title>Error Values - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Error-Handling.html#Error-Handling" title="Error Handling">
+<link rel="next" href="Error-Sources.html#Error-Sources" title="Error Sources">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Error-Values"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Error-Sources.html#Error-Sources">Error Sources</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Error-Handling.html#Error-Handling">Error Handling</a>
+<hr>
+</div>
+
+<h3 class="section">5.1 Error Values</h3>
+
+<p><a name="index-error-values-61"></a><a name="index-error-codes-62"></a><a name="index-error-sources-63"></a>
+
+<div class="defun">
+&mdash; Data type: <b>gpgme_err_code_t</b><var><a name="index-gpgme_005ferr_005fcode_005ft-64"></a></var><br>
+<blockquote><p>The <code>gpgme_err_code_t</code> type is an alias for the <code>libgpg-error</code>
+type <code>gpg_err_code_t</code>.  The error code indicates the type of an
+error, or the reason why an operation failed.
+
+        <p>A list of important error codes can be found in the next section. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Data type: <b>gpgme_err_source_t</b><var><a name="index-gpgme_005ferr_005fsource_005ft-65"></a></var><br>
+<blockquote><p>The <code>gpgme_err_source_t</code> type is an alias for the
+<code>libgpg-error</code> type <code>gpg_err_source_t</code>.  The error source
+has not a precisely defined meaning.  Sometimes it is the place where
+the error happened, sometimes it is the place where an error was
+encoded into an error value.  Usually the error source will give an
+indication to where to look for the problem.  This is not always true,
+but it is attempted to achieve this goal.
+
+        <p>A list of important error sources can be found in the next section. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Data type: <b>gpgme_error_t</b><var><a name="index-gpgme_005ferror_005ft-66"></a></var><br>
+<blockquote><p>The <code>gpgme_error_t</code> type is an alias for the <code>libgpg-error</code>
+type <code>gpg_error_t</code>.  An error value like this has always two
+components, an error code and an error source.  Both together form the
+error value.
+
+        <p>Thus, the error value can not be directly compared against an error
+code, but the accessor functions described below must be used. 
+However, it is guaranteed that only 0 is used to indicate success
+(<code>GPG_ERR_NO_ERROR</code>), and that in this case all other parts of
+the error value are set to 0, too.
+
+        <p>Note that in <acronym>GPGME</acronym>, the error source is used purely for
+diagnostical purposes.  Only the error code should be checked to test
+for a certain outcome of a function.  The manual only documents the
+error code part of an error value.  The error source is left
+unspecified and might be anything. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: static inline gpgme_err_code_t <b>gpgme_err_code</b> (<var>gpgme_error_t&nbsp;err<!-- /@w --></var>)<var><a name="index-gpgme_005ferr_005fcode-67"></a></var><br>
+<blockquote><p>The static inline function <code>gpgme_err_code</code> returns the
+<code>gpgme_err_code_t</code> component of the error value <var>err</var>.  This
+function must be used to extract the error code from an error value in
+order to compare it with the <code>GPG_ERR_*</code> error code macros. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: static inline gpgme_err_source_t <b>gpgme_err_source</b> (<var>gpgme_error_t&nbsp;err<!-- /@w --></var>)<var><a name="index-gpgme_005ferr_005fsource-68"></a></var><br>
+<blockquote><p>The static inline function <code>gpgme_err_source</code> returns the
+<code>gpgme_err_source_t</code> component of the error value <var>err</var>.  This
+function must be used to extract the error source from an error value in
+order to compare it with the <code>GPG_ERR_SOURCE_*</code> error source macros. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: static inline gpgme_error_t <b>gpgme_err_make</b> (<var>gpgme_err_source_t&nbsp;source<!-- /@w -->, gpgme_err_code_t&nbsp;code<!-- /@w --></var>)<var><a name="index-gpgme_005ferr_005fmake-69"></a></var><br>
+<blockquote><p>The static inline function <code>gpgme_err_make</code> returns the error
+value consisting of the error source <var>source</var> and the error code
+<var>code</var>.
+
+        <p>This function can be used in callback functions to construct an error
+value to return it to the library. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: static inline gpgme_error_t <b>gpgme_error</b> (<var>gpgme_err_code_t&nbsp;code<!-- /@w --></var>)<var><a name="index-gpgme_005ferror-70"></a></var><br>
+<blockquote><p>The static inline function <code>gpgme_error</code> returns the error value
+consisting of the default error source and the error code <var>code</var>.
+
+        <p>For <acronym>GPGME</acronym> applications, the default error source is
+<code>GPG_ERR_SOURCE_USER_1</code>.  You can define
+<code>GPGME_ERR_SOURCE_DEFAULT</code> before including <samp><span class="file">gpgme.h</span></samp> to
+change this default.
+
+        <p>This function can be used in callback functions to construct an error
+value to return it to the library. 
+</p></blockquote></div>
+
+   <p>The <code>libgpg-error</code> library provides error codes for all system
+error numbers it knows about.  If <var>err</var> is an unknown error
+number, the error code <code>GPG_ERR_UNKNOWN_ERRNO</code> is used.  The
+following functions can be used to construct error values from system
+errnor numbers.
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_err_make_from_errno</b> (<var>gpgme_err_source_t&nbsp;source<!-- /@w -->, int&nbsp;err<!-- /@w --></var>)<var><a name="index-gpgme_005ferr_005fmake_005ffrom_005ferrno-71"></a></var><br>
+<blockquote><p>The function <code>gpgme_err_make_from_errno</code> is like
+<code>gpgme_err_make</code>, but it takes a system error like <code>errno</code>
+instead of a <code>gpgme_err_code_t</code> error code. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_error_from_errno</b> (<var>int&nbsp;err<!-- /@w --></var>)<var><a name="index-gpgme_005ferror_005ffrom_005ferrno-72"></a></var><br>
+<blockquote><p>The function <code>gpgme_error_from_errno</code> is like <code>gpgme_error</code>,
+but it takes a system error like <code>errno</code> instead of a
+<code>gpgme_err_code_t</code> error code. 
+</p></blockquote></div>
+
+   <p>Sometimes you might want to map system error numbers to error codes
+directly, or map an error code representing a system error back to the
+system error number.  The following functions can be used to do that.
+
+<div class="defun">
+&mdash; Function: gpgme_err_code_t <b>gpgme_err_code_from_errno</b> (<var>int&nbsp;err<!-- /@w --></var>)<var><a name="index-gpgme_005ferr_005fcode_005ffrom_005ferrno-73"></a></var><br>
+<blockquote><p>The function <code>gpgme_err_code_from_errno</code> returns the error code
+for the system error <var>err</var>.  If <var>err</var> is not a known system
+error, the function returns <code>GPG_ERR_UNKNOWN_ERRNO</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>gpgme_err_code_to_errno</b> (<var>gpgme_err_code_t&nbsp;err<!-- /@w --></var>)<var><a name="index-gpgme_005ferr_005fcode_005fto_005ferrno-74"></a></var><br>
+<blockquote><p>The function <code>gpgme_err_code_to_errno</code> returns the system error
+for the error code <var>err</var>.  If <var>err</var> is not an error code
+representing a system error, or if this system error is not defined on
+this system, the function returns <code>0</code>. 
+</p></blockquote></div>
+
+   </body></html>
+

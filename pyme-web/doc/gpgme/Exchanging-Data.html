@@ -1,0 +1,58 @@
+<html lang="en">
+<head>
+<title>Exchanging Data - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Error-Handling.html#Error-Handling" title="Error Handling">
+<link rel="next" href="Contexts.html#Contexts" title="Contexts">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Exchanging-Data"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Contexts.html#Contexts">Contexts</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Error-Handling.html#Error-Handling">Error Handling</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="chapter">6 Exchanging Data</h2>
+
+<p><a name="index-data_002c-exchanging-84"></a>
+A lot of data has to be exchanged between the user and the crypto
+engine, like plaintext messages, ciphertext, signatures and
+information about the keys.  The technical details about exchanging
+the data information are completely abstracted by <acronym>GPGME</acronym>. 
+The user provides and receives the data via <code>gpgme_data_t</code> objects,
+regardless of the communication protocol between <acronym>GPGME</acronym> and
+the crypto engine in use.
+
+<div class="defun">
+&mdash; Data type: <b>gpgme_data_t</b><var><a name="index-gpgme_005fdata_005ft-85"></a></var><br>
+<blockquote><p>The <code>gpgme_data_t</code> type is a handle for a container for generic
+data, which is used by <acronym>GPGME</acronym> to exchange data with the user. 
+</p></blockquote></div>
+
+<ul class="menu">
+<li><a accesskey="1" href="Creating-Data-Buffers.html#Creating-Data-Buffers">Creating Data Buffers</a>:          Creating new data buffers. 
+<li><a accesskey="2" href="Destroying-Data-Buffers.html#Destroying-Data-Buffers">Destroying Data Buffers</a>:        Releasing data buffers. 
+<li><a accesskey="3" href="Manipulating-Data-Buffers.html#Manipulating-Data-Buffers">Manipulating Data Buffers</a>:      Operations on data buffers. 
+</ul>
+
+   </body></html>
+

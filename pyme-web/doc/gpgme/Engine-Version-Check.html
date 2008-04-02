@@ -1,0 +1,48 @@
+<html lang="en">
+<head>
+<title>Engine Version Check - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Protocols-and-Engines.html#Protocols-and-Engines" title="Protocols and Engines">
+<link rel="next" href="Engine-Information.html#Engine-Information" title="Engine Information">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Engine-Version-Check"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Engine-Information.html#Engine-Information">Engine Information</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Protocols-and-Engines.html#Protocols-and-Engines">Protocols and Engines</a>
+<hr>
+</div>
+
+<h3 class="section">3.1 Engine Version Check</h3>
+
+<p><a name="index-version-check_002c-of-the-engines-27"></a>
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_engine_check_version</b> (<var>gpgme_protocol_t&nbsp;protocol<!-- /@w --></var>)<var><a name="index-gpgme_005fengine_005fcheck_005fversion-28"></a></var><br>
+<blockquote><p>The function <code>gpgme_engine_check_version</code> verifies that the
+engine implementing the protocol <var>PROTOCOL</var> is installed in the
+expected path and meets the version requirement of <acronym>GPGME</acronym>.
+
+        <p>This function returns the error code <code>GPG_ERR_NO_ERROR</code> if the
+engine is available and <code>GPG_ERR_INV_ENGINE</code> if it is not. 
+</p></blockquote></div>
+
+   </body></html>
+

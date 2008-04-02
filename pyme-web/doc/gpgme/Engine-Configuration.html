@@ -1,0 +1,65 @@
+<html lang="en">
+<head>
+<title>Engine Configuration - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Protocols-and-Engines.html#Protocols-and-Engines" title="Protocols and Engines">
+<link rel="prev" href="Engine-Information.html#Engine-Information" title="Engine Information">
+<link rel="next" href="OpenPGP.html#OpenPGP" title="OpenPGP">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Engine-Configuration"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="OpenPGP.html#OpenPGP">OpenPGP</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Engine-Information.html#Engine-Information">Engine Information</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Protocols-and-Engines.html#Protocols-and-Engines">Protocols and Engines</a>
+<hr>
+</div>
+
+<h3 class="section">3.3 Engine Configuration</h3>
+
+<p><a name="index-engine_002c-configuration-of-33"></a><a name="index-configuration-of-crypto-backend-34"></a>
+You can change the configuration of a backend engine, and thus change
+the executable program and configuration directory to be used.  You
+can make these changes the default or set them for some contexts
+individually.
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_set_engine_info</b> (<var>gpgme_protocol_t&nbsp;proto<!-- /@w -->, const&nbsp;char&nbsp;*file_name<!-- /@w -->, const&nbsp;char&nbsp;*home_dir<!-- /@w --></var>)<var><a name="index-gpgme_005fset_005fengine_005finfo-35"></a></var><br>
+<blockquote><p>The function <code>gpgme_set_engine_info</code> changes the default
+configuration of the crypto engine implementing the protocol
+<var>proto</var>.
+
+        <p><var>file_name</var> is the file name of the executable program
+implementing this protocol, and <var>home_dir</var> is the directory name
+of the configuration directory for this crypto engine.  If
+<var>home_dir</var> is <code>NULL</code>, the engine's default will be used.
+
+        <p>The new defaults are not applied to already created GPGME contexts.
+
+        <p>This function returns the error code <code>GPG_ERR_NO_ERROR</code> if
+successful, or an eror code on failure. 
+</p></blockquote></div>
+
+   <p>The functions <code>gpgme_ctx_get_engine_info</code> and
+<code>gpgme_ctx_set_engine_info</code> can be used to change the engine
+configuration per context.  See <a href="Crypto-Engine.html#Crypto-Engine">Crypto Engine</a>.
+
+   </body></html>
+

@@ -1,0 +1,171 @@
+<html lang="en">
+<head>
+<title>Importing Keys - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Key-Management.html#Key-Management" title="Key Management">
+<link rel="prev" href="Exporting-Keys.html#Exporting-Keys" title="Exporting Keys">
+<link rel="next" href="Deleting-Keys.html#Deleting-Keys" title="Deleting Keys">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Importing-Keys"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Deleting-Keys.html#Deleting-Keys">Deleting Keys</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Exporting-Keys.html#Exporting-Keys">Exporting Keys</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Key-Management.html#Key-Management">Key Management</a>
+<hr>
+</div>
+
+<h4 class="subsection">7.4.7 Importing Keys</h4>
+
+<p><a name="index-key_002c-import-218"></a><a name="index-key-ring_002c-import-to-219"></a>
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_op_import</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w -->, gpgme_data_t&nbsp;keydata<!-- /@w --></var>)<var><a name="index-gpgme_005fop_005fimport-220"></a></var><br>
+<blockquote><p>The function <code>gpgme_op_import</code> adds the keys in the data buffer
+<var>keydata</var> to the key ring of the crypto engine used by <var>ctx</var>. 
+The format of <var>keydata</var> can be <acronym>ASCII</acronym> armored, for example,
+but the details are specific to the crypto engine.
+
+        <p>After the operation completed successfully, the result can be
+retrieved with <code>gpgme_op_import_result</code>.
+
+        <p>The function returns the error code <code>GPG_ERR_NO_ERROR</code> if the
+import was completed successfully, <code>GPG_ERR_INV_VALUE</code> if
+<var>keydata</var> if <var>ctx</var> or <var>keydata</var> is not a valid pointer,
+and <code>GPG_ERR_NO_DATA</code> if <var>keydata</var> is an empty data buffer. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_op_import_start</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w -->, gpgme_data_t&nbsp;keydata<!-- /@w --></var>)<var><a name="index-gpgme_005fop_005fimport_005fstart-221"></a></var><br>
+<blockquote><p>The function <code>gpgme_op_import_start</code> initiates a
+<code>gpgme_op_import</code> operation.  It can be completed by calling
+<code>gpgme_wait</code> on the context.  See <a href="Waiting-For-Completion.html#Waiting-For-Completion">Waiting For Completion</a>.
+
+        <p>The function returns the error code <code>GPG_ERR_NO_ERROR</code> if the
+import could be started successfully, <code>GPG_ERR_INV_VALUE</code> if
+<var>keydata</var> if <var>ctx</var> or <var>keydata</var> is not a valid pointer,
+and <code>GPG_ERR_NO_DATA</code> if <var>keydata</var> is an empty data buffer. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Data type: <b>gpgme_import_status_t</b><var><a name="index-gpgme_005fimport_005fstatus_005ft-222"></a></var><br>
+<blockquote><p>This is a pointer to a structure used to store a part of the result of
+a <code>gpgme_op_import</code> operation.  For each considered key one
+status is added that contains information about the result of the
+import.  The structure contains the following members:
+
+          <dl>
+<dt><code>gpgme_import_status_t next</code><dd>This is a pointer to the next status structure in the linked list, or
+<code>NULL</code> if this is the last element.
+
+          <br><dt><code>char *fpr</code><dd>This is the fingerprint of the key that was considered.
+
+          <br><dt><code>gpgme_error_t result</code><dd>If the import was not successful, this is the error value that caused
+the import to fail.  Otherwise the error code is
+<code>GPG_ERR_NO_ERROR</code>.
+
+          <br><dt><code>unsigned int status</code><dd>This is a bit-wise OR of the following flags that give more
+information about what part of the key was imported.  If the key was
+already known, this might be 0.
+
+               <dl>
+<dt><code>GPGME_IMPORT_NEW</code><dd>The key was new.
+
+               <br><dt><code>GPGME_IMPORT_UID</code><dd>The key contained new user IDs.
+
+               <br><dt><code>GPGME_IMPORT_SIG</code><dd>The key contained new signatures.
+
+               <br><dt><code>GPGME_IMPORT_SUBKEY</code><dd>The key contained new sub keys.
+
+               <br><dt><code>GPGME_IMPORT_SECRET</code><dd>The key contained a secret key. 
+</dl>
+          </dl>
+        </p></blockquote></div>
+
+<div class="defun">
+&mdash; Data type: <b>gpgme_import_result_t</b><var><a name="index-gpgme_005fimport_005fresult_005ft-223"></a></var><br>
+<blockquote><p>This is a pointer to a structure used to store the result of a
+<code>gpgme_op_import</code> operation.  After a successful import
+operation, you can retrieve the pointer to the result with
+<code>gpgme_op_import_result</code>.  The structure contains the following
+members:
+
+          <dl>
+<dt><code>int considered</code><dd>The total number of considered keys.
+
+          <br><dt><code>int no_user_id</code><dd>The number of keys without user ID.
+
+          <br><dt><code>int imported</code><dd>The total number of imported keys.
+
+          <br><dt><code>imported_rsa</code><dd>The number of imported RSA keys.
+
+          <br><dt><code>unchanged</code><dd>The number of unchanged keys.
+
+          <br><dt><code>new_user_ids</code><dd>The number of new user IDs.
+
+          <br><dt><code>new_sub_keys</code><dd>The number of new sub keys.
+
+          <br><dt><code>new_signatures</code><dd>The number of new signatures.
+
+          <br><dt><code>new_revocations</code><dd>The number of new revocations.
+
+          <br><dt><code>secret_read</code><dd>The total number of secret keys read.
+
+          <br><dt><code>secret_imported</code><dd>The number of imported secret keys.
+
+          <br><dt><code>secret_unchanged</code><dd>The number of unchanged secret keys.
+
+          <br><dt><code>not_imported</code><dd>The number of keys not imported.
+
+          <br><dt><code>gpgme_import_status_t imports</code><dd>A list of gpgme_import_status_t objects which contain more information
+about the keys for which an import was attempted. 
+</dl>
+        </p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: gpgme_import_result_t <b>gpgme_op_import_result</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w --></var>)<var><a name="index-gpgme_005fop_005fimport_005fresult-224"></a></var><br>
+<blockquote><p>The function <code>gpgme_op_import_result</code> returns a
+<code>gpgme_import_result_t</code> pointer to a structure holding the result
+of a <code>gpgme_op_import</code> operation.  The pointer is only valid if
+the last operation on the context was a <code>gpgme_op_import</code> or
+<code>gpgme_op_import_start</code> operation, and if this operation finished
+successfully.  The returned pointer is only valid until the next
+operation is started on the context. 
+</p></blockquote></div>
+
+   <p>The following interface is deprecated and only provided for backward
+compatibility.  Don't use it.  It will be removed in a future version
+of <acronym>GPGME</acronym>.
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_op_import_ext</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w -->, gpgme_data_t&nbsp;keydata<!-- /@w -->, int&nbsp;*nr<!-- /@w --></var>)<var><a name="index-gpgme_005fop_005fimport_005fext-225"></a></var><br>
+<blockquote><p>The function <code>gpgme_op_import_ext</code> is equivalent to:
+
+     <pre class="example">            gpgme_error_t err = gpgme_op_import (ctx, keydata);
+            if (!err)
+              {
+                gpgme_import_result_t result = gpgme_op_import_result (ctx);
+                *nr = result-&gt;considered;
+              }
+</pre>
+        </blockquote></div>
+
+   </body></html>
+

@@ -1,0 +1,74 @@
+<html lang="en">
+<head>
+<title>Public Key Algorithms - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Algorithms.html#Algorithms" title="Algorithms">
+<link rel="next" href="Hash-Algorithms.html#Hash-Algorithms" title="Hash Algorithms">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Public-Key-Algorithms"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Hash-Algorithms.html#Hash-Algorithms">Hash Algorithms</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Algorithms.html#Algorithms">Algorithms</a>
+<hr>
+</div>
+
+<h3 class="section">4.1 Public Key Algorithms</h3>
+
+<p><a name="index-algorithms_002c-public-key-48"></a><a name="index-public-key-algorithms-49"></a>
+Public key algorithms are used for encryption, decryption, signing and
+verification of signatures.
+
+<div class="defun">
+&mdash; Data type: <b>enum gpgme_pubkey_algo_t</b><var><a name="index-enum-gpgme_005fpubkey_005falgo_005ft-50"></a></var><br>
+<blockquote><p><a name="index-gpgme_005fpubkey_005falgo_005ft-51"></a>The <code>gpgme_pubkey_algo_t</code> type specifies the set of all public key
+algorithms that are supported by <acronym>GPGME</acronym>.  Possible values
+are:
+
+          <dl>
+<dt><code>GPGME_PK_RSA</code><dd>This value indicates the RSA (Rivest, Shamir, Adleman) algorithm.
+
+          <br><dt><code>GPGME_PK_RSA_E</code><dd>Deprecated.  This value indicates the RSA (Rivest, Shamir, Adleman)
+algorithm for encryption and decryption only.
+
+          <br><dt><code>GPGME_PK_RSA_S</code><dd>Deprecated.  This value indicates the RSA (Rivest, Shamir, Adleman)
+algorithm for signing and verification only.
+
+          <br><dt><code>GPGME_PK_DSA</code><dd>This value indicates DSA, the Digital Signature Algorithm.
+
+          <br><dt><code>GPGME_PK_ELG</code><dd>This value indicates ElGamal.
+
+          <br><dt><code>GPGME_PK_ELG_E</code><dd>This value also indicates ElGamal and is used specifically in GnuPG. 
+</dl>
+        </p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: const char * <b>gpgme_pubkey_algo_name</b> (<var>gpgme_pubkey_algo_t&nbsp;algo<!-- /@w --></var>)<var><a name="index-gpgme_005fpubkey_005falgo_005fname-52"></a></var><br>
+<blockquote><p>The function <code>gpgme_pubkey_algo_name</code> returns a pointer to a
+statically allocated string containing a description of the public key
+algorithm <var>algo</var>.  This string can be used to output the name of
+the public key algorithm to the user.
+
+        <p>If <var>algo</var> is not a valid public key algorithm, <code>NULL</code> is
+returned. 
+</p></blockquote></div>
+
+   </body></html>
+

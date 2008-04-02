@@ -1,0 +1,53 @@
+<html lang="en">
+<head>
+<title>Run Control - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Contexts.html#Contexts" title="Contexts">
+<link rel="prev" href="Crypto-Operations.html#Crypto-Operations" title="Crypto Operations">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Run-Control"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Crypto-Operations.html#Crypto-Operations">Crypto Operations</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Contexts.html#Contexts">Contexts</a>
+<hr>
+</div>
+
+<h3 class="section">7.7 Run Control</h3>
+
+<p><a name="index-run-control-314"></a><a name="index-cryptographic-operation_002c-running-315"></a>
+<acronym>GPGME</acronym> supports running operations synchronously and
+asynchronously.  You can use asynchronous operation to set up a
+context up to initiating the desired operation, but delay performing
+it to a later point.
+
+   <p>Furthermore, you can use an external event loop to control exactly
+when <acronym>GPGME</acronym> runs.  This ensures that <acronym>GPGME</acronym> only
+runs when necessary and also prevents it from blocking for a long
+time.
+
+<ul class="menu">
+<li><a accesskey="1" href="Waiting-For-Completion.html#Waiting-For-Completion">Waiting For Completion</a>:         Waiting until an operation is completed. 
+<li><a accesskey="2" href="Using-External-Event-Loops.html#Using-External-Event-Loops">Using External Event Loops</a>:     Advanced control over what happens when. 
+<li><a accesskey="3" href="Cancellation.html#Cancellation">Cancellation</a>:                   How to end pending operations prematurely. 
+</ul>
+
+   </body></html>
+

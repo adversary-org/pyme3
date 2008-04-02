@@ -1,0 +1,63 @@
+<html lang="en">
+<head>
+<title>Text Mode - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Context-Attributes.html#Context-Attributes" title="Context Attributes">
+<link rel="prev" href="ASCII-Armor.html#ASCII-Armor" title="ASCII Armor">
+<link rel="next" href="Included-Certificates.html#Included-Certificates" title="Included Certificates">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Text-Mode"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Included-Certificates.html#Included-Certificates">Included Certificates</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="ASCII-Armor.html#ASCII-Armor">ASCII Armor</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Context-Attributes.html#Context-Attributes">Context Attributes</a>
+<hr>
+</div>
+
+<h4 class="subsection">7.3.4 Text Mode</h4>
+
+<p><a name="index-context_002c-text-mode-146"></a><a name="index-text-mode-147"></a><a name="index-canonical-text-mode-148"></a>
+
+<div class="defun">
+&mdash; Function: void <b>gpgme_set_textmode</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w -->, int&nbsp;yes<!-- /@w --></var>)<var><a name="index-gpgme_005fset_005ftextmode-149"></a></var><br>
+<blockquote><p>The function <code>gpgme_set_textmode</code> specifies if canonical text mode
+should be used.  By default, text mode is not used.
+
+        <p>Text mode is for example used for the RFC2015 signatures; note that
+the updated RFC 3156 mandates that the mail user agent does some
+preparations so that text mode is not needed anymore.
+
+        <p>This option is only relevant to the OpenPGP crypto engine, and ignored
+by all other engines.
+
+        <p>Canonical text mode is disabled if <var>yes</var> is zero, and enabled
+otherwise. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>gpgme_get_textmode</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w --></var>)<var><a name="index-gpgme_005fget_005ftextmode-150"></a></var><br>
+<blockquote><p>The function <code>gpgme_get_textmode</code> returns 1 if canonical text
+mode is enabled, and <code>0</code> if it is not, or if <var>ctx</var> is not a
+valid pointer. 
+</p></blockquote></div>
+
+   </body></html>
+

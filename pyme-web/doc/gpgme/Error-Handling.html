@@ -1,0 +1,72 @@
+<html lang="en">
+<head>
+<title>Error Handling - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Algorithms.html#Algorithms" title="Algorithms">
+<link rel="next" href="Exchanging-Data.html#Exchanging-Data" title="Exchanging Data">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Error-Handling"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Exchanging-Data.html#Exchanging-Data">Exchanging Data</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Algorithms.html#Algorithms">Algorithms</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="chapter">5 Error Handling</h2>
+
+<p><a name="index-error-handling-60"></a>
+Many functions in <acronym>GPGME</acronym> can return an error if they fail. 
+For this reason, the application should always catch the error
+condition and take appropriate measures, for example by releasing the
+resources and passing the error up to the caller, or by displaying a
+descriptive message to the user and cancelling the operation.
+
+   <p>Some error values do not indicate a system error or an error in the
+operation, but the result of an operation that failed properly.  For
+example, if you try to decrypt a tempered message, the decryption will
+fail.  Another error value actually means that the end of a data
+buffer or list has been reached.  The following descriptions explain
+for many error codes what they mean usually.  Some error values have
+specific meanings if returned by a certain functions.  Such cases are
+described in the documentation of those functions.
+
+   <p><acronym>GPGME</acronym> uses the <code>libgpg-error</code> library.  This allows to
+share the error codes with other components of the GnuPG system, and
+thus pass error values transparently from the crypto engine, or some
+helper application of the crypto engine, to the user.  This way no
+information is lost.  As a consequence, <acronym>GPGME</acronym> does not use
+its own identifiers for error codes, but uses those provided by
+<code>libgpg-error</code>.  They usually start with <code>GPG_ERR_</code>.
+
+   <p>However, <acronym>GPGME</acronym> does provide aliases for the functions
+defined in libgpg-error, which might be preferred for name space
+consistency.
+
+<ul class="menu">
+<li><a accesskey="1" href="Error-Values.html#Error-Values">Error Values</a>:                   The error value and what it means. 
+<li><a accesskey="2" href="Error-Sources.html#Error-Sources">Error Sources</a>:                  A list of important error sources. 
+<li><a accesskey="3" href="Error-Codes.html#Error-Codes">Error Codes</a>:                    A list of important error codes. 
+<li><a accesskey="4" href="Error-Strings.html#Error-Strings">Error Strings</a>:                  How to get a descriptive string from a value. 
+</ul>
+
+   </body></html>
+

@@ -1,0 +1,260 @@
+<html lang="en">
+<head>
+<title>Key Management - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Contexts.html#Contexts" title="Contexts">
+<link rel="prev" href="Context-Attributes.html#Context-Attributes" title="Context Attributes">
+<link rel="next" href="Trust-Item-Management.html#Trust-Item-Management" title="Trust Item Management">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Key-Management"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Trust-Item-Management.html#Trust-Item-Management">Trust Item Management</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Context-Attributes.html#Context-Attributes">Context Attributes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Contexts.html#Contexts">Contexts</a>
+<hr>
+</div>
+
+<h3 class="section">7.4 Key Management</h3>
+
+<p><a name="index-key-management-173"></a>
+Some of the cryptographic operations require that recipients or
+signers are specified.  This is always done by specifying the
+respective keys that should be used for the operation.  The following
+section describes how such keys can be selected and manipulated.
+
+<div class="defun">
+&mdash; Data type: <b>gpgme_sub_key_t</b><var><a name="index-gpgme_005fsub_005fkey_005ft-174"></a></var><br>
+<blockquote><p>The <code>gpgme_sub_key_t</code> type is a pointer to a subkey structure. 
+Sub keys are one component of a <code>gpgme_key_t</code> object.  In fact,
+subkeys are those parts that contains the real information about the
+individual cryptographic keys that belong to the same key object.  One
+<code>gpgme_key_t</code> can contain several subkeys.  The first subkey in
+the linked list is also called the primary key.
+
+        <p>The subkey structure has the following members:
+
+          <dl>
+<dt><code>gpgme_sub_key_t next</code><dd>This is a pointer to the next subkey structure in the linked list, or
+<code>NULL</code> if this is the last element.
+
+          <br><dt><code>unsigned int revoked : 1</code><dd>This is true if the subkey is revoked.
+
+          <br><dt><code>unsigned int expired : 1</code><dd>This is true if the subkey is expired.
+
+          <br><dt><code>unsigned int disabled : 1</code><dd>This is true if the subkey is disabled.
+
+          <br><dt><code>unsigned int invalid : 1</code><dd>This is true if the subkey is invalid.
+
+          <br><dt><code>unsigned int can_encrypt : 1</code><dd>This is true if the subkey can be used for encryption.
+
+          <br><dt><code>unsigned int can_sign : 1</code><dd>This is true if the subkey can be used to create data signatures.
+
+          <br><dt><code>unsigned int can_certify : 1</code><dd>This is true if the subkey can be used to create key certificates.
+
+          <br><dt><code>unsigned int can_authenticate : 1</code><dd>This is true if the subkey can be used for authentication.
+
+          <br><dt><code>unsigned int is_qualified : 1</code><dd>This is true if the subkey can be used for qualified signatures
+according to local government regulations.
+
+          <br><dt><code>unsigned int secret : 1</code><dd>This is true if the subkey is a secret key.  Note that it will be false
+if the key is actually a stub key; i.e. a secret key operation is
+currently not possible (offline-key).
+
+          <br><dt><code>gpgme_pubkey_algo_t pubkey_algo</code><dd>This is the public key algorithm supported by this subkey.
+
+          <br><dt><code>unsigned int length</code><dd>This is the length of the subkey (in bits).
+
+          <br><dt><code>char *keyid</code><dd>This is the key ID of the subkey in hexadecimal digits.
+
+          <br><dt><code>char *fpr</code><dd>This is the fingerprint of the subkey in hexadecimal digits, if
+available.
+
+          <br><dt><code>long int timestamp</code><dd>This is the creation timestamp of the subkey.  This is -1 if the
+timestamp is invalid, and 0 if it is not available.
+
+          <br><dt><code>long int expires</code><dd>This is the expiration timestamp of the subkey, or 0 if the subkey
+does not expire. 
+</dl>
+        </p></blockquote></div>
+
+<div class="defun">
+&mdash; Data type: <b>gpgme_key_sig_t</b><var><a name="index-gpgme_005fkey_005fsig_005ft-175"></a></var><br>
+<blockquote><p>The <code>gpgme_key_sig_t</code> type is a pointer to a key signature structure. 
+Key signatures are one component of a <code>gpgme_key_t</code> object, and
+validate user IDs on the key.
+
+        <p>The signatures on a key are only available if the key was retrieved
+via a listing operation with the <code>GPGME_KEYLIST_MODE_SIGS</code> mode
+enabled, because it can be expensive to retrieve all signatures of a
+key.
+
+        <p>The signature notations on a key signature are only available if the
+key was retrieved via a listing operation with the
+<code>GPGME_KEYLIST_MODE_SIG_NOTATIONS</code> mode enabled, because it can
+be expensive to retrieve all signature notations.
+
+        <p>The key signature structure has the following members:
+
+          <dl>
+<dt><code>gpgme_key_sig_t next</code><dd>This is a pointer to the next key signature structure in the linked
+list, or <code>NULL</code> if this is the last element.
+
+          <br><dt><code>unsigned int revoked : 1</code><dd>This is true if the key signature is a revocation signature.
+
+          <br><dt><code>unsigned int expired : 1</code><dd>This is true if the key signature is expired.
+
+          <br><dt><code>unsigned int invalid : 1</code><dd>This is true if the key signature is invalid.
+
+          <br><dt><code>unsigned int exportable : 1</code><dd>This is true if the key signature is exportable.
+
+          <br><dt><code>gpgme_pubkey_algo_t pubkey_algo</code><dd>This is the public key algorithm used to create the signature.
+
+          <br><dt><code>char *keyid</code><dd>This is the key ID of the key (in hexadecimal digits) used to create
+the signature.
+
+          <br><dt><code>long int timestamp</code><dd>This is the creation timestamp of the key signature.  This is -1 if
+the timestamp is invalid, and 0 if it is not available.
+
+          <br><dt><code>long int expires</code><dd>This is the expiration timestamp of the key signature, or 0 if the key
+signature does not expire.
+
+          <br><dt><code>gpgme_error_t status</code><dd>This is the status of the signature and has the same meaning as the
+member of the same name in a <code>gpgme_signature_t</code> object.
+
+          <br><dt><code>unsigned int sig_class</code><dd>This specifies the signature class of the key signature.  The meaning
+is specific to the crypto engine.
+
+          <br><dt><code>char *uid</code><dd>This is the main user ID of the key used to create the signature.
+
+          <br><dt><code>char *name</code><dd>This is the name component of <code>uid</code>, if available.
+
+          <br><dt><code>char *comment</code><dd>This is the comment component of <code>uid</code>, if available.
+
+          <br><dt><code>char *email</code><dd>This is the email component of <code>uid</code>, if available.
+
+          <br><dt><code>gpgme_sig_notation_t notations</code><dd>This is a linked list with the notation data and policy URLs. 
+</dl>
+        </p></blockquote></div>
+
+<div class="defun">
+&mdash; Data type: <b>gpgme_user_id_t</b><var><a name="index-gpgme_005fuser_005fid_005ft-176"></a></var><br>
+<blockquote><p>A user ID is a component of a <code>gpgme_key_t</code> object.  One key can
+have many user IDs.  The first one in the list is the main (or
+primary) user ID.
+
+        <p>The user ID structure has the following members.
+
+          <dl>
+<dt><code>gpgme_user_id_t next</code><dd>This is a pointer to the next user ID structure in the linked list, or
+<code>NULL</code> if this is the last element.
+
+          <br><dt><code>unsigned int revoked : 1</code><dd>This is true if the user ID is revoked.
+
+          <br><dt><code>unsigned int invalid : 1</code><dd>This is true if the user ID is invalid.
+
+          <br><dt><code>gpgme_validity_t validity</code><dd>This specifies the validity of the user ID.
+
+          <br><dt><code>char *uid</code><dd>This is the user ID string.
+
+          <br><dt><code>char *name</code><dd>This is the name component of <code>uid</code>, if available.
+
+          <br><dt><code>char *comment</code><dd>This is the comment component of <code>uid</code>, if available.
+
+          <br><dt><code>char *email</code><dd>This is the email component of <code>uid</code>, if available.
+
+          <br><dt><code>gpgme_key_sig_t signatures</code><dd>This is a linked list with the signatures on this user ID. 
+</dl>
+        </p></blockquote></div>
+
+<div class="defun">
+&mdash; Data type: <b>gpgme_key_t</b><var><a name="index-gpgme_005fkey_005ft-177"></a></var><br>
+<blockquote><p>The <code>gpgme_key_t</code> type is a pointer to a key object.  It has the
+following members:
+
+          <dl>
+<dt><code>gpgme_keylist_mode_t keylist_mode</code><dd>The keylist mode that was active when the key was retrieved.
+
+          <br><dt><code>unsigned int revoked : 1</code><dd>This is true if the key is revoked.
+
+          <br><dt><code>unsigned int expired : 1</code><dd>This is true if the key is expired.
+
+          <br><dt><code>unsigned int disabled : 1</code><dd>This is true if the key is disabled.
+
+          <br><dt><code>unsigned int invalid : 1</code><dd>This is true if the key is invalid. This might have several reasons,
+for a example for the S/MIME backend, it will be set in during key
+listsing if the key could not be validated due to a missing
+certificates or unmatched policies.
+
+          <br><dt><code>unsigned int can_encrypt : 1</code><dd>This is true if the key (ie one of its subkeys) can be used for
+encryption.
+
+          <br><dt><code>unsigned int can_sign : 1</code><dd>This is true if the key (ie one of its subkeys) can be used to create
+data signatures.
+
+          <br><dt><code>unsigned int can_certify : 1</code><dd>This is true if the key (ie one of its subkeys) can be used to create
+key certificates.
+
+          <br><dt><code>unsigned int can_authenticate : 1</code><dd>This is true if the key (ie one of its subkeys) can be used for
+authentication.
+
+          <br><dt><code>unsigned int is_qualified : 1</code><dd>This is true if the key can be used for qualified signatures according
+to local government regulations.
+
+          <br><dt><code>unsigned int secret : 1</code><dd>This is true if the key is a secret key.  Note, that this will always be
+true even if the corresponding subkey flag may be false (offline/stub
+keys).
+
+          <br><dt><code>gpgme_protocol_t protocol</code><dd>This is the protocol supported by this key.
+
+          <br><dt><code>char *issuer_serial</code><dd>If <code>protocol</code> is <code>GPGME_PROTOCOL_CMS</code>, then this is the
+issuer serial.
+
+          <br><dt><code>char *issuer_name</code><dd>If <code>protocol</code> is <code>GPGME_PROTOCOL_CMS</code>, then this is the
+issuer name.
+
+          <br><dt><code>char *chain_id</code><dd>If <code>protocol</code> is <code>GPGME_PROTOCOL_CMS</code>, then this is the
+chain ID, which can be used to built the certificate chain.
+
+          <br><dt><code>gpgme_validity_t owner_trust</code><dd>If <code>protocol</code> is <code>GPGME_PROTOCOL_OpenPGP</code>, then this is the
+owner trust.
+
+          <br><dt><code>gpgme_sub_key_t subkeys</code><dd>This is a linked list with the subkeys of the key.  The first subkey
+in the list is the primary key and usually available.
+
+          <br><dt><code>gpgme_user_id_t uids</code><dd>This is a linked list with the user IDs of the key.  The first user ID
+in the list is the main (or primary) user ID. 
+</dl>
+        </p></blockquote></div>
+
+<ul class="menu">
+<li><a accesskey="1" href="Listing-Keys.html#Listing-Keys">Listing Keys</a>:                   Browsing the list of available keys. 
+<li><a accesskey="2" href="Information-About-Keys.html#Information-About-Keys">Information About Keys</a>:         Requesting detailed information about keys. 
+<li><a accesskey="3" href="Key-Signatures.html#Key-Signatures">Key Signatures</a>:                 Listing the signatures on a key. 
+<li><a accesskey="4" href="Manipulating-Keys.html#Manipulating-Keys">Manipulating Keys</a>:              Operations on keys. 
+<li><a accesskey="5" href="Generating-Keys.html#Generating-Keys">Generating Keys</a>:                Creating new key pairs. 
+<li><a accesskey="6" href="Exporting-Keys.html#Exporting-Keys">Exporting Keys</a>:                 Retrieving key data from the key ring. 
+<li><a accesskey="7" href="Importing-Keys.html#Importing-Keys">Importing Keys</a>:                 Adding keys to the key ring. 
+<li><a accesskey="8" href="Deleting-Keys.html#Deleting-Keys">Deleting Keys</a>:                  Removing keys from the key ring. 
+<li><a accesskey="9" href="Advanced-Key-Editing.html#Advanced-Key-Editing">Advanced Key Editing</a>:           Advanced key edit operation. 
+</ul>
+
+   </body></html>
+

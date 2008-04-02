@@ -1,0 +1,99 @@
+<html lang="en">
+<head>
+<title>Key Listing Mode - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Context-Attributes.html#Context-Attributes" title="Context Attributes">
+<link rel="prev" href="Included-Certificates.html#Included-Certificates" title="Included Certificates">
+<link rel="next" href="Passphrase-Callback.html#Passphrase-Callback" title="Passphrase Callback">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Key-Listing-Mode"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Passphrase-Callback.html#Passphrase-Callback">Passphrase Callback</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Included-Certificates.html#Included-Certificates">Included Certificates</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Context-Attributes.html#Context-Attributes">Context Attributes</a>
+<hr>
+</div>
+
+<h4 class="subsection">7.3.6 Key Listing Mode</h4>
+
+<p><a name="index-key-listing-mode-154"></a><a name="index-key-listing_002c-mode-of-155"></a>
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_set_keylist_mode</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w -->, gpgme_keylist_mode_t&nbsp;mode<!-- /@w --></var>)<var><a name="index-gpgme_005fset_005fkeylist_005fmode-156"></a></var><br>
+<blockquote><p>The function <code>gpgme_set_keylist_mode</code> changes the default
+behaviour of the key listing functions.  The value in <var>mode</var> is a
+bitwise-or combination of one or multiple of the following bit values:
+
+          <dl>
+<dt><code>GPGME_KEYLIST_MODE_LOCAL</code><dd>The <code>GPGME_KEYLIST_MODE_LOCAL</code> symbol specifies that the local
+keyring should be searched for keys in the keylisting operation.  This
+is the default.
+
+          <br><dt><code>GPGME_KEYLIST_MODE_EXTERN</code><dd>The <code>GPGME_KEYLIST_MODE_EXTERN</code> symbol specifies that an external
+source should be searched for keys in the keylisting
+operation.  The type of external source is dependant on the crypto
+engine used.  For example, it can be a remote keyserver or LDAP
+certificate server.
+
+          <br><dt><code>GPGME_KEYLIST_MODE_SIGS</code><dd>The <code>GPGME_KEYLIST_MODE_SIGS</code> symbol specifies that the key
+signatures should be included in the listed keys.
+
+          <br><dt><code>GPGME_KEYLIST_MODE_SIG_NOTATIONS</code><dd>The <code>GPGME_KEYLIST_MODE_SIG_NOTATIONS</code> symbol specifies that the
+signature notations on key signatures should be included in the listed
+keys.  This only works if <code>GPGME_KEYLIST_MODE_SIGS</code> is also
+enabled.
+
+          <br><dt><code>GPGME_KEYLIST_MODE_VALIDATE</code><dd>The <code>GPGME_KEYLIST_MODE_VALIDATE</code> symbol specifies that the
+backend should do key or certificate validation and not just get the
+validity information from an internal cache.  This might be an
+expensive operation and is in general not useful.  Currently only
+implemented for the S/MIME backend and ignored for other backends.
+
+        </dl>
+
+        <p>At least one of <code>GPGME_KEYLIST_MODE_LOCAL</code> and
+<code>GPGME_KEYLIST_MODE_EXTERN</code> must be specified.  For future binary
+compatibility, you should get the current mode with
+<code>gpgme_get_keylist_mode</code> and modify it by setting or clearing the
+appropriate bits, and then using that calulcated value in the
+<code>gpgme_set_keylisting_mode</code> operation.  This will leave all other
+bits in the mode value intact (in particular those that are not used
+in the current version of the library).
+
+        <p>The function returns the error code <code>GPG_ERR_NO_ERROR</code> if the
+mode could be set correctly, and <code>GPG_ERR_INV_VALUE</code> if <var>ctx</var>
+is not a valid pointer or <var>mode</var> is not a valid mode. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: gpgme_keylist_mode_t <b>gpgme_get_keylist_mode</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w --></var>)<var><a name="index-gpgme_005fget_005fkeylist_005fmode-157"></a></var><br>
+<blockquote><p>The function <code>gpgme_get_keylist_mode</code> returns the current key
+listing mode of the context <var>ctx</var>.  This value can then be
+modified and used in a subsequent <code>gpgme_set_keylist_mode</code>
+operation to only affect the desired bits (and leave all others
+intact).
+
+        <p>The function returns 0 if <var>ctx</var> is not a valid pointer, and the
+current mode otherwise.  Note that 0 is not a valid mode value. 
+</p></blockquote></div>
+
+   </body></html>
+

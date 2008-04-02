@@ -1,0 +1,207 @@
+<html lang="en">
+<head>
+<title>Information About Keys - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Key-Management.html#Key-Management" title="Key Management">
+<link rel="prev" href="Listing-Keys.html#Listing-Keys" title="Listing Keys">
+<link rel="next" href="Key-Signatures.html#Key-Signatures" title="Key Signatures">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Information-About-Keys"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Key-Signatures.html#Key-Signatures">Key Signatures</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Listing-Keys.html#Listing-Keys">Listing Keys</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Key-Management.html#Key-Management">Key Management</a>
+<hr>
+</div>
+
+<h4 class="subsection">7.4.2 Information About Keys</h4>
+
+<p><a name="index-key_002c-information-about-190"></a><a name="index-key_002c-attributes-191"></a><a name="index-attributes_002c-of-a-key-192"></a>
+Please see the beginning of this section for more information about
+<code>gpgme_key_t</code> objects.
+
+<div class="defun">
+&mdash; Data type: <b>gpgme_validity_t</b><var><a name="index-gpgme_005fvalidity_005ft-193"></a></var><br>
+<blockquote><p>The <code>gpgme_validity_t</code> type is used to specify the validity of a user ID
+in a key.  The following validities are defined:
+
+          <dl>
+<dt><code>GPGME_VALIDITY_UNKNOWN</code><dd>The user ID is of unknown validity.  The string representation of this
+validity is &ldquo;?&rdquo;.
+
+          <br><dt><code>GPGME_VALIDITY_UNDEFINED</code><dd>The validity of the user ID is undefined.  The string representation of this
+validity is &ldquo;q&rdquo;.
+
+          <br><dt><code>GPGME_VALIDITY_NEVER</code><dd>The user ID is never valid.  The string representation of this
+validity is &ldquo;n&rdquo;.
+
+          <br><dt><code>GPGME_VALIDITY_MARGINAL</code><dd>The user ID is marginally valid.  The string representation of this
+validity is &ldquo;m&rdquo;.
+
+          <br><dt><code>GPGME_VALIDITY_FULL</code><dd>The user ID is fully valid.  The string representation of this
+validity is &ldquo;f&rdquo;.
+
+          <br><dt><code>GPGME_VALIDITY_ULTIMATE</code><dd>The user ID is ultimately valid.  The string representation of this
+validity is &ldquo;u&rdquo;. 
+</dl>
+        </p></blockquote></div>
+
+   <p>The following interfaces are deprecated and only provided for backward
+compatibility.  Don't use them.  They will be removed in a future
+version of <acronym>GPGME</acronym>.
+
+<div class="defun">
+&mdash; Data type: <b>gpgme_attr_t</b><var><a name="index-gpgme_005fattr_005ft-194"></a></var><br>
+<blockquote><p>The <code>gpgme_attr_t</code> type is used to specify a key or trust item
+attribute.  The following attributes are defined:
+
+          <dl>
+<dt><code>GPGME_ATTR_KEYID</code><dd>This is the key ID of a sub key.  It is representable as a string.
+
+          <p>For trust items, the trust item refers to the key with this ID.
+
+          <br><dt><code>GPGME_ATTR_FPR</code><dd>This is the fingerprint of a sub key.  It is representable as a
+string.
+
+          <br><dt><code>GPGME_ATTR_ALGO</code><dd>This is the crypto algorithm for which the sub key can be used.  It
+is representable as a string and as a number.  The numbers correspond
+to the <code>enum gcry_pk_algos</code> values in the gcrypt library.
+
+          <br><dt><code>GPGME_ATTR_LEN</code><dd>This is the key length of a sub key.  It is representable as a
+number.
+
+          <br><dt><code>GPGME_ATTR_CREATED</code><dd>This is the timestamp at creation time of a sub key.  It is
+representable as a number.
+
+          <br><dt><code>GPGME_ATTR_EXPIRE</code><dd>This is the expiration time of a sub key.  It is representable as a
+number.
+
+          <br><dt><code>GPGME_ATTR_OTRUST</code><dd>XXX FIXME  (also for trust items)
+
+          <br><dt><code>GPGME_ATTR_USERID</code><dd>This is a user ID.  There can be more than one user IDs in a
+<var>gpgme_key_t</var> object.  The first one (with index 0) is the primary
+user ID.  The user ID is representable as a number.
+
+          <p>For trust items, this is the user ID associated with this trust item.
+
+          <br><dt><code>GPGME_ATTR_NAME</code><dd>This is the name belonging to a user ID.  It is representable as a string.
+
+          <br><dt><code>GPGME_ATTR_EMAIL</code><dd>This is the email address belonging to a user ID.  It is representable
+as a string.
+
+          <br><dt><code>GPGME_ATTR_COMMENT</code><dd>This is the comment belonging to a user ID.  It is representable as a
+string.
+
+          <br><dt><code>GPGME_ATTR_VALIDITY</code><dd>This is the validity belonging to a user ID.  It is representable as a
+string and as a number.  See below for a list of available validities.
+
+          <p>For trust items, this is the validity that is associated with this
+trust item.
+
+          <br><dt><code>GPGME_ATTR_UID_REVOKED</code><dd>This specifies if a user ID is revoked.  It is representable as a
+number, and is <code>1</code> if the user ID is revoked, and <code>0</code>
+otherwise.
+
+          <br><dt><code>GPGME_ATTR_UID_INVALID</code><dd>This specifies if a user ID is invalid.  It is representable as a
+number, and is <code>1</code> if the user ID is invalid, and <code>0</code>
+otherwise.
+
+          <br><dt><code>GPGME_ATTR_LEVEL</code><dd>This is the trust level of a trust item.
+
+          <br><dt><code>GPGME_ATTR_TYPE</code><dd>This returns information about the type of key.  For the string function
+this will eother be "PGP" or "X.509".  The integer function returns 0
+for PGP and 1 for X.509.  It is also used for the type of a trust item.
+
+          <br><dt><code>GPGME_ATTR_IS_SECRET</code><dd>This specifies if the key is a secret key.  It is representable as a
+number, and is <code>1</code> if the key is revoked, and <code>0</code> otherwise.
+
+          <br><dt><code>GPGME_ATTR_KEY_REVOKED</code><dd>This specifies if a sub key is revoked.  It is representable as a
+number, and is <code>1</code> if the key is revoked, and <code>0</code> otherwise.
+
+          <br><dt><code>GPGME_ATTR_KEY_INVALID</code><dd>This specifies if a sub key is invalid.  It is representable as a
+number, and is <code>1</code> if the key is invalid, and <code>0</code> otherwise.
+
+          <br><dt><code>GPGME_ATTR_KEY_EXPIRED</code><dd>This specifies if a sub key is expired.  It is representable as a
+number, and is <code>1</code> if the key is expired, and <code>0</code> otherwise.
+
+          <br><dt><code>GPGME_ATTR_KEY_DISABLED</code><dd>This specifies if a sub key is disabled.  It is representable as a
+number, and is <code>1</code> if the key is disabled, and <code>0</code> otherwise.
+
+          <br><dt><code>GPGME_ATTR_KEY_CAPS</code><dd>This is a description of the capabilities of a sub key.  It is
+representable as a string.  The string contains the letter &ldquo;e&rdquo; if
+the key can be used for encryption, &ldquo;s&rdquo; if the key can be used for
+signatures, and &ldquo;c&rdquo; if the key can be used for certifications.
+
+          <br><dt><code>GPGME_ATTR_CAN_ENCRYPT</code><dd>This specifies if a sub key can be used for encryption.  It is
+representable as a number, and is <code>1</code> if the sub key can be used
+for encryption, and <code>0</code> otherwise.
+
+          <br><dt><code>GPGME_ATTR_CAN_SIGN</code><dd>This specifies if a sub key can be used to create data signatures.  It
+is representable as a number, and is <code>1</code> if the sub key can be
+used for signatures, and <code>0</code> otherwise.
+
+          <br><dt><code>GPGME_ATTR_CAN_CERTIFY</code><dd>This specifies if a sub key can be used to create key certificates. 
+It is representable as a number, and is <code>1</code> if the sub key can be
+used for certifications, and <code>0</code> otherwise.
+
+          <br><dt><code>GPGME_ATTR_SERIAL</code><dd>The X.509 issuer serial attribute of the key.  It is representable as
+a string.
+
+          <br><dt><code>GPGME_ATTR_ISSUE</code><dd>The X.509 issuer name attribute of the key.  It is representable as a
+string.
+
+          <br><dt><code>GPGME_ATTR_CHAINID</code><dd>The X.509 chain ID can be used to build the certification chain.  It
+is representable as a string. 
+</dl>
+        </p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: const char * <b>gpgme_key_get_string_attr</b> (<var>gpgme_key_t&nbsp;key<!-- /@w -->, gpgme_attr_t&nbsp;what<!-- /@w -->, const&nbsp;void&nbsp;*reserved<!-- /@w -->, int&nbsp;idx<!-- /@w --></var>)<var><a name="index-gpgme_005fkey_005fget_005fstring_005fattr-195"></a></var><br>
+<blockquote><p>The function <code>gpgme_key_get_string_attr</code> returns the value of the
+string-representable attribute <var>what</var> of key <var>key</var>.  If the
+attribute is an attribute of a sub key or an user ID, <var>idx</var>
+specifies the sub key or user ID of which the attribute value is
+returned.  The argument <var>reserved</var> is reserved for later use and
+should be <code>NULL</code>.
+
+        <p>The string returned is only valid as long as the key is valid.
+
+        <p>The function returns <code>0</code> if an attribute can't be returned as a
+string, <var>key</var> is not a valid pointer, <var>idx</var> out of range,
+or <var>reserved</var> not <code>NULL</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: unsigned long <b>gpgme_key_get_ulong_attr</b> (<var>gpgme_key_t&nbsp;key<!-- /@w -->, gpgme_attr_t&nbsp;what<!-- /@w -->, const&nbsp;void&nbsp;*reserved<!-- /@w -->, int&nbsp;idx<!-- /@w --></var>)<var><a name="index-gpgme_005fkey_005fget_005fulong_005fattr-196"></a></var><br>
+<blockquote><p>The function <code>gpgme_key_get_ulong_attr</code> returns the value of the
+number-representable attribute <var>what</var> of key <var>key</var>.  If the
+attribute is an attribute of a sub key or an user ID, <var>idx</var>
+specifies the sub key or user ID of which the attribute value is
+returned.  The argument <var>reserved</var> is reserved for later use and
+should be <code>NULL</code>.
+
+        <p>The function returns <code>0</code> if the attribute can't be returned as a
+number, <var>key</var> is not a valid pointer, <var>idx</var> out of range, or
+<var>reserved</var> not <code>NULL</code>. 
+</p></blockquote></div>
+
+   </body></html>
+

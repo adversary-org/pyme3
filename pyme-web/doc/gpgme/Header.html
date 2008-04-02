@@ -1,0 +1,53 @@
+<html lang="en">
+<head>
+<title>Header - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Preparation.html#Preparation" title="Preparation">
+<link rel="next" href="Building-the-Source.html#Building-the-Source" title="Building the Source">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Header"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Building-the-Source.html#Building-the-Source">Building the Source</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Preparation.html#Preparation">Preparation</a>
+<hr>
+</div>
+
+<h3 class="section">2.1 Header</h3>
+
+<p><a name="index-header-file-1"></a><a name="index-include-file-2"></a>
+All interfaces (data types and functions) of the library are defined
+in the header file `gpgme.h'.  You must include this in all programs
+using the library, either directly or through some other header file,
+like this:
+
+<pre class="example">     #include &lt;gpgme.h&gt;
+</pre>
+   <p>The name space of <acronym>GPGME</acronym> is <code>gpgme_*</code> for function names
+and data types and <code>GPGME_*</code> for other symbols.  Symbols internal
+to <acronym>GPGME</acronym> take the form <code>_gpgme_*</code> and <code>_GPGME_*</code>.
+
+   <p>Because <acronym>GPGME</acronym> makes use of the GPG Error library, using
+<acronym>GPGME</acronym> will also use the <code>GPG_ERR_*</code> name space
+directly, and the <code>gpg_err*</code> and <code>gpg_str*</code> name space
+indirectly.
+
+   </body></html>
+

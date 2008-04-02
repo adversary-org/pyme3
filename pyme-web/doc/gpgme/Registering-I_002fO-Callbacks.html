@@ -1,0 +1,81 @@
+<html lang="en">
+<head>
+<title>Registering I/O Callbacks - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Using-External-Event-Loops.html#Using-External-Event-Loops" title="Using External Event Loops">
+<link rel="prev" href="I_002fO-Callback-Interface.html#I_002fO-Callback-Interface" title="I/O Callback Interface">
+<link rel="next" href="I_002fO-Callback-Example.html#I_002fO-Callback-Example" title="I/O Callback Example">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Registering-I%2fO-Callbacks"></a>
+<a name="Registering-I_002fO-Callbacks"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="I_002fO-Callback-Example.html#I_002fO-Callback-Example">I/O Callback Example</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="I_002fO-Callback-Interface.html#I_002fO-Callback-Interface">I/O Callback Interface</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Using-External-Event-Loops.html#Using-External-Event-Loops">Using External Event Loops</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">7.7.2.2 Registering I/O Callbacks</h5>
+
+<div class="defun">
+&mdash; Data type: <b>struct gpgme_io_cb_ts</b><var><a name="index-struct-gpgme_005fio_005fcb_005fts-328"></a></var><br>
+<blockquote><p><a name="index-gpgme_005fevent_005fio_005ft-329"></a>This structure is used to store the I/O callback interface functions
+described in the previous section.  It has the following members:
+
+          <dl>
+<dt><code>gpgme_register_io_cb_t add</code><dd>This is the function called by <acronym>GPGME</acronym> to register an I/O
+callback handler.  It must be specified.
+
+          <br><dt><code>void *add_data</code><dd>This is passed as the first argument to the <code>add</code> function when
+it is called by <acronym>GPGME</acronym>.  For example, it can be used to
+determine the event loop to which the file descriptor should be added.
+
+          <br><dt><code>gpgme_remove_io_cb_t remove</code><dd>This is the function called by <acronym>GPGME</acronym> to remove an I/O
+callback handler.  It must be specified.
+
+          <br><dt><code>gpgme_event_io_cb_t event</code><dd>This is the function called by <acronym>GPGME</acronym> to signal an event for
+an operation.  It must be specified, because at least the start event
+must be processed.
+
+          <br><dt><code>void *event_data</code><dd>This is passed as the first argument to the <code>event</code> function when
+it is called by <acronym>GPGME</acronym>.  For example, it can be used to
+determine the context in which the event has occured. 
+</dl>
+        </p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>gpgme_set_io_cbs</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w -->, struct&nbsp;gpgme_io_cb_ts&nbsp;*io_cbs<!-- /@w --></var>)<var><a name="index-gpgme_005fset_005fio_005fcbs-330"></a></var><br>
+<blockquote><p>The function <code>gpgme_set_io_cbs</code> enables the I/O callback
+interface for the context <var>ctx</var>.  The I/O callback functions are
+specified by <var>io_cbs</var>.
+
+        <p>If <var>io_cbs</var>-&gt;<code>add</code> is <code>NULL</code>, the I/O callback interface
+is disabled for the context, and normal operation is restored. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>gpgme_get_io_cbs</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w -->, struct&nbsp;gpgme_io_cb_ts&nbsp;*io_cbs<!-- /@w --></var>)<var><a name="index-gpgme_005fget_005fio_005fcbs-331"></a></var><br>
+<blockquote><p>The function <code>gpgme_get_io_cbs</code> returns the I/O callback
+functions set with <code>gpgme_set_io_cbs</code> in <var>io_cbs</var>. 
+</p></blockquote></div>
+
+   </body></html>
+

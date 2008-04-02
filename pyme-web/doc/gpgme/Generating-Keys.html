@@ -1,0 +1,144 @@
+<html lang="en">
+<head>
+<title>Generating Keys - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Key-Management.html#Key-Management" title="Key Management">
+<link rel="prev" href="Manipulating-Keys.html#Manipulating-Keys" title="Manipulating Keys">
+<link rel="next" href="Exporting-Keys.html#Exporting-Keys" title="Exporting Keys">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Generating-Keys"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Exporting-Keys.html#Exporting-Keys">Exporting Keys</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Manipulating-Keys.html#Manipulating-Keys">Manipulating Keys</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Key-Management.html#Key-Management">Key Management</a>
+<hr>
+</div>
+
+<h4 class="subsection">7.4.5 Generating Keys</h4>
+
+<p><a name="index-key_002c-creation-206"></a><a name="index-key-ring_002c-add-207"></a>
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_op_genkey</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w -->, const&nbsp;char&nbsp;*parms<!-- /@w -->, gpgme_data_t&nbsp;public<!-- /@w -->, gpgme_data_t&nbsp;secret<!-- /@w --></var>)<var><a name="index-gpgme_005fop_005fgenkey-208"></a></var><br>
+<blockquote><p>The function <code>gpgme_op_genkey</code> generates a new key pair in the
+context <var>ctx</var>.  The meaning of <var>public</var> and <var>secret</var>
+depends on the crypto backend.
+
+        <p>GnuPG does not support <var>public</var> and <var>secret</var>, they should be
+<code>NULL</code>.  GnuPG will generate a key pair and add it to the
+standard key ring.  The fingerprint of the generated key is available
+with <code>gpgme_op_genkey_result</code>.
+
+        <p>GpgSM requires <var>public</var> to be a writable data object.  GpgSM will
+generate a secret key (which will be stored by <samp><span class="command">gpg-agent</span></samp>,
+and return a certificate request in <var>public</var>, which then needs to
+be signed by the certification authority and imported before it can be
+used.  GpgSM does not make the fingerprint available.
+
+        <p>The argument <var>parms</var> specifies parameters for the key in an XML
+string.  The details about the format of <var>parms</var> are specific to
+the crypto engine used by <var>ctx</var>.  Here is an example for GnuPG as
+the crypto engine:
+
+     <pre class="example">          &lt;GnupgKeyParms format="internal"&gt;
+          Key-Type: DSA
+          Key-Length: 1024
+          Subkey-Type: ELG-E
+          Subkey-Length: 1024
+          Name-Real: Joe Tester
+          Name-Comment: with stupid passphrase
+          Name-Email: joe@foo.bar
+          Expire-Date: 0
+          Passphrase: abc
+          &lt;/GnupgKeyParms&gt;
+</pre>
+        <p>Here is an example for GpgSM as the crypto engine:
+
+     <pre class="example">          &lt;GnupgKeyParms format="internal"&gt;
+          Key-Type: RSA
+          Key-Length: 1024
+          Name-DN: C=de,O=g10 code,OU=Testlab,CN=Joe 2 Tester
+          Name-Email: joe@foo.bar
+          &lt;/GnupgKeyParms&gt;
+</pre>
+        <p>Strings should be given in UTF-8 encoding.  The only format supported
+for now is &ldquo;internal&rdquo;.  The content of the <code>GnupgKeyParms</code>
+container is passed verbatim to the crypto backend.  Control
+statements are not allowed.
+
+        <p>After the operation completed successfully, the result can be
+retrieved with <code>gpgme_op_genkey_result</code>.
+
+        <p>The function returns the error code <code>GPG_ERR_NO_ERROR</code> if the
+operation could be started successfully, <code>GPG_ERR_INV_VALUE</code> if
+<var>parms</var> is not a valid XML string, <code>GPG_ERR_NOT_SUPPORTED</code> if
+<var>public</var> or <var>secret</var> is not valid, and <code>GPG_ERR_GENERAL</code>
+if no key was created by the backend. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_op_genkey_start</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w -->, const&nbsp;char&nbsp;*parms<!-- /@w -->, gpgme_data_t&nbsp;public<!-- /@w -->, gpgme_data_t&nbsp;secret<!-- /@w --></var>)<var><a name="index-gpgme_005fop_005fgenkey_005fstart-209"></a></var><br>
+<blockquote><p>The function <code>gpgme_op_genkey_start</code> initiates a
+<code>gpgme_op_genkey</code> operation.  It can be completed by calling
+<code>gpgme_wait</code> on the context.  See <a href="Waiting-For-Completion.html#Waiting-For-Completion">Waiting For Completion</a>.
+
+        <p>The function returns the error code <code>GPG_ERR_NO_ERROR</code> if the
+operation could be started successfully, <code>GPG_ERR_INV_VALUE</code> if
+<var>parms</var> is not a valid XML string, and
+<code>GPG_ERR_NOT_SUPPORTED</code> if <var>public</var> or <var>secret</var> is not
+<code>NULL</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Data type: <b>gpgme_genkey_result_t</b><var><a name="index-gpgme_005fgenkey_005fresult_005ft-210"></a></var><br>
+<blockquote><p>This is a pointer to a structure used to store the result of a
+<code>gpgme_op_genkey</code> operation.  After successfully generating a
+key, you can retrieve the pointer to the result with
+<code>gpgme_op_genkey_result</code>.  The structure contains the following
+members:
+
+          <dl>
+<dt><code>unsigned int primary : 1</code><dd>This is a flag that is set to 1 if a primary key was created and to 0
+if not.
+
+          <br><dt><code>unsigned int sub : 1</code><dd>This is a flag that is set to 1 if a subkey was created and to 0
+if not.
+
+          <br><dt><code>char *fpr</code><dd>This is the fingerprint of the key that was created.  If both a
+primary and a sub key were generated, the fingerprint of the primary
+key will be returned.  If the crypto engine does not provide the
+fingerprint, <code>fpr</code> will be a null pointer. 
+</dl>
+        </p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: gpgme_genkey_result_t <b>gpgme_op_genkey_result</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w --></var>)<var><a name="index-gpgme_005fop_005fgenkey_005fresult-211"></a></var><br>
+<blockquote><p>The function <code>gpgme_op_genkey_result</code> returns a
+<code>gpgme_genkey_result_t</code> pointer to a structure holding the result of
+a <code>gpgme_op_genkey</code> operation.  The pointer is only valid if the
+last operation on the context was a <code>gpgme_op_genkey</code> or
+<code>gpgme_op_genkey_start</code> operation, and if this operation finished
+successfully.  The returned pointer is only valid until the next
+operation is started on the context. 
+</p></blockquote></div>
+
+   </body></html>
+

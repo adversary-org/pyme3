@@ -1,0 +1,75 @@
+<html lang="en">
+<head>
+<title>Information About Trust Items - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Trust-Item-Management.html#Trust-Item-Management" title="Trust Item Management">
+<link rel="prev" href="Listing-Trust-Items.html#Listing-Trust-Items" title="Listing Trust Items">
+<link rel="next" href="Manipulating-Trust-Items.html#Manipulating-Trust-Items" title="Manipulating Trust Items">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Information-About-Trust-Items"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Manipulating-Trust-Items.html#Manipulating-Trust-Items">Manipulating Trust Items</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Listing-Trust-Items.html#Listing-Trust-Items">Listing Trust Items</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Trust-Item-Management.html#Trust-Item-Management">Trust Item Management</a>
+<hr>
+</div>
+
+<h4 class="subsection">7.5.2 Information About Trust Items</h4>
+
+<p><a name="index-trust-item_002c-information-about-243"></a><a name="index-trust-item_002c-attributes-244"></a><a name="index-attributes_002c-of-a-trust-item-245"></a>
+The following interfaces are deprecated and only provided for backward
+compatibility.  Don't use them.  They will be removed in a future
+version of <acronym>GPGME</acronym>.
+
+   <p>Trust items have attributes which can be queried using the interfaces
+below.  The attribute identifiers are shared with those for key
+attributes.  See <a href="Information-About-Keys.html#Information-About-Keys">Information About Keys</a>.
+
+<div class="defun">
+&mdash; Function: const char * <b>gpgme_trust_item_get_string_attr</b> (<var>gpgme_trust_item_t&nbsp;item<!-- /@w -->, gpgme_attr_t&nbsp;what<!-- /@w -->, const&nbsp;void&nbsp;*reserved<!-- /@w -->, int&nbsp;idx<!-- /@w --></var>)<var><a name="index-gpgme_005ftrust_005fitem_005fget_005fstring_005fattr-246"></a></var><br>
+<blockquote><p>The function <code>gpgme_trust_item_get_string_attr</code> returns the value
+of the string-representable attribute <var>what</var> of trust item
+<var>item</var>.  The arguments <var>idx</var> and <var>reserved</var> are reserved
+for later use and should be <code>0</code> and <code>NULL</code> respectively.
+
+        <p>The string returned is only valid as long as the key is valid.
+
+        <p>The function returns <code>0</code> if an attribute can't be returned as a
+string, <var>key</var> is not a valid pointer, <var>idx</var> out of range,
+or <var>reserved</var> not <code>NULL</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>gpgme_trust_item_get_int_attr</b> (<var>gpgme_trust_item_t&nbsp;item<!-- /@w -->, gpgme_attr_t&nbsp;what<!-- /@w -->, const&nbsp;void&nbsp;*reserved<!-- /@w -->, int&nbsp;idx<!-- /@w --></var>)<var><a name="index-gpgme_005ftrust_005fitem_005fget_005fint_005fattr-247"></a></var><br>
+<blockquote><p>The function <code>gpgme_trust_item_get_int_attr</code> returns the value of
+the number-representable attribute <var>what</var> of trust item
+<var>item</var>.  If the attribute occurs more than once in the trust item,
+the index is specified by <var>idx</var>.  However, currently no such
+attribute exists, so <var>idx</var> should be <code>0</code>.  The argument
+<var>reserved</var> is reserved for later use and should be <code>NULL</code>.
+
+        <p>The function returns <code>0</code> if the attribute can't be returned as a
+number, <var>key</var> is not a valid pointer, <var>idx</var> out of range,
+or <var>reserved</var> not <code>NULL</code>. 
+</p></blockquote></div>
+
+   </body></html>
+

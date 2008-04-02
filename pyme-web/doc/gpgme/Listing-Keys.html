@@ -1,0 +1,204 @@
+<html lang="en">
+<head>
+<title>Listing Keys - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Key-Management.html#Key-Management" title="Key Management">
+<link rel="next" href="Information-About-Keys.html#Information-About-Keys" title="Information About Keys">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Listing-Keys"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Information-About-Keys.html#Information-About-Keys">Information About Keys</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Key-Management.html#Key-Management">Key Management</a>
+<hr>
+</div>
+
+<h4 class="subsection">7.4.1 Listing Keys</h4>
+
+<p><a name="index-listing-keys-178"></a><a name="index-key-listing-179"></a><a name="index-key-listing_002c-start-180"></a><a name="index-key-ring_002c-list-181"></a><a name="index-key-ring_002c-search-182"></a>
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_op_keylist_start</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w -->, const&nbsp;char&nbsp;*pattern<!-- /@w -->, int&nbsp;secret_only<!-- /@w --></var>)<var><a name="index-gpgme_005fop_005fkeylist_005fstart-183"></a></var><br>
+<blockquote><p>The function <code>gpgme_op_keylist_start</code> initiates a key listing
+operation inside the context <var>ctx</var>.  It sets everything up so that
+subsequent invocations of <code>gpgme_op_keylist_next</code> return the keys
+in the list.
+
+        <p>If <var>pattern</var> is <code>NULL</code>, all available keys are returned. 
+Otherwise, <var>pattern</var> contains an engine specific expression that
+is used to limit the list to all keys matching the pattern.  Note that
+the total length of the pattern is restricted to an engine-specific
+maximum (a couple of hundred characters are usually accepted).  The
+pattern should be used to restrict the search to a certain common name
+or user, not to list many specific keys at once by listing their
+fingerprints or key IDs.
+
+        <p>If <var>secret_only</var> is not <code>0</code>, the list is restricted to secret
+keys only.
+
+        <p>The context will be busy until either all keys are received (and
+<code>gpgme_op_keylist_next</code> returns <code>GPG_ERR_EOF</code>), or
+<code>gpgme_op_keylist_end</code> is called to finish the operation.
+
+        <p>The function returns the error code <code>GPG_ERR_INV_VALUE</code> if
+<var>ctx</var> is not a valid pointer, and passes through any errors that
+are reported by the crypto engine support routines. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_op_keylist_ext_start</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w -->, const&nbsp;char&nbsp;*pattern[]<!-- /@w -->, int&nbsp;secret_only<!-- /@w -->, int&nbsp;reserved<!-- /@w --></var>)<var><a name="index-gpgme_005fop_005fkeylist_005fext_005fstart-184"></a></var><br>
+<blockquote><p>The function <code>gpgme_op_keylist_ext_start</code> initiates an extended
+key listing operation inside the context <var>ctx</var>.  It sets
+everything up so that subsequent invocations of
+<code>gpgme_op_keylist_next</code> return the keys in the list.
+
+        <p>If <var>pattern</var> or <var>*pattern</var> is <code>NULL</code>, all available keys
+are returned.  Otherwise, <var>pattern</var> is a <code>NULL</code> terminated
+array of strings that are used to limit the list to all keys matching
+at least one of the patterns verbatim.  Note that the total length of
+all patterns is restricted to an engine-specific maximum (the exact
+limit also depends on the number of patterns and amount of quoting
+required, but a couple of hundred characters are usually accepted). 
+Patterns should be used to restrict the search to a certain common
+name or user, not to list many specific keys at once by listing their
+fingerprints or key IDs.
+
+        <p>If <var>secret_only</var> is not <code>0</code>, the list is restricted to secret
+keys only.
+
+        <p>The value of <var>reserved</var> must be <code>0</code>.
+
+        <p>The context will be busy until either all keys are received (and
+<code>gpgme_op_keylist_next</code> returns <code>GPG_ERR_EOF</code>), or
+<code>gpgme_op_keylist_end</code> is called to finish the operation.
+
+        <p>The function returns the error code <code>GPG_ERR_INV_VALUE</code> if
+<var>ctx</var> is not a valid pointer, and passes through any errors that
+are reported by the crypto engine support routines. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_op_keylist_next</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w -->, gpgme_key_t&nbsp;*r_key<!-- /@w --></var>)<var><a name="index-gpgme_005fop_005fkeylist_005fnext-185"></a></var><br>
+<blockquote><p>The function <code>gpgme_op_keylist_next</code> returns the next key in the
+list created by a previous <code>gpgme_op_keylist_start</code> operation in
+the context <var>ctx</var>.  The key will have one reference for the user. 
+See <a href="Manipulating-Keys.html#Manipulating-Keys">Manipulating Keys</a>.
+
+        <p>This is the only way to get at <code>gpgme_key_t</code> objects in
+<acronym>GPGME</acronym>.
+
+        <p>If the last key in the list has already been returned,
+<code>gpgme_op_keylist_next</code> returns <code>GPG_ERR_EOF</code>.
+
+        <p>The function returns the error code <code>GPG_ERR_INV_VALUE</code> if
+<var>ctx</var> or <var>r_key</var> is not a valid pointer, and
+<code>GPG_ERR_ENOMEM</code> if there is not enough memory for the operation. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_op_keylist_end</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w --></var>)<var><a name="index-gpgme_005fop_005fkeylist_005fend-186"></a></var><br>
+<blockquote><p>The function <code>gpgme_op_keylist_next</code> ends a pending key list
+operation in the context <var>ctx</var>.
+
+        <p>After the operation completed successfully, the result of the key
+listing operation can be retrieved with
+<code>gpgme_op_keylist_result</code>.
+
+        <p>The function returns the error code <code>GPG_ERR_INV_VALUE</code> if
+<var>ctx</var> is not a valid pointer, and <code>GPG_ERR_ENOMEM</code> if at some
+time during the operation there was not enough memory available. 
+</p></blockquote></div>
+
+   <p>The following example illustrates how all keys containing a certain
+string (<code>g10code</code>) can be listed with their key ID and the name
+and e-mail address of the main user ID:
+
+<pre class="example">     gpgme_ctx_t ctx;
+     gpgme_error_t err = gpgme_new (&amp;ctx);
+     
+     if (!err)
+       {
+         err = gpgme_op_keylist_start (ctx, "g10code", 0);
+         while (!err)
+           {
+             err = gpgme_op_keylist_next (ctx, &amp;key);
+             if (err)
+               break;
+             printf ("%s: %s &lt;%s&gt;\n", key-&gt;keyid, key-&gt;name, key-&gt;email);
+             gpgme_key_release (key);
+           }
+         gpgme_release (ctx);
+       }
+     if (gpg_err_code (err) != GPG_ERR_EOF)
+       {
+         fprintf (stderr, "%s: can not list keys: %s\n",
+                  argv[0], gpgme_strerror (err));
+         exit (1);
+       }
+</pre>
+   <div class="defun">
+&mdash; Data type: <b>gpgme_keylist_result_t</b><var><a name="index-gpgme_005fkeylist_005fresult_005ft-187"></a></var><br>
+<blockquote><p>This is a pointer to a structure used to store the result of a
+<code>gpgme_op_keylist_*</code> operation.  After successfully ending a key
+listing operation, you can retrieve the pointer to the result with
+<code>gpgme_op_keylist_result</code>.  The structure contains the following
+member:
+
+          <dl>
+<dt><code>unsigned int truncated : 1</code><dd>This is true if the crypto backend had to truncate the result, and
+less than the desired keys could be listed. 
+</dl>
+        </p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: gpgme_keylist_result_t <b>gpgme_op_keylist_result</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w --></var>)<var><a name="index-gpgme_005fop_005fkeylist_005fresult-188"></a></var><br>
+<blockquote><p>The function <code>gpgme_op_keylist_result</code> returns a
+<code>gpgme_keylist_result_t</code> pointer to a structure holding the
+result of a <code>gpgme_op_keylist_*</code> operation.  The pointer is only
+valid if the last operation on the context was a key listing
+operation, and if this operation finished successfully.  The returned
+pointer is only valid until the next operation is started on the
+context. 
+</p></blockquote></div>
+
+   <p>In a simple program, for which a blocking operation is acceptable, the
+following function can be used to retrieve a single key.
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_get_key</b> (<var>gpgme_ctx_t&nbsp;ctx<!-- /@w -->, const&nbsp;char&nbsp;*fpr<!-- /@w -->, gpgme_key_t&nbsp;*r_key<!-- /@w -->, int&nbsp;secret<!-- /@w --></var>)<var><a name="index-gpgme_005fget_005fkey-189"></a></var><br>
+<blockquote><p>The function <code>gpgme_get_key</code> gets the key with the fingerprint
+(or key ID) <var>fpr</var> from the crypto backend and return it in
+<var>r_key</var>.  If <var>secret</var> is true, get the secret key.  The
+currently active keylist mode is used to retrieve the key.  The key
+will have one reference for the user.
+
+        <p>If the key is not found in the keyring, <code>gpgme_get_key</code> returns
+the error code <code>GPG_ERR_NO_ERROR</code> and *<var>r_key</var> will be set to
+<code>NULL</code>.
+
+        <p>The function returns the error code <code>GPG_ERR_INV_VALUE</code> if
+<var>ctx</var> or <var>r_key</var> is not a valid pointer or <var>fpr</var> is not a
+fingerprint or key ID, <code>GPG_ERR_AMBIGUOUS_NAME</code> if the key ID was
+not a unique specifier for a key, and <code>GPG_ERR_ENOMEM</code> if at some
+time during the operation there was not enough memory available. 
+</p></blockquote></div>
+
+   </body></html>
+

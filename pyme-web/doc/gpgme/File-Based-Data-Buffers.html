@@ -1,0 +1,74 @@
+<html lang="en">
+<head>
+<title>File Based Data Buffers - The `GnuPG Made Easy' Reference Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The `GnuPG Made Easy' Reference Manual">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Creating-Data-Buffers.html#Creating-Data-Buffers" title="Creating Data Buffers">
+<link rel="prev" href="Memory-Based-Data-Buffers.html#Memory-Based-Data-Buffers" title="Memory Based Data Buffers">
+<link rel="next" href="Callback-Based-Data-Buffers.html#Callback-Based-Data-Buffers" title="Callback Based Data Buffers">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="File-Based-Data-Buffers"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Callback-Based-Data-Buffers.html#Callback-Based-Data-Buffers">Callback Based Data Buffers</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Memory-Based-Data-Buffers.html#Memory-Based-Data-Buffers">Memory Based Data Buffers</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Creating-Data-Buffers.html#Creating-Data-Buffers">Creating Data Buffers</a>
+<hr>
+</div>
+
+<h4 class="subsection">6.1.2 File Based Data Buffers</h4>
+
+<p>File based data objects operate directly on file descriptors or
+streams.  Only a small amount of data is stored in core at any time,
+so the size of the data objects is not limited by <acronym>GPGME</acronym>.
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_data_new_from_fd</b> (<var>gpgme_data_t&nbsp;*dh<!-- /@w -->, int&nbsp;fd<!-- /@w --></var>)<var><a name="index-gpgme_005fdata_005fnew_005ffrom_005ffd-91"></a></var><br>
+<blockquote><p>The function <code>gpgme_data_new_from_fd</code> creates a new
+<code>gpgme_data_t</code> object and uses the file descriptor <var>fd</var> to read
+from (if used as an input data object) and write to (if used as an
+output data object).
+
+        <p>When using the data object as an input buffer, the function might read
+a bit more from the file descriptor than is actually needed by the
+crypto engine in the desired operation because of internal buffering.
+
+        <p>The function returns the error code <code>GPG_ERR_NO_ERROR</code> if the
+data object was successfully created, and <code>GPG_ERR_ENOMEM</code> if not
+enough memory is available. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: gpgme_error_t <b>gpgme_data_new_from_stream</b> (<var>gpgme_data_t&nbsp;*dh<!-- /@w -->, FILE&nbsp;*stream<!-- /@w --></var>)<var><a name="index-gpgme_005fdata_005fnew_005ffrom_005fstream-92"></a></var><br>
+<blockquote><p>The function <code>gpgme_data_new_from_stream</code> creates a new
+<code>gpgme_data_t</code> object and uses the I/O stream <var>stream</var> to read
+from (if used as an input data object) and write to (if used as an
+output data object).
+
+        <p>When using the data object as an input buffer, the function might read
+a bit more from the stream than is actually needed by the crypto
+engine in the desired operation because of internal buffering.
+
+        <p>The function returns the error code <code>GPG_ERR_NO_ERROR</code> if the
+data object was successfully created, and <code>GPG_ERR_ENOMEM</code> if not
+enough memory is available. 
+</p></blockquote></div>
+
+   </body></html>
+
