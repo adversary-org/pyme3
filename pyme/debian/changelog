@@ -1,3 +1,13 @@
+pyme (0.8.1) unstable; urgency=low
+
+  * Add issuing gpgme_key_unref() in __del__ method for keys return from
+    op_keylist_next() and get_key() calls to avoid memory leak in a long
+    living contexts.
+  * Add missing (get|set)_engine_info() methods for the Context class and
+    set_engine_info() for the core module.
+
+ -- Igor Belyi <belyi@users.sourceforge.net>  Wed, 02 Apr 2008 01:48:25 -0400
+
 pyme (0.8.0) unstable; urgency=low
 
   * Make all structure types containing 'next' field to be return as lists.

@@ -103,6 +103,8 @@ class Context(GpgmeWrapper):
             if excp.getcode() != errors.EOF:
                 raise excp
         pygpgme.delete_gpgme_key_t_p(ptr)
+	if key:
+	    key.__del__ = lambda self: pygpgme.gpgme_key_unref(self)
         return key
     
     def get_key(self, fpr, secret):
@@ -111,6 +113,8 @@ class Context(GpgmeWrapper):
         errorcheck(pygpgme.gpgme_get_key(self.wrapped, fpr, ptr, secret))
         key = pygpgme.gpgme_key_t_p_value(ptr)
         pygpgme.delete_gpgme_key_t_p(ptr)
+	if key:
+	    key.__del__ = lambda self: pygpgme.gpgme_key_unref(self)
         return key
 
     def op_trustlist_all(self, *args, **kwargs):
@@ -177,6 +181,18 @@ class Context(GpgmeWrapper):
             else:
                 hookdata = (func, hook)
         pygpgme.pygpgme_set_progress_cb(self.wrapped, hookdata, self.last_progresscb)
+
+    def get_engine_info(self):
+        """Returns this context specific engine info"""
+	return pygpgme.gpgme_ctx_get_engine_info(self.wrapped)
+
+    def set_engine_info(self, proto, file_name, home_dir=None):
+        """Changes the configuration of the crypto engine implementing the
+	protocol 'proto' for the context. 'file_name' is the file name of
+	the executable program implementing this protocol. 'home_dir' is the
+	directory name of the configuration directory (engine's default is
+	used if omitted)."""
+        errorcheck(pygpgme.gpgme_ctx_set_engine_info(self.wrapped, proto, file_name, home_dir))
 
     def wait(self, hang):
         """Wait for asynchronous call to finish. Wait forever if hang is True
@@ -413,6 +429,14 @@ def get_engine_info():
         info = None
     pygpgme.delete_gpgme_engine_info_t_p(ptr)
     return info
+
+def set_engine_info(proto, file_name, home_dir=None):
+    """Changes the default configuration of the crypto engine implementing
+    the protocol 'proto'. 'file_name' is the file name of
+    the executable program implementing this protocol. 'home_dir' is the
+    directory name of the configuration directory (engine's default is
+    used if omitted)."""
+    errorcheck(pygpgme.gpgme_set_engine_info(proto, file_name, home_dir))
 
 def wait(hang):
     """Wait for asynchronous call on any Context  to finish.
