@@ -10,7 +10,7 @@
 ><td align=right valign=bottom
 ><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="http://pyme.cvs.sourceforge.net/pyme/pyme/pyme/core.py?&view=markup">pyme/core.py</a></font></td></tr></table>
     <p><tt>#&nbsp;$Id$<br>
-#&nbsp;Copyright&nbsp;(C)&nbsp;2004&nbsp;Igor&nbsp;Belyi&nbsp;&lt;belyi@users.sourceforge.net&gt;<br>
+#&nbsp;Copyright&nbsp;(C)&nbsp;2004,2008&nbsp;Igor&nbsp;Belyi&nbsp;&lt;belyi@users.sourceforge.net&gt;<br>
 #&nbsp;Copyright&nbsp;(C)&nbsp;2002&nbsp;John&nbsp;Goerzen&nbsp;&lt;jgoerzen@complete.org&gt;<br>
 #<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;library&nbsp;is&nbsp;free&nbsp;software;&nbsp;you&nbsp;can&nbsp;redistribute&nbsp;it&nbsp;and/or<br>
@@ -42,7 +42,7 @@
     
 <tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl>
-<dt><font face="helvetica, arial"><a href="pyme.util.html#GpgmeWrapper">pyme.util.GpgmeWrapper</a>
+<dt><font face="helvetica, arial"><a href="pyme.util.html#GpgmeWrapper">pyme.util.GpgmeWrapper</a>(__builtin__.object)
 </font></dt><dd>
 <dl>
 <dt><font face="helvetica, arial"><a href="pyme.core.html#Context">Context</a>
@@ -67,7 +67,13 @@
 &nbsp;<br>
 Thus,&nbsp;this&nbsp;is&nbsp;the&nbsp;place&nbsp;that&nbsp;you&nbsp;will&nbsp;usually&nbsp;start.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
-<td width="100%">Methods defined here:<br>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="pyme.core.html#Context">Context</a></dd>
+<dd><a href="pyme.util.html#GpgmeWrapper">pyme.util.GpgmeWrapper</a></dd>
+<dd>__builtin__.object</dd>
+</dl>
+<hr>
+Methods defined here:<br>
 <dl><dt><a name="Context-__del__"><strong>__del__</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="Context-__init__"><strong>__init__</strong></a>(self, wrapped<font color="#909090">=None</font>)</dt></dl>
@@ -128,6 +134,12 @@ Methods inherited from <a href="pyme.util.html#GpgmeWrapper">pyme.util.GpgmeWrap
 
 <dl><dt><a name="Context-__str__"><strong>__str__</strong></a>(self)</dt></dl>
 
+<hr>
+Data and other attributes inherited from <a href="pyme.util.html#GpgmeWrapper">pyme.util.GpgmeWrapper</a>:<br>
+<dl><dt><strong>__dict__</strong> = &lt;dictproxy object&gt;<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dl>
+
+<dl><dt><strong>__weakref__</strong> = &lt;attribute '__weakref__' of 'GpgmeWrapper' objects&gt;<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dl>
+
 </td></tr></table> <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
@@ -148,7 +160,13 @@ Methods inherited from <a href="pyme.util.html#GpgmeWrapper">pyme.util.GpgmeWrap
 &nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please&nbsp;see&nbsp;the&nbsp;information&nbsp;about&nbsp;__init__&nbsp;for&nbsp;instantiation.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
-<td width="100%">Methods defined here:<br>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="pyme.core.html#Data">Data</a></dd>
+<dd><a href="pyme.util.html#GpgmeWrapper">pyme.util.GpgmeWrapper</a></dd>
+<dd>__builtin__.object</dd>
+</dl>
+<hr>
+Methods defined here:<br>
 <dl><dt><a name="Data-__del__"><strong>__del__</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="Data-__init__"><strong>__init__</strong></a>(self, string<font color="#909090">=None</font>, file<font color="#909090">=None</font>, offset<font color="#909090">=None</font>, length<font color="#909090">=None</font>, cbs<font color="#909090">=None</font>)</dt><dd><tt>Initialize&nbsp;a&nbsp;new&nbsp;gpgme_data_t&nbsp;object.<br>
@@ -221,6 +239,12 @@ Methods inherited from <a href="pyme.util.html#GpgmeWrapper">pyme.util.GpgmeWrap
 
 <dl><dt><a name="Data-__str__"><strong>__str__</strong></a>(self)</dt></dl>
 
+<hr>
+Data and other attributes inherited from <a href="pyme.util.html#GpgmeWrapper">pyme.util.GpgmeWrapper</a>:<br>
+<dl><dt><strong>__dict__</strong> = &lt;dictproxy object&gt;<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dl>
+
+<dl><dt><strong>__weakref__</strong> = &lt;attribute '__weakref__' of 'GpgmeWrapper' objects&gt;<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dl>
+
 </td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#eeaa77">
@@ -228,7 +252,7 @@ Methods inherited from <a href="pyme.util.html#GpgmeWrapper">pyme.util.GpgmeWrap
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-check_version"><strong>check_version</strong></a>(version)</dt></dl>
+<td width="100%"><dl><dt><a name="-check_version"><strong>check_version</strong></a>(version<font color="#909090">=None</font>)</dt></dl>
  <dl><dt><a name="-engine_check_version"><strong>engine_check_version</strong></a>(proto)</dt></dl>
  <dl><dt><a name="-get_engine_info"><strong>get_engine_info</strong></a>()</dt></dl>
  <dl><dt><a name="-get_protocol_name"><strong>get_protocol_name</strong></a>(proto)</dt></dl>
