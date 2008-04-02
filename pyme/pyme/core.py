@@ -438,6 +438,10 @@ def set_engine_info(proto, file_name, home_dir=None):
     used if omitted)."""
     errorcheck(pygpgme.gpgme_set_engine_info(proto, file_name, home_dir))
 
+def set_locale(category, value):
+    """Sets the default locale used by contexts"""
+    errorcheck(pygpgme.gpgme_set_locale(None, category, value))
+
 def wait(hang):
     """Wait for asynchronous call on any Context  to finish.
     Wait forever if hang is True.
