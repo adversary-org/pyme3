@@ -1,21 +1,28 @@
+body {
+  font-family: sans-serif;
+  font-size: 11pt;
+}
+
 #sidebar {
   float: left;
-  width: 180px;
-  margin-top: 20px;
+  width: 190px;
+  margin-top: 30px;
   padding-right: 10px;
   padding-bottom: 0;
 }
 
 #sidebar p.section {
+  margin-top: 0;
+  margin-bottom: 3px;
   text-align: center;
   font-weight: bold;
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding: 3px 10px 3px 10px;
   background-color: #d6e7ff;
   border: 1px solid #9c99cd;
 }
 
 #sidebar ul {
+  margin: 0 0 15px 0;
   padding: 0 10px 0 10px;
   list-style-type: none;
 }
