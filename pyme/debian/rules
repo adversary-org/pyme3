@@ -31,7 +31,6 @@ build-stamp: configure-stamp
 
 	# Add here commands to compile the package.
 	$(MAKE) swig
-	python2.3 setup.py build -b `pwd`/build
 	python2.4 setup.py build -b `pwd`/build
 	python2.5 setup.py build -b `pwd`/build
 	$(MAKE) PYSRCURL=file:/usr/share/pyshared/\\1 docs
@@ -54,7 +53,6 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/pyme.
-	python2.3 setup.py install --root=`pwd`/debian/python-pyme
 	python2.4 setup.py install --root=`pwd`/debian/python-pyme
 	python2.5 setup.py install --root=`pwd`/debian/python-pyme
 

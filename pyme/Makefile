@@ -77,7 +77,7 @@ reallyclean: clean
 
 docs: build
 	rm -f doc/*.html
-	cd doc; for MOD in $(DOCMODS); do PYTHONPATH=`echo ../build/lib*` pydoc -w $$MOD; done
+	cd doc; for MOD in $(DOCMODS); do PYTHONPATH=`echo ../build/lib* | sed -e "s# #:#"` pydoc -w $$MOD; done
 ifneq (, $(PYSRCURL))
 	cd doc; for MOD in $(DOCMODS); do sed -i -e "s#\"file:.*/site-packages/\(pyme/.*\)\">[^<]*</a>#\"$(PYSRCURL)\">\1</a>#" $$MOD.html; done
 endif
