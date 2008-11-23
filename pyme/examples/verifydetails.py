@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # initial 20080123 build from the example:
 #   very simple - probably INCOMPLETE
+# 20080703 Bernhard
+#   added second usage for detached signatures.
+#   added output of signature.summary (another bitfield)
+#   printing signature bitfield in hex format
 #
 # $Id$
 #
@@ -36,16 +40,21 @@ def print_engine_infos():
         print core.get_protocol_name(proto), core.engine_check_version(proto)
 
 
-def verifyprintdetails(filename):
+def verifyprintdetails(sigfilename, filefilename=None):
     """Verify a signature, print a lot of details."""
     c = core.Context()
 
     # Create Data with signed text.
-    sig2 = core.Data(file=filename)
-    plain2 = core.Data()
+    sig2 = core.Data(file=sigfilename)
+    if filefilename:
+        file2 = core.Data(file=filefilename)
+        plain2 = None
+    else:
+        file2 = None
+        plain2 = core.Data()
 
     # Verify.
-    c.op_verify(sig2, None, plain2)
+    c.op_verify(sig2, file2, plain2)
     result = c.op_verify_result()
 
     # List results for all signatures. Status equal 0 means "Ok".
@@ -53,27 +62,39 @@ def verifyprintdetails(filename):
     for sign in result.signatures:
         index += 1
         print "signature", index, ":"
-        print "  status:     ", sign.status
+        print "  summary:     %#0x" % (sign.summary)
+        print "  status:      %#0x" % (sign.status)
         print "  timestamp:  ", sign.timestamp
         print "  fingerprint:", sign.fpr
         print "  uid:        ", c.get_key(sign.fpr, 0).uids[0].uid
 
-    # Print "unsigned" text. Rewind since verify put plain2 at EOF.
-    plain2.seek(0,0)
-    print "\n", plain2.read()
+    # Print "unsigned" text if inline signature
+    if plain2:
+        #Rewind since verify put plain2 at EOF.
+        plain2.seek(0,0)
+        print "\n", plain2.read()
 
 def main():
     print_engine_infos()
 
     print
 
-    if len(sys.argv) < 2:
+    argc= len(sys.argv)
+    if argc < 2 or argc > 3:
         print "need a filename for inline signature"
+        print "or two filename for detached signature and file to check"
         sys.exit(1)
 
-    print "trying to verify file: " + sys.argv[1]
-    verifyprintdetails(sys.argv[1])
+    if argc == 2:
+        print "trying to verify file: " + sys.argv[1]
+        verifyprintdetails(sys.argv[1])
+    if argc == 3:
+        print "trying to verify signature %s for file %s" \
+                    % (sys.argv[1], sys.argv[2])
 
+        verifyprintdetails(sys.argv[1], sys.argv[2])
 
 if __name__ == "__main__":
     main()
+
+ 	  	 
