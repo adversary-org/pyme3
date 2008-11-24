@@ -7,8 +7,11 @@ pyme (0.8.1) unstable; urgency=low
     set_engine_info() and set_locale() for the core module.
   * Remove support for python2.3 in debian packaging since neither testing
     nor unstable dist contains packages for it now.
+  * Update verifydetails.py for the new way structure types are handled;
+    add testCMSgetkey.py example for CMS keys. Thanks to Bernhard Reiter.
+  * Fix hang on Windows caused by passphrase_cb.
 
- -- Igor Belyi <belyi@users.sourceforge.net>  Thu, 29 May 2008 14:16:31 -0400
+ -- Igor Belyi <belyi@users.sourceforge.net>  Mon, 24 Nov 2008 01:56:19 -0500
 
 pyme (0.8.0) unstable; urgency=low
 
