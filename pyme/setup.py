@@ -63,13 +63,13 @@ if uname_s.startswith("MINGW32"):
    for item in include_dirs:
        for ln, mnt, tgt in tmplist:
            if item.startswith(mnt):
-               extra_dirs.append(os.path.realpath(tgt+item[ln:]))
+               extra_dirs.append(os.path.join(tgt,item[ln:]))
                break
    include_dirs += extra_dirs
    for item in [x[2:] for x in libs if x.startswith("-L")]:
        for ln, mnt, tgt in tmplist:
            if item.startswith(mnt):
-               library_dirs.append(os.path.realpath(tgt+item[ln:]))
+               library_dirs.append(os.path.join(tgt,item[ln:]))
                break
 
 swige = Extension("pyme._pygpgme", ["gpgme_wrap.c", "helpers.c"],
