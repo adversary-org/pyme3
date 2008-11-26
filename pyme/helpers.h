@@ -21,6 +21,11 @@
 #include <gpgme.h>
 #include "Python.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#define write(fd, str, sz) {DWORD written; WriteFile((HANDLE) fd, str, sz, &written, 0);}
+#endif
+
 void pygpgme_exception_init(void);
 gpgme_error_t pygpgme_exception2code(void);
 
