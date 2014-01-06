@@ -75,11 +75,11 @@ PyObject* object_to_gpgme_t(PyObject* input, const char* objtype, int argnum) {
 }
 %}
 
-%typemap(arginit) gpgme_key_t recp[] {
+%typemap(arginit) gpgme_key_t [] {
   $1 = NULL;
 }
 
-%typemap(in) gpgme_key_t recp[] {
+%typemap(in) gpgme_key_t [] {
   int i, numb = 0;
   if (!PySequence_Check($input)) {
     PyErr_Format(PyExc_ValueError, "arg %d: Expected a list of gpgme_key_t",
@@ -104,7 +104,7 @@ PyObject* object_to_gpgme_t(PyObject* input, const char* objtype, int argnum) {
     $1[numb] = NULL;
   }
 }
-%typemap(freearg) gpgme_key_t recp[] {
+%typemap(freearg) gpgme_key_t [] {
   if ($1) free($1);
 }
 
