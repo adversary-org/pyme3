@@ -85,7 +85,7 @@ swige = Extension("pyme._pygpgme", ["gpgme_wrap.c", "helpers.c"],
                   library_dirs = library_dirs,
                   extra_link_args = libs)
 
-setup(name = "pygpgme",
+setup(name = "pyme",
       version = version.versionstr,
       description = version.description,
       author = version.author,
