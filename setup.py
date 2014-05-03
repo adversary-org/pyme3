@@ -26,15 +26,14 @@
 from distutils.core import setup, Extension
 from distutils.command.build_ext import build_ext
 import os, os.path, sys
+import subprocess
 
 sys.path.append("pyme")
 import version
 
 def getconfig(what):
-    cmd = os.popen("sh gpgme-config --%s" % what, "r")
-    confdata = cmd.read()
+    confdata = subprocess.check_output(["gpgme-config", "--%s"%what])
     confdata = confdata.replace("\n", " ")
-    assert cmd.close() == None, "error getting GPG config"
     confdata = confdata.replace("  ", " ")
     return [x for x in confdata.split(' ') if x != '']
 
@@ -78,6 +77,8 @@ if uname_s.startswith("MINGW32"):
                library_dirs.append(os.path.join(tgt,item))
                break
 
+subprocess.call(["make swig"], shell=True)
+               
 swige = Extension("pyme._pygpgme", ["gpgme_wrap.c", "helpers.c"],
                   include_dirs = include_dirs,
                   define_macros = define_macros,
