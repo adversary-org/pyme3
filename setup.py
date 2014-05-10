@@ -36,7 +36,7 @@ def getconfig(what):
         confdata = subprocess.check_output(["gpgme-config", "--%s"%what])
     except OSError as e:
          if e.errno == os.errno.ENOENT:
-             raise ValueError("Could not call gpgme-config, perhaps install libgpgme-dev")
+             raise RuntimeError("Could not call gpgme-config, perhaps install libgpgme-dev")
          else:
              raise
     confdata = confdata.replace("\n", " ")
@@ -87,7 +87,7 @@ try:
     subprocess.call("swig")
 except OSError as e:
     if e.errno == os.errno.ENOENT:
-        raise ValueError("Could not call swig, perhaps install swig.")
+        raise RuntimeError("Could not call swig, perhaps install swig.")
     else:
         raise
     
