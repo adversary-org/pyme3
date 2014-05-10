@@ -83,6 +83,14 @@ if uname_s.startswith("MINGW32"):
                library_dirs.append(os.path.join(tgt,item))
                break
 
+try:
+    subprocess.call("swig")
+except OSError as e:
+    if e.errno == os.errno.ENOENT:
+        raise ValueError("Could not call swig, perhaps install swig.")
+    else:
+        raise
+    
 subprocess.call(["make swig"], shell=True)
                
 swige = Extension("pyme._pygpgme", ["gpgme_wrap.c", "helpers.c"],
