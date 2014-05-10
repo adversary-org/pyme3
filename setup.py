@@ -32,7 +32,13 @@ sys.path.append("pyme")
 import version
 
 def getconfig(what):
-    confdata = subprocess.check_output(["gpgme-config", "--%s"%what])
+    try:
+        confdata = subprocess.check_output(["gpgme-config", "--%s"%what])
+    except OSError as e:
+         if e.errno == os.errno.ENOENT:
+             raise ValueError("Could not file gpgme-config")
+         else:
+             raise
     confdata = confdata.replace("\n", " ")
     confdata = confdata.replace("  ", " ")
     return [x for x in confdata.split(' ') if x != '']
