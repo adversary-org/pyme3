@@ -1,9 +1,22 @@
+# PyME #
+
 PyMe is a python interface to the
 [GPGME](https://www.gnupg.org/related_software/gpgme/) library.
 
-PyMe's development model is GPGME + Python + SWIG combination which means that
-most of the functions and types are converted from C into Python automatically
-by SWIG. In short, to be able to use PyMe you need to be familiar with GPGME.
+PyMe's development model is a
+[GPGME](https://www.gnupg.org/related_software/gpgme/) + Python +
+[SWIG](http://www.swig.org/) combination which means that most of the functions
+and types are converted from C into Python automatically by SWIG. In short, to
+be able to use PyMe you need to be
+[familiar with GPGME](https://www.gnupg.org/documentation/manuals/gpgme/).
+
+## Mailing List ##
+
+PyME's support and development
+[mailing list](http://sourceforge.net/p/pyme/mailman/pyme-help/) is hosted by
+sourceforge.
+
+## History ##
 
 * The latest version of PyMe (as of this writing) is v0.9.0.
 
