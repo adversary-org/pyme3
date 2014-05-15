@@ -12,12 +12,16 @@ types are converted from C into Python automatically by SWIG. In short, to be
 able to use PyMe you need to be `familiar with GPGME
 <https://www.gnupg.org/documentation/manuals/gpgme/>`_.
 
-## Mailing List ##
+------------
+Mailing List
+------------
 
 PyME's support and development `mailing list
 <http://sourceforge.net/p/pyme/mailman/pyme-help/>`_ is hosted by sourceforge.
 
-## History ##
+-------
+History
+-------
 
 * The latest version of PyMe (as of this writing) is v0.9.0.
 
