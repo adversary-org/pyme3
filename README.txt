@@ -1,20 +1,21 @@
-# PyME #
+====
+PyME
+====
 
-PyMe is a python interface to the
-[GPGME](https://www.gnupg.org/related_software/gpgme/) library.
+PyMe is a python interface to the `GPGME
+<https://www.gnupg.org/related_software/gpgme/>`_ library.
 
-PyMe's development model is a
-[GPGME](https://www.gnupg.org/related_software/gpgme/) + Python +
-[SWIG](http://www.swig.org/) combination which means that most of the functions
-and types are converted from C into Python automatically by SWIG. In short, to
-be able to use PyMe you need to be
-[familiar with GPGME](https://www.gnupg.org/documentation/manuals/gpgme/).
+PyMe's development model is a `GPGME
+<https://www.gnupg.org/related_software/gpgme/>`_ + Python + `SWIG
+<http://www.swig.org/>`_ combination which means that most of the functions and
+types are converted from C into Python automatically by SWIG. In short, to be
+able to use PyMe you need to be `familiar with GPGME
+<https://www.gnupg.org/documentation/manuals/gpgme/>`_.
 
 ## Mailing List ##
 
-PyME's support and development
-[mailing list](http://sourceforge.net/p/pyme/mailman/pyme-help/) is hosted by
-sourceforge.
+PyME's support and development `mailing list
+<http://sourceforge.net/p/pyme/mailman/pyme-help/>`_ is hosted by sourceforge.
 
 ## History ##
 
