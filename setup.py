@@ -33,7 +33,9 @@ import version
 
 def getconfig(what):
     try:
-        confdata = subprocess.check_output(["gpgme-config", "--%s"%what])
+        process = subprocess.Popen(["gpgme-config", "--%s" % what],
+                                   stdout=subprocess.PIPE)
+        confdata = process.communicate()[0]
     except OSError as e:
          if e.errno == os.errno.ENOENT:
              raise RuntimeError("Could not call gpgme-config, perhaps install libgpgme-dev")
