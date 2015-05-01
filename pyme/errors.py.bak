@@ -37,7 +37,7 @@ class GPGMEError(Exception):
         return pygpgme.gpgme_err_source(self.error)
     
     def __str__(self):
-        return "%s (%d,%d)"%(self.getstring(), self.getsource(), self.getcode())
+        return "%s (%d,%d)"%(self.getstring(),self.getsource(),self.getcode())
 
 EOF = getattr(pygpgme, "EOF")
 
