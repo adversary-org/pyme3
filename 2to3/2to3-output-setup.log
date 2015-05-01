@@ -1,0 +1,35 @@
+bash4-4.3$ 2to3 -f all -f buffer -f idioms -f set_literal -f ws_comma -w setup.py 
+RefactoringTool: Refactored setup.py
+--- setup.py	(original)
++++ setup.py	(refactored)
+@@ -63,8 +63,7 @@
+ uname_s = os.popen("uname -s").read()
+ if uname_s.startswith("MINGW32"):
+    mnts = [x.split()[0:3:2] for x in os.popen("mount").read().split("\n") if x] 
+-   tmplist = [(len(x[1]), x[1], x[0]) for x in mnts]
+-   tmplist.sort()
++   tmplist = sorted([(len(x[1]), x[1], x[0]) for x in mnts])
+    tmplist.reverse()
+    extra_dirs = []
+    for item in include_dirs:
+@@ -73,7 +72,7 @@
+                item = os.path.normpath(item[ln:])
+                while item[0] == os.path.sep:
+                    item = item[1:]
+-               extra_dirs.append(os.path.join(tgt,item))
++               extra_dirs.append(os.path.join(tgt, item))
+                break
+    include_dirs += extra_dirs
+    for item in [x[2:] for x in libs if x.startswith("-L")]:
+@@ -82,7 +81,7 @@
+                item = os.path.normpath(item[ln:])
+                while item[0] == os.path.sep:
+                    item = item[1:]
+-               library_dirs.append(os.path.join(tgt,item))
++               library_dirs.append(os.path.join(tgt, item))
+                break
+ 
+ try:
+RefactoringTool: Files that were modified:
+RefactoringTool: setup.py
+bash4-4.3$

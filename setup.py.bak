@@ -63,7 +63,8 @@ for item in getconfig('cflags'):
 uname_s = os.popen("uname -s").read()
 if uname_s.startswith("MINGW32"):
    mnts = [x.split()[0:3:2] for x in os.popen("mount").read().split("\n") if x] 
-   tmplist = sorted([(len(x[1]), x[1], x[0]) for x in mnts])
+   tmplist = [(len(x[1]), x[1], x[0]) for x in mnts]
+   tmplist.sort()
    tmplist.reverse()
    extra_dirs = []
    for item in include_dirs:
@@ -72,7 +73,7 @@ if uname_s.startswith("MINGW32"):
                item = os.path.normpath(item[ln:])
                while item[0] == os.path.sep:
                    item = item[1:]
-               extra_dirs.append(os.path.join(tgt, item))
+               extra_dirs.append(os.path.join(tgt,item))
                break
    include_dirs += extra_dirs
    for item in [x[2:] for x in libs if x.startswith("-L")]:
@@ -81,7 +82,7 @@ if uname_s.startswith("MINGW32"):
                item = os.path.normpath(item[ln:])
                while item[0] == os.path.sep:
                    item = item[1:]
-               library_dirs.append(os.path.join(tgt, item))
+               library_dirs.append(os.path.join(tgt,item))
                break
 
 try:
