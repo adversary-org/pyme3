@@ -1,4 +1,4 @@
 # $Id$
 
-import mode
+from . import mode
 __all__ = ['mode']

@@ -31,7 +31,7 @@ gtk.glade.textdomain('gpa')
 # Thanks to Bernhard Reiter for pointing out the following:
 # gpgme_check_version() necessary for initialisation according to 
 # gpgme 1.1.6 and this is not done automatically in pyme-0.7.0
-print("gpgme version:", core.check_version())
+print "gpgme version:", core.check_version()
 
 # Helper functions to convert non-string data into printable strings
 def sec2str(secs, empty="_(Unknown)"):
@@ -50,7 +50,7 @@ trusts = {
 
 def validity2str(valid):
     "Convert trust integer into a human understandable string"
-    if valid in trusts: return _("%s" % trusts[valid])
+    if trusts.has_key(valid): return _("%s" % trusts[valid])
     else:                     return _("Unknown")
 
 def keyvalid2str(key):
@@ -138,12 +138,12 @@ for name in dir(status):
 
 def editor_func(status, args, val_dict):
     prompt = "%s %s" % (val_dict["state"], args)
-    if prompt in val_dict:
+    if val_dict.has_key(prompt):
         val_dict["state"] = val_dict[prompt][0]
         return val_dict[prompt][1]
-    elif args and "ignore %s" % status2str[status] not in val_dict:
+    elif args and not val_dict.has_key("ignore %s" % status2str[status]):
         for error in ["error %s" % status2str[status], "error %s" % prompt]:
-            if error in val_dict:
+            if val_dict.has_key(error):
                 raise errors.GPGMEError(val_dict[error])
         sys.stderr.write(_("Unexpected status and prompt in editor_func: " +
                            "%s %s\n") % (status2str[status], prompt))
@@ -383,7 +383,7 @@ class PyGpa:
         
     def error_message(self, text, parent=None, title=_("Warning")):
         "Pop up an error message dialog"
-        if type(text) == int:
+        if type(text) == long:
             text = errors.GPGMEError(text).getstring()
             title = "GPGME error"
         elif isinstance(text, errors.GPGMEError):
@@ -570,7 +570,7 @@ class PyGpa:
         encrypt_model = gtk.ListStore(*[x.ctype for x in keys_columns])
         context.set_keylist_mode(keylist.mode.SIGS)
         for key in context.op_keylist_all(None, 0):
-            secret = key.subkeys[0].fpr in sec_keys
+            secret = sec_keys.has_key(key.subkeys[0].fpr)
             data = [x.cfunc(key, secret) for x in keys_columns]
             if key.can_encrypt: encrypt_model.append(data)
             model.append(data)
@@ -664,7 +664,7 @@ class PyGpa:
             if status == None or self.progress_func(status):
                 self.new_progressbar.pulse()
                 return True
-        except errors.GPGMEError as exc:
+        except errors.GPGMEError, exc:
             self.error_message(exc)
         
         self.progress_context = None
@@ -948,7 +948,7 @@ class PyGpa:
                              self.sign_locally_cb.get_active())
                     row[-1].key=context.get_key(row[-1].key.subkeys[0].fpr,0)
                     self.on_keys_changed(self.keys_treeview)
-                except errors.GPGMEError as exc:
+                except errors.GPGMEError, exc:
                     self.error_message(exc)
             keytag.remove(table)
 
@@ -958,7 +958,7 @@ class PyGpa:
             context = Context()
             context.set_passphrase_cb(self.password_change_cb, {"count": 0})
             trigger_change_password(context, key_info.key)
-        except errors.GPGMEError as exc:
+        except errors.GPGMEError, exc:
             self.error_message(exc)
 
     def on_change_expiry_expireon_rb_toggled(self, expire_rb):
@@ -986,7 +986,7 @@ class PyGpa:
                 key_info.key=context.get_key(key_info.key.subkeys[0].fpr,0)
                 self.on_keys_changed(self.keys_treeview)
                 self.edit_key_date_label.set_text(key_info.key_expires_label())
-            except errors.GPGMEError as exc:
+            except errors.GPGMEError, exc:
                 self.error_message(exc)
 
     def on_edit_private_key_activate(self, obj):
@@ -1020,18 +1020,18 @@ class PyGpa:
         self.ownertrust_key.add(table)
         self.ownertrust_key.show_all()
         trust = key_info.key.owner_trust
-        if trust < 0 or trust not in trusts:
+        if trust < 0 or not trusts.has_key(trust):
             trust = validity.UNDEFINED
         getattr(self, "ownertrust_"+trusts[trust]).set_active(True)
         if self.popup(self.ownertrust_dialog) == gtk.RESPONSE_OK:
-            for trust, name in trusts.items():
+            for trust, name in trusts.iteritems():
                 if getattr(self, "ownertrust_"+name).get_active():
                     try:
                         context = Context()
                         change_key_trust(context, key_info.key, trust)
                         key_info.key.owner_trust = trust
                         self.on_keys_changed(self.keys_treeview)
-                    except errors.GPGMEError as exc:
+                    except errors.GPGMEError, exc:
                         self.error_message(exc)            
                     break
         self.ownertrust_key.remove(table)
@@ -1078,7 +1078,7 @@ class PyGpa:
         while import_file == None and dialog.run() == gtk.RESPONSE_OK:
             try:
                 import_file = file(dialog.get_filename(), "rb")
-            except IOError as strerror:
+            except IOError, strerror:
                 self.error_message(strerror, dialog)
                 import_file = None
         dialog.hide()
@@ -1127,7 +1127,7 @@ class PyGpa:
             if self.verify_output(filename, dialog):
                 try:
                     export_file = file(filename, "wb")
-                except IOError as strerror:
+                except IOError, strerror:
                     self.error_message(strerror, dialog)
                     export_file = None
         dialog.hide()
@@ -1183,7 +1183,7 @@ class PyGpa:
                 self.out_data = Data()
                 self.out_name = out_name
                 self.file_func(self.in_data, self.out_data)
-            except errors.GPGMEError as exc:
+            except errors.GPGMEError, exc:
                 self.file_error_message(exc)
 
     def process_file_done(self, status):
@@ -1198,7 +1198,7 @@ class PyGpa:
             if self.file_list:
                 self.process_file_start(*(self.file_list.pop(0)))
                 return True
-        except (errors.GPGMEError, IOError) as exc:
+        except (errors.GPGMEError, IOError), exc:
             self.file_error_message(exc)
 
         # Let python to free the memory.
@@ -1254,7 +1254,7 @@ class PyGpa:
                 self.plain2 = Data()
             self.progress_context.op_verify_start(self.signed, self.plain1,
                                                   self.plain2)
-        except errors.GPGMEError as exc:
+        except errors.GPGMEError, exc:
             self.file_error_message(exc)
 
     def verify_file_done(self, status):
@@ -1292,7 +1292,7 @@ class PyGpa:
             if self.file_list:
                 self.verify_file_start(*(self.file_list.pop(0)))
                 return True
-        except errors.GPGMEError as exc:
+        except errors.GPGMEError, exc:
             self.file_error_message(exc)
 
         # Let python to free the memory.

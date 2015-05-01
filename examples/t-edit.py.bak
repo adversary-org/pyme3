@@ -28,10 +28,10 @@ class KeyEditor:
         self.step = 0
 
     def edit_fnc(self, status, args, out):
-        print("[-- Response --]")
+        print "[-- Response --]"
         out.seek(0,0)
-        print(out.read(), end=' ')
-        print("[-- Code: %d, %s --]" % (status, args))
+        print out.read(),
+        print "[-- Code: %d, %s --]" % (status, args)
     
         if args == "keyedit.prompt":
             result = self.steps[self.step]
@@ -46,7 +46,7 @@ class KeyEditor:
         return result
 
 if not os.getenv("GNUPGHOME"):
-    print("Please, set GNUPGHOME env.var. pointing to GPGME's tests/gpg dir")
+    print "Please, set GNUPGHOME env.var. pointing to GPGME's tests/gpg dir"
 else:
     c = Context()
     c.set_passphrase_cb(lambda x,y,z: "abc")
@@ -54,6 +54,6 @@ else:
     c.op_keylist_start("Alpha", 0)
     key = c.op_keylist_next()
     c.op_edit(key, KeyEditor().edit_fnc, out, out)
-    print("[-- Last response --]")
+    print "[-- Last response --]"
     out.seek(0,0)
-    print(out.read(), end=' ')
+    print out.read(),

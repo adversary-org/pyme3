@@ -41,7 +41,7 @@ def sendto(keylist):
 
 names = []
 for key in c.op_keylist_all(None, 0):
-    print(" *** Found key for %s" % key.uids[0].uid)
+    print " *** Found key for %s" % key.uids[0].uid
     valid = 0
     for subkey in key.subkeys:
         keyid = subkey.keyid
@@ -49,17 +49,17 @@ for key in c.op_keylist_all(None, 0):
             break
         can_encrypt = subkey.can_encrypt
         valid += can_encrypt
-        print("     Subkey %s: encryption %s" % \
-              (keyid, can_encrypt and "enabled" or "disabled"))
+        print "     Subkey %s: encryption %s" % \
+              (keyid, can_encrypt and "enabled" or "disabled")
     
     if valid:
         names.append(key)
     else:
-        print("     This key cannot be used for encryption; skipping.")
+        print "     This key cannot be used for encryption; skipping."
 
 passno = 0
 
-print("Encrypting to %d recipients" % len(names))
-print(sendto(names))
+print "Encrypting to %d recipients" % len(names)
+print sendto(names)
 
 

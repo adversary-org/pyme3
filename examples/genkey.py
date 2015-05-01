@@ -42,4 +42,4 @@ Expire-Date: 2010-08-15
 """
 
 c.op_genkey(parms, None, None)
-print c.op_genkey_result().fpr
+print(c.op_genkey_result().fpr)

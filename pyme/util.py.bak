@@ -17,7 +17,7 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 
 import pygpgme
-from .errors import errorcheck
+from errors import errorcheck
 
 def process_constants(starttext, dict):
     """Called by the constant libraries to load up the appropriate constants
@@ -60,12 +60,12 @@ class GpgmeWrapper(object):
         if self._errorcheck(name):
             def _funcwrap(*args, **kwargs):
                 args = [self.wrapped] + list(args)
-                return errorcheck(getattr(pygpgme, name)(*args, **kwargs),
+                return errorcheck(apply(getattr(pygpgme, name), args, kwargs),
                                   "Invocation of " + name)
         else:
             def _funcwrap(*args, **kwargs):
                 args = [self.wrapped] + list(args)
-                return getattr(pygpgme, name)(*args, **kwargs)
+                return apply(getattr(pygpgme, name), args, kwargs)
 
         _funcwrap.__doc__ = getattr(getattr(pygpgme, name), "__doc__")
         return _funcwrap

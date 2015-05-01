@@ -17,12 +17,12 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 
 # import generators for portability with python2.2
-
+from __future__ import generators
 
 import pygpgme
-from .errors import errorcheck
-from . import errors
-from .util import GpgmeWrapper
+from errors import errorcheck
+import errors
+from util import GpgmeWrapper
 
 class Context(GpgmeWrapper):
     """From the GPGME C documentation:
@@ -84,7 +84,7 @@ class Context(GpgmeWrapper):
             self.last_progresscb = None
 
     def op_keylist_all(self, *args, **kwargs):
-        self.op_keylist_start(*args, **kwargs)
+        apply(self.op_keylist_start, args, kwargs)
         key = self.op_keylist_next()
         while key:
             yield key
@@ -98,7 +98,7 @@ class Context(GpgmeWrapper):
         try:
             errorcheck(pygpgme.gpgme_op_keylist_next(self.wrapped, ptr))
             key = pygpgme.gpgme_key_t_p_value(ptr)
-        except errors.GPGMEError as excp:
+        except errors.GPGMEError, excp:
             key = None
             if excp.getcode() != errors.EOF:
                 raise excp
@@ -118,7 +118,7 @@ class Context(GpgmeWrapper):
         return key
 
     def op_trustlist_all(self, *args, **kwargs):
-        self.op_trustlist_start(*args, **kwargs)
+        apply(self.op_trustlist_start, args, kwargs)
         trust = self.ctx.op_trustlist_next()
         while trust:
             yield trust
@@ -132,7 +132,7 @@ class Context(GpgmeWrapper):
         try:
             errorcheck(pygpgme.gpgme_op_trustlist_next(self.wrapped, ptr))
             trust = pygpgme.gpgme_trust_item_t_p_value(ptr)
-        except errors.GPGMEError as excp:
+        except errors.GPGMEError, excp:
             trust = None
             if excp.getcode() != errors.EOF:
                 raise
@@ -278,7 +278,7 @@ class Data(GpgmeWrapper):
         self.last_readcb = None
 
         if cbs != None:
-            self.new_from_cbs(*cbs)
+            apply(self.new_from_cbs, cbs)
         elif string != None:
             self.new_from_mem(string)
         elif file != None and offset != None and length != None:
@@ -348,8 +348,8 @@ class Data(GpgmeWrapper):
         else:
             fp = pygpgme.fdopen(file.fileno(), file.mode)
             if fp == None:
-                raise ValueError("Failed to open file from %s arg %s" % \
-                      (str(type(file)), str(file)))
+                raise ValueError, "Failed to open file from %s arg %s" % \
+                      (str(type(file)), str(file))
 
         errorcheck(pygpgme.gpgme_data_new_from_filepart(tmp, filename, fp,
                                                       offset, length))
@@ -364,8 +364,8 @@ class Data(GpgmeWrapper):
         tmp = pygpgme.new_gpgme_data_t_p()
         fp = pygpgme.fdopen(file.fileno(), file.mode)
         if fp == None:
-            raise ValueError("Failed to open file from %s arg %s" % \
-                  (str(type(file)), str(file)))
+            raise ValueError, "Failed to open file from %s arg %s" % \
+                  (str(type(file)), str(file))
         errorcheck(gpgme_data_new_from_fd(tmp, fp))
         self.wrapped = pygpgme.gpgme_data_t_p_value(tmp)
         pygpgme.delete_gpgme_data_t_p(tmp)

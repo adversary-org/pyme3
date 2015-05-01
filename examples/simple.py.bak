@@ -41,12 +41,12 @@ c.op_keylist_start(name, 0)
 r = c.op_keylist_next()
 
 if r == None:
-    print("The key for user \"%s\" was not found" % name)
+    print "The key for user \"%s\" was not found" % name
 else:
     # Do the encryption.
     try:
         c.op_encrypt([r], 1, plain, cipher)
         cipher.seek(0,0)
-        print(cipher.read())
-    except errors.GPGMEError as ex:
-        print(ex.getstring())
+        print cipher.read()
+    except errors.GPGMEError, ex:
+        print ex.getstring()

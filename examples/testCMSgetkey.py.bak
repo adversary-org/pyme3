@@ -20,20 +20,20 @@ def printgetkeyresults(keyfpr):
 
     # gpgme_check_version() necessary for initialisation according to 
     # gogme 1.1.6 and this is not done automatically in pyme-0.7.0
-    print("gpgme version:", core.check_version(None))
+    print "gpgme version:", core.check_version(None)
     c = core.Context()
     c.set_protocol(protocol.CMS)
 
     key = c.get_key(keyfpr, False)
 
-    print("got key: ", key.subkeys[0].fpr)
+    print "got key: ", key.subkeys[0].fpr
 
     for uid in key.uids:
-        print(uid.uid)
+        print uid.uid
 
 def main():
     if len(sys.argv) < 2:
-        print("fingerprint or unique key ID for gpgme_get_key()")
+        print "fingerprint or unique key ID for gpgme_get_key()"
         sys.exit(1)
 
     printgetkeyresults(sys.argv[1])

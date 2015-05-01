@@ -37,6 +37,6 @@ try:
         tmp = gpgme.readline()
     sys.stdout.write(text)
     gpgme.close()
-except IOError as errmsg:
+except IOError, errmsg:
     sys.stderr.write("%s: %s\n" % (sys.argv[0], errmsg))
     sys.exit(1)

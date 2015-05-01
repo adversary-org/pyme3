@@ -27,7 +27,7 @@ from pyme.constants.keylist import mode
 # Thanks to Bernhard Reiter for pointing out the following:
 # gpgme_check_version() necessary for initialisation according to 
 # gpgme 1.1.6 and this is not done automatically in pyme-0.7.0
-print("gpgme version:", core.check_version(None))
+print "gpgme version:", core.check_version(None)
 
 # Convert trust constant into a string
 trusts = {validity.UNKNOWN: "",
@@ -165,7 +165,7 @@ class PyGtkGpgKeys:
         for key in self.context.op_keylist_all(None, 1):
             secret_keys[key.subkeys[0].fpr] = 1
         for key in self.context.op_keylist_all(None, 0):
-            self.add_key(key, key.subkeys[0].fpr in secret_keys)
+            self.add_key(key, secret_keys.has_key(key.subkeys[0].fpr))
     
     def add_key(self, key, secret):
         "self.add_key(key) - add key to the TreeStore model"
@@ -275,7 +275,7 @@ class PyGtkGpgKeys:
     def editor_func(self, status, args, val_dict):
         state = val_dict["state"]
         prompt = "%s %s" % (state, args)
-        if prompt in val_dict:
+        if val_dict.has_key(prompt):
             val_dict["state"] = val_dict[prompt][0]
             return val_dict[prompt][1]
         elif args:
@@ -659,5 +659,5 @@ class PyGtkGpgKeys:
 try:
     # Glade file is expected to be in the same location as this script
     PyGtkGpgKeys(os.path.dirname(sys.argv[0]))
-except IOError as message:
-    print("%s:%s" %(sys.argv[0], message))
+except IOError, message:
+    print "%s:%s" %(sys.argv[0], message)

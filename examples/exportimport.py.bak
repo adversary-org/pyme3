@@ -29,16 +29,16 @@ c = core.Context()
 c.set_armor(1)
 user = "joe@foo.bar"
 
-print(" - Export %s's public keys - " % user)
+print " - Export %s's public keys - " % user
 c.op_export(user, 0, expkey)
 
 # print out exported data to see how it looks in armor.
 expkey.seek(0,0)
 expstring = expkey.read()
 if expstring:
-    print(expstring)
+    print expstring
 else:
-    print("No %s's keys to export!" % user)
+    print "No %s's keys to export!" % user
     sys.exit(0)
 
 
@@ -55,21 +55,21 @@ else:
 # initialize import data from a string as if it was read from a file.
 newkey = core.Data(expstring)
 
-print(" - Import exported keys - ")
+print " - Import exported keys - "
 c.op_import(newkey)
 result = c.op_import_result()
 
 # show the import result
 if result:
-    print(" - Result of the import - ")
+    print " - Result of the import - "
     for k in dir(result):
         if not k in result.__dict__ and not k.startswith("_"):
             if k == "imports":
-                print(k, ":")
+                print k, ":"
                 for impkey in result.__getattr__(k):
-                    print("    fpr=%s result=%d status=%x" % \
-                          (impkey.fpr, impkey.result, impkey.status))
+                    print "    fpr=%s result=%d status=%x" % \
+                          (impkey.fpr, impkey.result, impkey.status)
             else:
-                print(k, ":", result.__getattr__(k))
+                print k, ":", result.__getattr__(k)
 else:
-    print(" - No import result - ")
+    print " - No import result - "
