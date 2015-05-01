@@ -1,0 +1,950 @@
+bash4-4.3$ git status
+# On branch 2to3
+nothing to commit, working directory clean
+bash4-4.3$ for x in `find . | egrep .py$` ; do 2to3 -w $x; done ;
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: No changes to ./examples/delkey.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: ./examples/delkey.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./examples/encrypt-to-all.py
+--- ./examples/encrypt-to-all.py	(original)
++++ ./examples/encrypt-to-all.py	(refactored)
+@@ -41,7 +41,7 @@
+ 
+ names = []
+ for key in c.op_keylist_all(None, 0):
+-    print " *** Found key for %s" % key.uids[0].uid
++    print(" *** Found key for %s" % key.uids[0].uid)
+     valid = 0
+     for subkey in key.subkeys:
+         keyid = subkey.keyid
+@@ -49,17 +49,17 @@
+             break
+         can_encrypt = subkey.can_encrypt
+         valid += can_encrypt
+-        print "     Subkey %s: encryption %s" % \
+-              (keyid, can_encrypt and "enabled" or "disabled")
++        print("     Subkey %s: encryption %s" % \
++              (keyid, can_encrypt and "enabled" or "disabled"))
+     
+     if valid:
+         names.append(key)
+     else:
+-        print "     This key cannot be used for encryption; skipping."
++        print("     This key cannot be used for encryption; skipping.")
+ 
+ passno = 0
+ 
+-print "Encrypting to %d recipients" % len(names)
+-print sendto(names)
++print("Encrypting to %d recipients" % len(names))
++print(sendto(names))
+ 
+ 
+RefactoringTool: Files that were modified:
+RefactoringTool: ./examples/encrypt-to-all.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./examples/exportimport.py
+--- ./examples/exportimport.py	(original)
++++ ./examples/exportimport.py	(refactored)
+@@ -29,16 +29,16 @@
+ c.set_armor(1)
+ user = "joe@foo.bar"
+ 
+-print " - Export %s's public keys - " % user
++print(" - Export %s's public keys - " % user)
+ c.op_export(user, 0, expkey)
+ 
+ # print out exported data to see how it looks in armor.
+ expkey.seek(0,0)
+ expstring = expkey.read()
+ if expstring:
+-    print expstring
++    print(expstring)
+ else:
+-    print "No %s's keys to export!" % user
++    print("No %s's keys to export!" % user)
+     sys.exit(0)
+ 
+ 
+@@ -55,21 +55,21 @@
+ # initialize import data from a string as if it was read from a file.
+ newkey = core.Data(expstring)
+ 
+-print " - Import exported keys - "
++print(" - Import exported keys - ")
+ c.op_import(newkey)
+ result = c.op_import_result()
+ 
+ # show the import result
+ if result:
+-    print " - Result of the import - "
++    print(" - Result of the import - ")
+     for k in dir(result):
+         if not k in result.__dict__ and not k.startswith("_"):
+             if k == "imports":
+-                print k, ":"
++                print(k, ":")
+                 for impkey in result.__getattr__(k):
+-                    print "    fpr=%s result=%d status=%x" % \
+-                          (impkey.fpr, impkey.result, impkey.status)
++                    print("    fpr=%s result=%d status=%x" % \
++                          (impkey.fpr, impkey.result, impkey.status))
+             else:
+-                print k, ":", result.__getattr__(k)
++                print(k, ":", result.__getattr__(k))
+ else:
+-    print " - No import result - "
++    print(" - No import result - ")
+RefactoringTool: Files that were modified:
+RefactoringTool: ./examples/exportimport.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./examples/genkey.py
+--- ./examples/genkey.py	(original)
++++ ./examples/genkey.py	(refactored)
+@@ -42,4 +42,4 @@
+ """
+ 
+ c.op_genkey(parms, None, None)
+-print c.op_genkey_result().fpr
++print(c.op_genkey_result().fpr)
+RefactoringTool: Files that were modified:
+RefactoringTool: ./examples/genkey.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./examples/inter-edit.py
+--- ./examples/inter-edit.py	(original)
++++ ./examples/inter-edit.py	(refactored)
+@@ -37,8 +37,8 @@
+             helper["data"].seek(helper["skip"],0)
+             data = helper["data"].read()
+             helper["skip"] += len(data)
+-            print data
+-            return raw_input("(%s) %s > " % (stat2str[stat], args))
++            print(data)
++            return input("(%s) %s > " % (stat2str[stat], args))
+     except EOFError:
+         pass
+ 
+@@ -52,6 +52,6 @@
+     key = c.op_keylist_next()
+     helper = {"skip": 0, "data": out}
+     c.op_edit(key, edit_fnc, helper, out)
+-    print "[-- Final output --]"
++    print("[-- Final output --]")
+     out.seek(helper["skip"],0)
+-    print out.read()
++    print(out.read())
+RefactoringTool: Files that were modified:
+RefactoringTool: ./examples/inter-edit.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./examples/pygpa.py
+--- ./examples/pygpa.py	(original)
++++ ./examples/pygpa.py	(refactored)
+@@ -31,7 +31,7 @@
+ # Thanks to Bernhard Reiter for pointing out the following:
+ # gpgme_check_version() necessary for initialisation according to 
+ # gpgme 1.1.6 and this is not done automatically in pyme-0.7.0
+-print "gpgme version:", core.check_version()
++print("gpgme version:", core.check_version())
+ 
+ # Helper functions to convert non-string data into printable strings
+ def sec2str(secs, empty="_(Unknown)"):
+@@ -50,7 +50,7 @@
+ 
+ def validity2str(valid):
+     "Convert trust integer into a human understandable string"
+-    if trusts.has_key(valid): return _("%s" % trusts[valid])
++    if valid in trusts: return _("%s" % trusts[valid])
+     else:                     return _("Unknown")
+ 
+ def keyvalid2str(key):
+@@ -138,12 +138,12 @@
+ 
+ def editor_func(status, args, val_dict):
+     prompt = "%s %s" % (val_dict["state"], args)
+-    if val_dict.has_key(prompt):
++    if prompt in val_dict:
+         val_dict["state"] = val_dict[prompt][0]
+         return val_dict[prompt][1]
+-    elif args and not val_dict.has_key("ignore %s" % status2str[status]):
++    elif args and "ignore %s" % status2str[status] not in val_dict:
+         for error in ["error %s" % status2str[status], "error %s" % prompt]:
+-            if val_dict.has_key(error):
++            if error in val_dict:
+                 raise errors.GPGMEError(val_dict[error])
+         sys.stderr.write(_("Unexpected status and prompt in editor_func: " +
+                            "%s %s\n") % (status2str[status], prompt))
+@@ -383,7 +383,7 @@
+         
+     def error_message(self, text, parent=None, title=_("Warning")):
+         "Pop up an error message dialog"
+-        if type(text) == long:
++        if type(text) == int:
+             text = errors.GPGMEError(text).getstring()
+             title = "GPGME error"
+         elif isinstance(text, errors.GPGMEError):
+@@ -570,7 +570,7 @@
+         encrypt_model = gtk.ListStore(*[x.ctype for x in keys_columns])
+         context.set_keylist_mode(keylist.mode.SIGS)
+         for key in context.op_keylist_all(None, 0):
+-            secret = sec_keys.has_key(key.subkeys[0].fpr)
++            secret = key.subkeys[0].fpr in sec_keys
+             data = [x.cfunc(key, secret) for x in keys_columns]
+             if key.can_encrypt: encrypt_model.append(data)
+             model.append(data)
+@@ -664,7 +664,7 @@
+             if status == None or self.progress_func(status):
+                 self.new_progressbar.pulse()
+                 return True
+-        except errors.GPGMEError, exc:
++        except errors.GPGMEError as exc:
+             self.error_message(exc)
+         
+         self.progress_context = None
+@@ -948,7 +948,7 @@
+                              self.sign_locally_cb.get_active())
+                     row[-1].key=context.get_key(row[-1].key.subkeys[0].fpr,0)
+                     self.on_keys_changed(self.keys_treeview)
+-                except errors.GPGMEError, exc:
++                except errors.GPGMEError as exc:
+                     self.error_message(exc)
+             keytag.remove(table)
+ 
+@@ -958,7 +958,7 @@
+             context = Context()
+             context.set_passphrase_cb(self.password_change_cb, {"count": 0})
+             trigger_change_password(context, key_info.key)
+-        except errors.GPGMEError, exc:
++        except errors.GPGMEError as exc:
+             self.error_message(exc)
+ 
+     def on_change_expiry_expireon_rb_toggled(self, expire_rb):
+@@ -986,7 +986,7 @@
+                 key_info.key=context.get_key(key_info.key.subkeys[0].fpr,0)
+                 self.on_keys_changed(self.keys_treeview)
+                 self.edit_key_date_label.set_text(key_info.key_expires_label())
+-            except errors.GPGMEError, exc:
++            except errors.GPGMEError as exc:
+                 self.error_message(exc)
+ 
+     def on_edit_private_key_activate(self, obj):
+@@ -1020,18 +1020,18 @@
+         self.ownertrust_key.add(table)
+         self.ownertrust_key.show_all()
+         trust = key_info.key.owner_trust
+-        if trust < 0 or not trusts.has_key(trust):
++        if trust < 0 or trust not in trusts:
+             trust = validity.UNDEFINED
+         getattr(self, "ownertrust_"+trusts[trust]).set_active(True)
+         if self.popup(self.ownertrust_dialog) == gtk.RESPONSE_OK:
+-            for trust, name in trusts.iteritems():
++            for trust, name in trusts.items():
+                 if getattr(self, "ownertrust_"+name).get_active():
+                     try:
+                         context = Context()
+                         change_key_trust(context, key_info.key, trust)
+                         key_info.key.owner_trust = trust
+                         self.on_keys_changed(self.keys_treeview)
+-                    except errors.GPGMEError, exc:
++                    except errors.GPGMEError as exc:
+                         self.error_message(exc)            
+                     break
+         self.ownertrust_key.remove(table)
+@@ -1078,7 +1078,7 @@
+         while import_file == None and dialog.run() == gtk.RESPONSE_OK:
+             try:
+                 import_file = file(dialog.get_filename(), "rb")
+-            except IOError, strerror:
++            except IOError as strerror:
+                 self.error_message(strerror, dialog)
+                 import_file = None
+         dialog.hide()
+@@ -1127,7 +1127,7 @@
+             if self.verify_output(filename, dialog):
+                 try:
+                     export_file = file(filename, "wb")
+-                except IOError, strerror:
++                except IOError as strerror:
+                     self.error_message(strerror, dialog)
+                     export_file = None
+         dialog.hide()
+@@ -1183,7 +1183,7 @@
+                 self.out_data = Data()
+                 self.out_name = out_name
+                 self.file_func(self.in_data, self.out_data)
+-            except errors.GPGMEError, exc:
++            except errors.GPGMEError as exc:
+                 self.file_error_message(exc)
+ 
+     def process_file_done(self, status):
+@@ -1198,7 +1198,7 @@
+             if self.file_list:
+                 self.process_file_start(*(self.file_list.pop(0)))
+                 return True
+-        except (errors.GPGMEError, IOError), exc:
++        except (errors.GPGMEError, IOError) as exc:
+             self.file_error_message(exc)
+ 
+         # Let python to free the memory.
+@@ -1254,7 +1254,7 @@
+                 self.plain2 = Data()
+             self.progress_context.op_verify_start(self.signed, self.plain1,
+                                                   self.plain2)
+-        except errors.GPGMEError, exc:
++        except errors.GPGMEError as exc:
+             self.file_error_message(exc)
+ 
+     def verify_file_done(self, status):
+@@ -1292,7 +1292,7 @@
+             if self.file_list:
+                 self.verify_file_start(*(self.file_list.pop(0)))
+                 return True
+-        except errors.GPGMEError, exc:
++        except errors.GPGMEError as exc:
+             self.file_error_message(exc)
+ 
+         # Let python to free the memory.
+RefactoringTool: Files that were modified:
+RefactoringTool: ./examples/pygpa.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./examples/PyGtkGpgKeys.py
+--- ./examples/PyGtkGpgKeys.py	(original)
++++ ./examples/PyGtkGpgKeys.py	(refactored)
+@@ -27,7 +27,7 @@
+ # Thanks to Bernhard Reiter for pointing out the following:
+ # gpgme_check_version() necessary for initialisation according to 
+ # gpgme 1.1.6 and this is not done automatically in pyme-0.7.0
+-print "gpgme version:", core.check_version(None)
++print("gpgme version:", core.check_version(None))
+ 
+ # Convert trust constant into a string
+ trusts = {validity.UNKNOWN: "",
+@@ -165,7 +165,7 @@
+         for key in self.context.op_keylist_all(None, 1):
+             secret_keys[key.subkeys[0].fpr] = 1
+         for key in self.context.op_keylist_all(None, 0):
+-            self.add_key(key, secret_keys.has_key(key.subkeys[0].fpr))
++            self.add_key(key, key.subkeys[0].fpr in secret_keys)
+     
+     def add_key(self, key, secret):
+         "self.add_key(key) - add key to the TreeStore model"
+@@ -275,7 +275,7 @@
+     def editor_func(self, status, args, val_dict):
+         state = val_dict["state"]
+         prompt = "%s %s" % (state, args)
+-        if val_dict.has_key(prompt):
++        if prompt in val_dict:
+             val_dict["state"] = val_dict[prompt][0]
+             return val_dict[prompt][1]
+         elif args:
+@@ -659,5 +659,5 @@
+ try:
+     # Glade file is expected to be in the same location as this script
+     PyGtkGpgKeys(os.path.dirname(sys.argv[0]))
+-except IOError, message:
+-    print "%s:%s" %(sys.argv[0], message)
++except IOError as message:
++    print("%s:%s" %(sys.argv[0], message))
+RefactoringTool: Files that were modified:
+RefactoringTool: ./examples/PyGtkGpgKeys.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./examples/sign.py
+--- ./examples/sign.py	(original)
++++ ./examples/sign.py	(refactored)
+@@ -28,4 +28,4 @@
+ c.set_passphrase_cb(callbacks.passphrase_stdin, 'for signing')
+ c.op_sign(plain, sig, mode.CLEAR)
+ sig.seek(0,0)
+-print sig.read()
++print(sig.read())
+RefactoringTool: Files that were modified:
+RefactoringTool: ./examples/sign.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./examples/signverify.py
+--- ./examples/signverify.py	(original)
++++ ./examples/signverify.py	(refactored)
+@@ -36,7 +36,7 @@
+     if sigkey.can_sign:
+         c.signers_add(sigkey)
+ if not c.signers_enum(0):
+-    print "No secret %s's keys suitable for signing!" % user
++    print("No secret %s's keys suitable for signing!" % user)
+     sys.exit(0)
+ 
+ # This is a map between signer e-mail and its password
+@@ -52,7 +52,7 @@
+ # Print out the signature (don't forget to rewind since signing put sig at EOF)
+ sig.seek(0,0)
+ signedtext = sig.read()
+-print signedtext
++print(signedtext)
+ 
+ # Create Data with signed text.
+ sig2 = core.Data(signedtext)
+@@ -66,13 +66,13 @@
+ index = 0
+ for sign in result.signatures:
+     index += 1
+-    print "signature", index, ":"
+-    print "  summary:    ", sign.summary
+-    print "  status:     ", sign.status
+-    print "  timestamp:  ", sign.timestamp
+-    print "  fingerprint:", sign.fpr
+-    print "  uid:        ", c.get_key(sign.fpr, 0).uids[0].uid
++    print("signature", index, ":")
++    print("  summary:    ", sign.summary)
++    print("  status:     ", sign.status)
++    print("  timestamp:  ", sign.timestamp)
++    print("  fingerprint:", sign.fpr)
++    print("  uid:        ", c.get_key(sign.fpr, 0).uids[0].uid)
+ 
+ # Print "unsigned" text. Rewind since verify put plain2 at EOF.
+ plain2.seek(0,0)
+-print "\n", plain2.read()
++print("\n", plain2.read())
+RefactoringTool: Files that were modified:
+RefactoringTool: ./examples/signverify.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./examples/simple.py
+--- ./examples/simple.py	(original)
++++ ./examples/simple.py	(refactored)
+@@ -41,12 +41,12 @@
+ r = c.op_keylist_next()
+ 
+ if r == None:
+-    print "The key for user \"%s\" was not found" % name
++    print("The key for user \"%s\" was not found" % name)
+ else:
+     # Do the encryption.
+     try:
+         c.op_encrypt([r], 1, plain, cipher)
+         cipher.seek(0,0)
+-        print cipher.read()
+-    except errors.GPGMEError, ex:
+-        print ex.getstring()
++        print(cipher.read())
++    except errors.GPGMEError as ex:
++        print(ex.getstring())
+RefactoringTool: Files that were modified:
+RefactoringTool: ./examples/simple.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./examples/t-edit.py
+--- ./examples/t-edit.py	(original)
++++ ./examples/t-edit.py	(refactored)
+@@ -28,10 +28,10 @@
+         self.step = 0
+ 
+     def edit_fnc(self, status, args, out):
+-        print "[-- Response --]"
++        print("[-- Response --]")
+         out.seek(0,0)
+-        print out.read(),
+-        print "[-- Code: %d, %s --]" % (status, args)
++        print(out.read(), end=' ')
++        print("[-- Code: %d, %s --]" % (status, args))
+     
+         if args == "keyedit.prompt":
+             result = self.steps[self.step]
+@@ -46,7 +46,7 @@
+         return result
+ 
+ if not os.getenv("GNUPGHOME"):
+-    print "Please, set GNUPGHOME env.var. pointing to GPGME's tests/gpg dir"
++    print("Please, set GNUPGHOME env.var. pointing to GPGME's tests/gpg dir")
+ else:
+     c = Context()
+     c.set_passphrase_cb(lambda x,y,z: "abc")
+@@ -54,6 +54,6 @@
+     c.op_keylist_start("Alpha", 0)
+     key = c.op_keylist_next()
+     c.op_edit(key, KeyEditor().edit_fnc, out, out)
+-    print "[-- Last response --]"
++    print("[-- Last response --]")
+     out.seek(0,0)
+-    print out.read(),
++    print(out.read(), end=' ')
+RefactoringTool: Files that were modified:
+RefactoringTool: ./examples/t-edit.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./examples/testCMSgetkey.py
+--- ./examples/testCMSgetkey.py	(original)
++++ ./examples/testCMSgetkey.py	(refactored)
+@@ -20,20 +20,20 @@
+ 
+     # gpgme_check_version() necessary for initialisation according to 
+     # gogme 1.1.6 and this is not done automatically in pyme-0.7.0
+-    print "gpgme version:", core.check_version(None)
++    print("gpgme version:", core.check_version(None))
+     c = core.Context()
+     c.set_protocol(protocol.CMS)
+ 
+     key = c.get_key(keyfpr, False)
+ 
+-    print "got key: ", key.subkeys[0].fpr
++    print("got key: ", key.subkeys[0].fpr)
+ 
+     for uid in key.uids:
+-        print uid.uid
++        print(uid.uid)
+ 
+ def main():
+     if len(sys.argv) < 2:
+-        print "fingerprint or unique key ID for gpgme_get_key()"
++        print("fingerprint or unique key ID for gpgme_get_key()")
+         sys.exit(1)
+ 
+     printgetkeyresults(sys.argv[1])
+RefactoringTool: Files that were modified:
+RefactoringTool: ./examples/testCMSgetkey.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./examples/verifydetails.py
+--- ./examples/verifydetails.py	(original)
++++ ./examples/verifydetails.py	(refactored)
+@@ -30,14 +30,14 @@
+ from pyme.constants import protocol
+ 
+ def print_engine_infos():
+-    print "gpgme version:", core.check_version(None)
+-    print "engines:"
++    print("gpgme version:", core.check_version(None))
++    print("engines:")
+ 
+     for engine in core.get_engine_info():
+-        print engine.file_name, engine.version
++        print(engine.file_name, engine.version)
+ 
+     for proto in [protocol.OpenPGP, protocol.CMS]:
+-        print core.get_protocol_name(proto), core.engine_check_version(proto)
++        print(core.get_protocol_name(proto), core.engine_check_version(proto))
+ 
+ 
+ def verifyprintdetails(sigfilename, filefilename=None):
+@@ -61,36 +61,36 @@
+     index = 0
+     for sign in result.signatures:
+         index += 1
+-        print "signature", index, ":"
+-        print "  summary:     %#0x" % (sign.summary)
+-        print "  status:      %#0x" % (sign.status)
+-        print "  timestamp:  ", sign.timestamp
+-        print "  fingerprint:", sign.fpr
+-        print "  uid:        ", c.get_key(sign.fpr, 0).uids[0].uid
++        print("signature", index, ":")
++        print("  summary:     %#0x" % (sign.summary))
++        print("  status:      %#0x" % (sign.status))
++        print("  timestamp:  ", sign.timestamp)
++        print("  fingerprint:", sign.fpr)
++        print("  uid:        ", c.get_key(sign.fpr, 0).uids[0].uid)
+ 
+     # Print "unsigned" text if inline signature
+     if plain2:
+         #Rewind since verify put plain2 at EOF.
+         plain2.seek(0,0)
+-        print "\n", plain2.read()
++        print("\n", plain2.read())
+ 
+ def main():
+     print_engine_infos()
+ 
+-    print
++    print()
+ 
+     argc= len(sys.argv)
+     if argc < 2 or argc > 3:
+-        print "need a filename for inline signature"
+-        print "or two filename for detached signature and file to check"
++        print("need a filename for inline signature")
++        print("or two filename for detached signature and file to check")
+         sys.exit(1)
+ 
+     if argc == 2:
+-        print "trying to verify file: " + sys.argv[1]
++        print("trying to verify file: " + sys.argv[1])
+         verifyprintdetails(sys.argv[1])
+     if argc == 3:
+-        print "trying to verify signature %s for file %s" \
+-                    % (sys.argv[1], sys.argv[2])
++        print("trying to verify signature %s for file %s" \
++                    % (sys.argv[1], sys.argv[2]))
+ 
+         verifyprintdetails(sys.argv[1], sys.argv[2])
+ 
+RefactoringTool: Files that were modified:
+RefactoringTool: ./examples/verifydetails.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./gpgme-h-clean.py
+--- ./gpgme-h-clean.py	(original)
++++ ./gpgme-h-clean.py	(refactored)
+@@ -37,6 +37,6 @@
+         tmp = gpgme.readline()
+     sys.stdout.write(text)
+     gpgme.close()
+-except IOError, errmsg:
++except IOError as errmsg:
+     sys.stderr.write("%s: %s\n" % (sys.argv[0], errmsg))
+     sys.exit(1)
+RefactoringTool: Files that were modified:
+RefactoringTool: ./gpgme-h-clean.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: No changes to ./pyme/__init__.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: ./pyme/__init__.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./pyme/callbacks.py
+--- ./pyme/callbacks.py	(original)
++++ ./pyme/callbacks.py	(refactored)
+@@ -27,12 +27,12 @@
+         why = ' ' + hook
+     if prev_bad:
+         why += ' (again)'
+-    print "Please supply %s' password%s:" % (hint, why)
++    print("Please supply %s' password%s:" % (hint, why))
+     return getpass()
+ 
+ def progress_stdout(what, type, current, total, hook=None):
+-    print "PROGRESS UPDATE: what = %s, type = %d, current = %d, total = %d" %\
+-          (what, type, current, total)
++    print("PROGRESS UPDATE: what = %s, type = %d, current = %d, total = %d" %\
++          (what, type, current, total))
+     
+ def readcb_fh(count, hook):
+     """A callback for data.  hook should be a Python file-like object."""
+RefactoringTool: Files that were modified:
+RefactoringTool: ./pyme/callbacks.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: No changes to ./pyme/constants/__init__.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: ./pyme/constants/__init__.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./pyme/constants/data/__init__.py
+--- ./pyme/constants/data/__init__.py	(original)
++++ ./pyme/constants/data/__init__.py	(refactored)
+@@ -1,4 +1,4 @@
+ # $Id$
+ 
+-import encoding
++from . import encoding
+ __all__ = ['encoding']
+RefactoringTool: Files that were modified:
+RefactoringTool: ./pyme/constants/data/__init__.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: No changes to ./pyme/constants/data/encoding.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: ./pyme/constants/data/encoding.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: No changes to ./pyme/constants/event.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: ./pyme/constants/event.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: No changes to ./pyme/constants/import.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: ./pyme/constants/import.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./pyme/constants/keylist/__init__.py
+--- ./pyme/constants/keylist/__init__.py	(original)
++++ ./pyme/constants/keylist/__init__.py	(refactored)
+@@ -1,4 +1,4 @@
+ # $Id$
+ 
+-import mode
++from . import mode
+ __all__ = ['mode']
+RefactoringTool: Files that were modified:
+RefactoringTool: ./pyme/constants/keylist/__init__.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: No changes to ./pyme/constants/keylist/mode.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: ./pyme/constants/keylist/mode.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: No changes to ./pyme/constants/md.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: ./pyme/constants/md.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: No changes to ./pyme/constants/pk.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: ./pyme/constants/pk.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: No changes to ./pyme/constants/protocol.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: ./pyme/constants/protocol.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./pyme/constants/sig/__init__.py
+--- ./pyme/constants/sig/__init__.py	(original)
++++ ./pyme/constants/sig/__init__.py	(refactored)
+@@ -1,4 +1,4 @@
+ # $Id$
+ 
+-import mode
++from . import mode
+ __all__ = ['mode']
+RefactoringTool: Files that were modified:
+RefactoringTool: ./pyme/constants/sig/__init__.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: No changes to ./pyme/constants/sig/mode.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: ./pyme/constants/sig/mode.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: No changes to ./pyme/constants/sigsum.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: ./pyme/constants/sigsum.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: No changes to ./pyme/constants/status.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: ./pyme/constants/status.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: No changes to ./pyme/constants/validity.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: ./pyme/constants/validity.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./pyme/core.py
+--- ./pyme/core.py	(original)
++++ ./pyme/core.py	(refactored)
+@@ -17,12 +17,12 @@
+ #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+ 
+ # import generators for portability with python2.2
+-from __future__ import generators
++
+ 
+ import pygpgme
+-from errors import errorcheck
+-import errors
+-from util import GpgmeWrapper
++from .errors import errorcheck
++from . import errors
++from .util import GpgmeWrapper
+ 
+ class Context(GpgmeWrapper):
+     """From the GPGME C documentation:
+@@ -84,7 +84,7 @@
+             self.last_progresscb = None
+ 
+     def op_keylist_all(self, *args, **kwargs):
+-        apply(self.op_keylist_start, args, kwargs)
++        self.op_keylist_start(*args, **kwargs)
+         key = self.op_keylist_next()
+         while key:
+             yield key
+@@ -98,7 +98,7 @@
+         try:
+             errorcheck(pygpgme.gpgme_op_keylist_next(self.wrapped, ptr))
+             key = pygpgme.gpgme_key_t_p_value(ptr)
+-        except errors.GPGMEError, excp:
++        except errors.GPGMEError as excp:
+             key = None
+             if excp.getcode() != errors.EOF:
+                 raise excp
+@@ -118,7 +118,7 @@
+         return key
+ 
+     def op_trustlist_all(self, *args, **kwargs):
+-        apply(self.op_trustlist_start, args, kwargs)
++        self.op_trustlist_start(*args, **kwargs)
+         trust = self.ctx.op_trustlist_next()
+         while trust:
+             yield trust
+@@ -132,7 +132,7 @@
+         try:
+             errorcheck(pygpgme.gpgme_op_trustlist_next(self.wrapped, ptr))
+             trust = pygpgme.gpgme_trust_item_t_p_value(ptr)
+-        except errors.GPGMEError, excp:
++        except errors.GPGMEError as excp:
+             trust = None
+             if excp.getcode() != errors.EOF:
+                 raise
+@@ -278,7 +278,7 @@
+         self.last_readcb = None
+ 
+         if cbs != None:
+-            apply(self.new_from_cbs, cbs)
++            self.new_from_cbs(*cbs)
+         elif string != None:
+             self.new_from_mem(string)
+         elif file != None and offset != None and length != None:
+@@ -348,8 +348,8 @@
+         else:
+             fp = pygpgme.fdopen(file.fileno(), file.mode)
+             if fp == None:
+-                raise ValueError, "Failed to open file from %s arg %s" % \
+-                      (str(type(file)), str(file))
++                raise ValueError("Failed to open file from %s arg %s" % \
++                      (str(type(file)), str(file)))
+ 
+         errorcheck(pygpgme.gpgme_data_new_from_filepart(tmp, filename, fp,
+                                                       offset, length))
+@@ -364,8 +364,8 @@
+         tmp = pygpgme.new_gpgme_data_t_p()
+         fp = pygpgme.fdopen(file.fileno(), file.mode)
+         if fp == None:
+-            raise ValueError, "Failed to open file from %s arg %s" % \
+-                  (str(type(file)), str(file))
++            raise ValueError("Failed to open file from %s arg %s" % \
++                  (str(type(file)), str(file)))
+         errorcheck(gpgme_data_new_from_fd(tmp, fp))
+         self.wrapped = pygpgme.gpgme_data_t_p_value(tmp)
+         pygpgme.delete_gpgme_data_t_p(tmp)
+RefactoringTool: Files that were modified:
+RefactoringTool: ./pyme/core.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: No changes to ./pyme/errors.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: ./pyme/errors.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./pyme/util.py
+--- ./pyme/util.py	(original)
++++ ./pyme/util.py	(refactored)
+@@ -17,7 +17,7 @@
+ #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+ 
+ import pygpgme
+-from errors import errorcheck
++from .errors import errorcheck
+ 
+ def process_constants(starttext, dict):
+     """Called by the constant libraries to load up the appropriate constants
+@@ -60,12 +60,12 @@
+         if self._errorcheck(name):
+             def _funcwrap(*args, **kwargs):
+                 args = [self.wrapped] + list(args)
+-                return errorcheck(apply(getattr(pygpgme, name), args, kwargs),
++                return errorcheck(getattr(pygpgme, name)(*args, **kwargs),
+                                   "Invocation of " + name)
+         else:
+             def _funcwrap(*args, **kwargs):
+                 args = [self.wrapped] + list(args)
+-                return apply(getattr(pygpgme, name), args, kwargs)
++                return getattr(pygpgme, name)(*args, **kwargs)
+ 
+         _funcwrap.__doc__ = getattr(getattr(pygpgme, name), "__doc__")
+         return _funcwrap
+RefactoringTool: Files that were modified:
+RefactoringTool: ./pyme/util.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored ./pyme/version.py
+--- ./pyme/version.py	(original)
++++ ./pyme/version.py	(refactored)
+@@ -2,7 +2,7 @@
+ 
+ productname = 'pyme'
+ versionstr = "0.9.0"
+-revno = long('$Rev: 281 $'[6:-2])
++revno = int('$Rev: 281 $'[6:-2])
+ revstr = "Rev %d" % revno
+ datestr = '$Date$'
+ 
+RefactoringTool: Files that were modified:
+RefactoringTool: ./pyme/version.py
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: No changes to ./setup.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: ./setup.py
+bash4-4.3$ 
