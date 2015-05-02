@@ -16,7 +16,7 @@
 #    License along with this library; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 
-PYTHON = python
+PYTHON = python3
 MODULE = pygpgme
 FILE = gpgme
 PYPATH = pyme
@@ -29,7 +29,7 @@ DOCMODSDIRS := $(shell find pyme -type d | grep -v CVS | sed 'sx/x.xg')
 DOCMODSFILES := $(shell find pyme -name "*.py" | egrep -v __init__ | grep -v gpgme.py | sed 'sx/x.xg')
 DOCMODS := $(DOCMODSDIRS) $(DOCMODSFILES:.py=)
 SWIGOPT := $(shell gpgme-config --cflags) -I/usr/include 
-PYMEVERS := $(shell python -c "from pyme.version import *;print versionstr")
+PYMEVERS := $(shell python3 -c "from pyme.version import *;print versionstr")
 SYSTEM = $(shell uname -s | sed 's/_.*//')
 ifeq ($(SYSTEM),MINGW32)
   DLLDIR := $(shell gpgme-config --exec-prefix)/bin
@@ -64,7 +64,7 @@ $(CFILE) $(PYPATH)/$(PYFILE): $(SWIGSOURCE) $(HFILE) helpers.h
 	mv $(PYFILE) $(PYPATH)/$(PYFILE)
 
 clean:
-	python setup.py clean --all
+	python3 setup.py clean --all
 	rm -rf build dist
 	rm -f `find . -name "*~"` `find . -name "*.pyc"` `find . -name "*.so"`
 	find . -name auth -exec rm -vf {}/password {}/username \;
