@@ -184,7 +184,7 @@ class Context(GpgmeWrapper):
 
     def get_engine_info(self):
         """Returns this context specific engine info"""
-    return pygpgme.gpgme_ctx_get_engine_info(self.wrapped)
+        return pygpgme.gpgme_ctx_get_engine_info(self.wrapped)
 
     def set_engine_info(self, proto, file_name, home_dir=None):
         """Changes the configuration of the crypto engine implementing the
