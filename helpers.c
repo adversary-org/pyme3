@@ -45,7 +45,7 @@ gpgme_error_t pygpgme_exception2code(void) {
     PyErr_Fetch(&type, &value, &traceback);
     PyErr_NormalizeException(&type, &value, &traceback);
     error = PyObject_GetAttrString(value, "error");
-    err_status = PyInt_AsLong(error);
+    err_status = PyLong_AsLong(error);
     Py_DECREF(error);
     PyErr_Restore(type, value, traceback);
   }
@@ -130,9 +130,9 @@ static void pyProgressCb(void *hook, const char *what, int type, int current,
   }
 
   PyTuple_SetItem(args, 0, PyString_FromString(what));
-  PyTuple_SetItem(args, 1, PyInt_FromLong((long) type));
-  PyTuple_SetItem(args, 2, PyInt_FromLong((long) current));
-  PyTuple_SetItem(args, 3, PyInt_FromLong((long) total));
+  PyTuple_SetItem(args, 1, PyLong_FromLong((long) type));
+  PyTuple_SetItem(args, 2, PyLong_FromLong((long) current));
+  PyTuple_SetItem(args, 3, PyLong_FromLong((long) total));
   if (dataarg) {
     Py_INCREF(dataarg);		/* Because GetItem doesn't give a ref but SetItem taketh away */
     PyTuple_SetItem(args, 4, dataarg);

@@ -147,7 +147,7 @@ PyObject* object_to_gpgme_t(PyObject* input, const char* objtype, int argnum) {
 
 // Those are for gpgme_data_read() and gpgme_strerror_r()
 %typemap(in) (void *buffer, size_t size), (char *buf, size_t buflen) {
-   $2 = PyInt_AsLong($input);
+   $2 = PyLong_AsLong($input);
    if ($2 < 0) {
      PyErr_SetString(PyExc_ValueError, "Positive integer expected");
      return NULL;
@@ -242,7 +242,7 @@ gpgme_error_t pyEditCb(void *opaque, gpgme_status_code_t status,
     pyargs = PyTuple_New(2);
   }
   
-  PyTuple_SetItem(pyargs, 0, PyInt_FromLong((long) status));
+  PyTuple_SetItem(pyargs, 0, PyLong_FromLong((long) status));
   PyTuple_SetItem(pyargs, 1, PyString_FromString(args));
   if (dataarg) {
     Py_INCREF(dataarg);		/* Because GetItem doesn't give a ref but SetItem taketh away */
