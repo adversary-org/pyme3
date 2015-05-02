@@ -60,7 +60,7 @@ $(HFILE): $(USRHFILE)
 	$(PYTHON) gpgme-h-clean.py $(USRHFILE) >$(HFILE)
 
 $(CFILE) $(PYPATH)/$(PYFILE): $(SWIGSOURCE) $(HFILE) helpers.h
-	$(SWIG) -python $(SWIGOPT) $(SWIGSOURCE)
+	$(SWIG) -python -py3 $(SWIGOPT) $(SWIGSOURCE)
 	mv $(PYFILE) $(PYPATH)/$(PYFILE)
 
 clean:
