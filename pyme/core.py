@@ -114,8 +114,9 @@ class Context(GpgmeWrapper):
         key = pygpgme.gpgme_key_t_p_value(ptr)
         pygpgme.delete_gpgme_key_t_p(ptr)
     if key:
-        key.__del__ = lambda self: pygpgme.gpgme_key_unref(self)
-    return key
+        key.__del__ = lambda self:
+            pygpgme.gpgme_key_unref(self)
+            return key
 
     def op_trustlist_all(self, *args, **kwargs):
         self.op_trustlist_start(*args, **kwargs)
