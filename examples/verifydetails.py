@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # initial 20080123 build from the example:
 #   very simple - probably INCOMPLETE
 # 20080703 Bernhard

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # initial 20080124 bernhard@intevation.de
 # 20080124-2: removed some superflous imports
 # 20080703: adapted for pyme-0.8.0

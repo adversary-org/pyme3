@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # $Id$
 
@@ -110,6 +110,6 @@ setup(name = "pyme",
       packages = ['pyme', 'pyme.constants', 'pyme.constants.data',
                   'pyme.constants.keylist', 'pyme.constants.sig'], 
       license = version.copyright + \
-                ", Licensed under the GPL version 2"
+                ", Licensed under the GPL version 2 and the LGPL version 2.1"
 )
 

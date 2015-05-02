@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # $Id$
 # Copyright (C) 2005 Igor Belyi <belyi@users.sourceforge.net>
 #
