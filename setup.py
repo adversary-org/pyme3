@@ -83,7 +83,7 @@ if uname_s.startswith("MINGW32"):
                break
 
 try:
-    subprocess.call(["swig", "-python", "-py3"])
+    subprocess.call("swig")
 except OSError as e:
     if e.errno == os.errno.ENOENT:
         raise RuntimeError("Could not call swig, perhaps install swig.")
