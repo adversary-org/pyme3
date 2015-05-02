@@ -104,8 +104,8 @@ class Context(GpgmeWrapper):
                 raise excp
         pygpgme.delete_gpgme_key_t_p(ptr)
         if key:
-        key.__del__ = lambda self: pygpgme.gpgme_key_unref(self)
-        return key
+            key.__del__ = lambda self: pygpgme.gpgme_key_unref(self)
+            return key
     
     def get_key(self, fpr, secret):
         """Return the key corresponding to the fingerprint 'fpr'"""
