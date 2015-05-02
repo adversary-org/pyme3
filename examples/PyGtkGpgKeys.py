@@ -358,7 +358,7 @@ class PyGtkGpgKeys:
                     continue
 
             # FIXME. Verify that file can be written to
-            export_file = file(filename, "wb")
+            export_file = open(filename, "wb")
             break
         dialog.destroy()
         if export_file == None:

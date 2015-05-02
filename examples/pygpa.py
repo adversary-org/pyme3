@@ -1077,7 +1077,7 @@ class PyGpa:
         dialog.set_transient_for(self.main_window)
         while import_file == None and dialog.run() == gtk.RESPONSE_OK:
             try:
-                import_file = file(dialog.get_filename(), "rb")
+                import_file = open(dialog.get_filename(), "rb")
             except IOError as strerror:
                 self.error_message(strerror, dialog)
                 import_file = None
@@ -1126,7 +1126,7 @@ class PyGpa:
             filename = dialog.get_filename()
             if self.verify_output(filename, dialog):
                 try:
-                    export_file = file(filename, "wb")
+                    export_file = open(filename, "wb")
                 except IOError as strerror:
                     self.error_message(strerror, dialog)
                     export_file = None
@@ -1147,7 +1147,7 @@ class PyGpa:
         for item in (self.sign, self.verify, self.encrypt, self.decrypt):
             item.set_sensitive(value)
 
-    def add_file(self, filename, complain=False):
+    def open(self, filename, complain=False):
         "Helper function to add a file into filemanager treeview"
         model = self.files_treeview.get_model()
         row_list = []

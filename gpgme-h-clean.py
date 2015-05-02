@@ -25,7 +25,7 @@ if len(sys.argv) < 2:
 deprec_func=re.compile('^(.*typedef.*|.*\(.*\))\s*_GPGME_DEPRECATED;\s*',re.S)
 line_break=re.compile(';|\\$|\\x0c|^\s*#');
 try:
-    gpgme = file(sys.argv[1])
+    gpgme = open(sys.argv[1])
     tmp = gpgme.readline()
     text = ''
     while tmp:
