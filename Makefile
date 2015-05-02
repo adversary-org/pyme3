@@ -34,9 +34,9 @@ SYSTEM = $(shell uname -s | sed 's/_.*//')
 ifeq ($(SYSTEM),MINGW32)
   DLLDIR := $(shell gpgme-config --exec-prefix)/bin
   DLLFILES := $(DLLDIR)/libgpg-error-0.dll $(DLLDIR)/libgpgme-11.dll
-  SWIG = $(shell /c/cygwin/bin/swig -python -py3)
+  SWIG = /c/cygwin/bin/swig
 else
-  SWIG = $(shell swig -python -py3)
+  SWIG = swig
 endif
 
 build: swig
