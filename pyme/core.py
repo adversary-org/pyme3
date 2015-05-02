@@ -19,7 +19,7 @@
 # import generators for portability with python2.2
 
 
-import pygpgme
+from . import pygpgme
 from .errors import errorcheck
 from . import errors
 from .util import GpgmeWrapper
