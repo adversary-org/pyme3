@@ -29,7 +29,7 @@ DOCMODSDIRS := $(shell find pyme -type d | grep -v CVS | sed 'sx/x.xg')
 DOCMODSFILES := $(shell find pyme -name "*.py" | egrep -v __init__ | grep -v gpgme.py | sed 'sx/x.xg')
 DOCMODS := $(DOCMODSDIRS) $(DOCMODSFILES:.py=)
 SWIGOPT := $(shell gpgme-config --cflags) -I/usr/include 
-PYMEVERS := $(shell python3 -c "from pyme.version import *;print versionstr")
+PYMEVERS := $(shell python3 -c "from pyme.version import *;print(versionstr)")
 SYSTEM = $(shell uname -s | sed 's/_.*//')
 ifeq ($(SYSTEM),MINGW32)
   DLLDIR := $(shell gpgme-config --exec-prefix)/bin
