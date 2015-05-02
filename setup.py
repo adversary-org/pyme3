@@ -41,9 +41,7 @@ def getconfig(what):
              raise RuntimeError("Could not call gpgme-config, perhaps install libgpgme-dev")
          else:
              raise
-    confdata = confdata.replace("\n", " ")
-    confdata = confdata.replace("  ", " ")
-    return [x for x in confdata.split(' ') if x != '']
+    return [x for x in confdata.decode('utf-8').split() if x != '']
 
 include_dirs = [os.getcwd()]
 define_macros = []
