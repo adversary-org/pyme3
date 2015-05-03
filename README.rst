@@ -35,8 +35,8 @@ PyME's support and development `mailing list
 History
 -------
 
-* The latest version of PyMe for Python 3.2 and above (as of May, 2015) is v0.9.0-2to3.
-  https://bitbucket.org/benmcginnes/pyme/branch/2to3
+* The latest version of PyMe for Python 3.2 and above (as of May, 2015) is v0.9.1-beta0.
+  https://github.com/adversary-org/pyme3
 
 * The latest version of PyMe for Python 2.6 and 2.7 (as of this writing) is v0.9.0.
   https://bitbucket.org/malb/pyme
