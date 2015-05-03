@@ -1,5 +1,0 @@
-* Porting PyME from Python 2 to Python 3
-
-** TODO Update *.py to use "/usr/bin/env python3" instead of "/usr/bin/env python"
-** Test to see if C objects also need conversion.
-*** If so, this will probably require someone a little more familiar with such things to fix it.
