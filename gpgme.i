@@ -29,8 +29,8 @@
 %typemap(in) const char * {
   if ($input == Py_None)
     $1 = NULL;
-  else if (PyUnicode_Check($input))
-    $1 = PyUnicode_AsString($input);
+  else if (PyBytes_Check($input))
+    $1 = PyBytes_AsString($input);
   else {
     PyErr_Format(PyExc_TypeError,
                  "arg %d: expected string or None, got %s",
@@ -56,10 +56,10 @@ PyObject* object_to_gpgme_t(PyObject* input, const char* objtype, int argnum) {
 		 input == Py_None ? "None" : input->ob_type->tp_name);
     return NULL;
   }
-  if (strcmp(PyUnicode_AsString(pyname), objtype) != 0) {
+  if (strcmp(PyBytes_AsString(pyname), objtype) != 0) {
     PyErr_Format(PyExc_TypeError,
 		 "arg %d: Expected value of type %s, but got %s",
-		 argnum, objtype, PyUnicode_AsString(pyname));
+		 argnum, objtype, PyBytes_AsString(pyname));
     Py_DECREF(pyname);
     return NULL;
   }
@@ -160,7 +160,7 @@ PyObject* object_to_gpgme_t(PyObject* input, const char* objtype, int argnum) {
     free($1);
     return NULL;
   }
-  $result = PyUnicode_FromStringAndSize($1,result);
+  $result = PyBytes_FromStringAndSize($1,result);
   free($1);
 }
 
@@ -243,7 +243,7 @@ gpgme_error_t pyEditCb(void *opaque, gpgme_status_code_t status,
   }
   
   PyTuple_SetItem(pyargs, 0, PyLong_FromLong((long) status));
-  PyTuple_SetItem(pyargs, 1, PyUnicode_FromString(args));
+  PyTuple_SetItem(pyargs, 1, PyBytes_FromString(args));
   if (dataarg) {
     Py_INCREF(dataarg);		/* Because GetItem doesn't give a ref but SetItem taketh away */
     PyTuple_SetItem(pyargs, 2, dataarg);
@@ -255,7 +255,7 @@ gpgme_error_t pyEditCb(void *opaque, gpgme_status_code_t status,
     err_status = pygpgme_exception2code();
   } else {
     if (fd>=0 && retval) {
-      write(fd, PyUnicode_AsString(retval), PyUnicode_Size(retval));
+      write(fd, PyBytes_AsString(retval), PyBytes_Size(retval));
       write(fd, "\n", 1);
     }
   }

@@ -79,8 +79,8 @@ static gpgme_error_t pyPassphraseCb(void *hook,
     args = PyTuple_New(3);
   }
 
-  PyTuple_SetItem(args, 0, PyUnicode_FromString(uid_hint));
-  PyTuple_SetItem(args, 1, PyUnicode_FromString(passphrase_info));
+  PyTuple_SetItem(args, 0, PyBytes_FromString(uid_hint));
+  PyTuple_SetItem(args, 1, PyBytes_FromString(passphrase_info));
   PyTuple_SetItem(args, 2, PyBool_FromLong((long)prev_was_bad));
   if (dataarg) {
     Py_INCREF(dataarg);		/* Because GetItem doesn't give a ref but SetItem taketh away */
@@ -95,7 +95,7 @@ static gpgme_error_t pyPassphraseCb(void *hook,
     if (!retval) {
       write(fd, "\n", 1);
     } else {
-      write(fd, PyUnicode_AsString(retval), PyUnicode_Size(retval));
+      write(fd, PyBytes_AsString(retval), PyBytes_Size(retval));
       write(fd, "\n", 1);
       Py_DECREF(retval);
     }
@@ -129,7 +129,7 @@ static void pyProgressCb(void *hook, const char *what, int type, int current,
     args = PyTuple_New(4);
   }
 
-  PyTuple_SetItem(args, 0, PyUnicode_FromString(what));
+  PyTuple_SetItem(args, 0, PyBytes_FromString(what));
   PyTuple_SetItem(args, 1, PyLong_FromLong((long) type));
   PyTuple_SetItem(args, 2, PyLong_FromLong((long) current));
   PyTuple_SetItem(args, 3, PyLong_FromLong((long) total));
