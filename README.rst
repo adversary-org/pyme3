@@ -17,10 +17,10 @@ able to use PyMe you need to be `familiar with GPGME
 Authors
 -------
 
-* John Goerzen, `Complete.Org http://www.complete.org/JohnGoerzen`_, 2002.
-* Igor Belyi, `PyME 0.8 http://pyme.sourceforge.net/`_, 2004-2008.
-* Martin Albrecht, `PyME 0.9+ https://bitbucket.org/malb/pyme`_, 2014-2015.
-* Ben McGinnes, `PyME Python 3 Port https://bitbucket.org/benmcginnes/pyme/overview`_, 2015.
+* John Goerzen, `Complete.Org <http://www.complete.org/JohnGoerzen>`_, 2002.
+* Igor Belyi, `PyME 0.8 <http://pyme.sourceforge.net/>`_, 2004-2008.
+* Martin Albrecht, `PyME 0.9+ <https://bitbucket.org/malb/pyme>`_, 2014-2015.
+* Ben McGinnes, `PyME Python 3 Port <https://github.com/adversary-org/pyme3>`_, 2015.
 
   
 ------------
