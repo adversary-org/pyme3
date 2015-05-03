@@ -12,12 +12,24 @@ types are converted from C into Python automatically by SWIG. In short, to be
 able to use PyMe you need to be `familiar with GPGME
 <https://www.gnupg.org/documentation/manuals/gpgme/>`_.
 
+
+-------
+Authors
+-------
+
+* John Goerzen, `Complete.Org http://www.complete.org/JohnGoerzen`_, 2002.
+* Igor Belyi, `PyME 0.8 http://pyme.sourceforge.net/`_, 2004-2008.
+* Martin Albrecht, `PyME 0.9+ https://bitbucket.org/malb/pyme`_, 2014-2015.
+* Ben McGinnes, `PyME Python 3 Port https://bitbucket.org/benmcginnes/pyme/overview`_, 2015.
+
+  
 ------------
 Mailing List
 ------------
 
 PyME's support and development `mailing list
 <http://sourceforge.net/p/pyme/mailman/pyme-help/>`_ is hosted by sourceforge.
+
 
 -------
 History
