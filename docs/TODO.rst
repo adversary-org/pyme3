@@ -19,7 +19,7 @@ Currently this appears to be buried in the debian/ directory for some
 unknown reason, probably pertaining to one of the other developers.
 Documentation is to be moved to a more appropriate docs/ directory and
 produced using reST in preparation for inevitable publication by way
-of Sphinx and the existing infrastructure at readthedocs.org or on
-GitHub.
+of Sphinx and the existing infrastructure at readthedocs.org or the
+projects new home at gnupg.org.
 
 
