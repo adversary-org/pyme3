@@ -19,8 +19,8 @@ Authors
 
 * John Goerzen, `Complete.Org <http://www.complete.org/JohnGoerzen>`_, 2002.
 * Igor Belyi, `PyME 0.8 <http://pyme.sourceforge.net/>`_, 2004-2008.
-* Martin Albrecht, `PyME 0.9+ <https://bitbucket.org/malb/pyme>`_, 2014-2015.
-* Ben McGinnes, `PyME Python 3 Port <https://github.com/adversary-org/pyme3>`_, 2015.
+* Martin Albrecht, `PyME 0.9+ <https://bitbucket.org/malb/pyme>`_, 2014 to present.
+* Ben McGinnes, `PyME Python 3 Port <https://git.gnupg.org/gpgme.git/lang/py3-pyme>`_, 2015 to present.
 
   
 ------------
@@ -35,14 +35,14 @@ PyME's support and development `mailing list
 History
 -------
 
-* The latest version of PyMe for Python 3.2 and above (as of May, 2015) is v0.9.1-beta0.
-  https://github.com/adversary-org/pyme3
+* The latest version of PyME for Python 3.2 and above (as of May, 2015) is v0.9.1.
+  https://git.gnupg.org/gpgme.git/lang/py3-pyme
 
-* The latest version of PyMe for Python 2.6 and 2.7 (as of this writing) is v0.9.0.
+* The latest version of PyME for Python 2.6 and 2.7 (as of this writing) is v0.9.0.
   https://bitbucket.org/malb/pyme
 
-* A previous version of PyMe v0.8.0 can be found on sourceforge:
+* A previous version of PyME v0.8.0 can be found on sourceforge:
   http://pyme.sourceforge.net/
 
-* A previous version of PyMe v0.5.1 which works with GPGME v0.3.15 can be found
+* A previous version of PyME v0.5.1 which works with GPGME v0.3.15 can be found
   on John Goerzen's PyMe page: http://quux.org/devel/pyme/
